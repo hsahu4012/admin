@@ -44,6 +44,9 @@ import Profile from './components/common/Profile';
 import SubjectList from './components/admin/SubjectList';
 import SubjectAdd from './components/admin/SubjectAdd';
 import SubjectUpdate from './components/admin/SubjectUpdate';
+import CustomerDetails from './components/customer/CustomerDetails';
+import CustomerCreate from './components/customer/CustomerCreate';
+import CustomerUpdate from './components/customer/CustomerUpdate';
 
 function App() {
 
@@ -85,6 +88,9 @@ function App() {
                   <br></br>
                 </div> */}
                   <Routes>
+                  <Route path='/customerDetails' element={<CustomerDetails />} />
+                  <Route path='/customerCreate' element={<CustomerCreate />} />
+                  <Route path='/customerUpdate/:id' element={<CustomerUpdate />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/dashboardadmin' element={<DashboardAdmin />} />
