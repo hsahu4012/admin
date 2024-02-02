@@ -15,15 +15,8 @@ import SecureHeader from './components/shared/SecureHeader';
 import SecureFooter from './components/shared/SecureFooter';
 import SecureLeftPanel from './components/shared/SecureLeftPanel';
 
-import Dashboard from './components/student/Dashboard';
-import Examlist from './components/student/Examlist';
-import ExamTaken from './components/student/ExamsTaken';
-import Examprogress from './components/student/Examprogress';
-import Examresult from './components/student/Examresult';
-import Examstart from './components/student/Examstart';
 import Home from './components/common/Home';
 import Login from './components/common/Login';
-import ExamReview from './components/student/ExamReview';
 
 
 import QsAdd from './components/admin/QsAdd';
@@ -39,11 +32,13 @@ import AdminNotice from './components/admin/Notice';
 import UsersList from './components/admin/UsersList';
 import UserAdd from './components/admin/UserAdd';
 import UserUpdate from './components/admin/UserUpdate';
-import ExamDetail from './components/student/ExamDetail';
 import Profile from './components/common/Profile';
 import SubjectList from './components/admin/SubjectList';
 import SubjectAdd from './components/admin/SubjectAdd';
 import SubjectUpdate from './components/admin/SubjectUpdate';
+import CustomerDetails from './components/customer/CustomerDetails';
+import CustomerCreate from './components/customer/CustomerCreate';
+import CustomerUpdate from './components/customer/CustomerUpdate';
 
 function App() {
 
@@ -51,7 +46,7 @@ function App() {
   const callApiQsList = async () => {
     console.log('running.............................')
     try {
-      const url = process.env.REACT_APP_API_URL + 'exams/fetchallexams';
+      const url = process.env.REACT_APP_API_URL + 'products/allProducts';
       const response = await axios.get(url);
     }
     catch (error) { console.log(error); }
@@ -73,31 +68,16 @@ function App() {
               <div className='row maincontent content'>
 
                 <div className='col-12 scrollPage'>
-                  {/* <div>
-                  <br></br>
-                  <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-                  <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-                  <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-                  <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-                  <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-                  <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-                  <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-                  <br></br>
-                </div> */}
+                  
                   <Routes>
+                  <Route path='/customerDetails' element={<CustomerDetails />} />
+                  <Route path='/customerCreate' element={<CustomerCreate />} />
+                  <Route path='/customerUpdate/:id' element={<CustomerUpdate />} />
                     <Route path='/profile' element={<Profile />} />
-                    <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/dashboardadmin' element={<DashboardAdmin />} />
                     <Route path='/adminnotice' element={<AdminNotice />} />
                     <Route path='/home' element={<Home />} />
                     <Route path='/login' element={<Login />} />
-                    <Route path='/examlist' element={<Examlist />} />
-                    <Route path='/examtaken' element={<ExamTaken />} />
-                    <Route path='/examdetail/:examid' element={<ExamDetail />} />
-                    <Route path='/examstart' element={<Examstart />} />
-                    <Route path='/examprogress/:examid' element={<Examprogress />} />
-                    <Route path='/examreview/:examid' element={<ExamReview />} />
-                    <Route path='/examresult/:examid' element={<Examresult />} />
                     <Route path='/qslist' element={<QsList />} />
                     <Route path='/qsadd' element={<QsAdd />} />
                     <Route path='/Bulkqsadd' element={<BulkQsAdd />} />
@@ -111,7 +91,7 @@ function App() {
                     <Route path='/subjectslist' element={<SubjectList />} />
                     <Route path='/subjectadd' element={<SubjectAdd />} />
                     <Route path='/subjectedit/:id' element={<SubjectUpdate />} />
-                    <Route path='/' element={<Dashboard />} />
+                    <Route path='/' element={<DashboardAdmin />} />
                   </Routes>
                 </div>
 

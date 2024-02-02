@@ -3,7 +3,7 @@ import React from 'react'
 const Footer = () => {
     return (
         <>
-            <div className="clearfix"></div>
+            {/* <div className="clearfix"></div>
 
             <footer className="site-footer">
                 <div className="footer-inner bg-white">
@@ -16,7 +16,7 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-            </footer>
+            </footer> */}
         </>
     )
 }

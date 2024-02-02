@@ -1,0 +1,16 @@
+/*    Customer-create   */
+.hey{
+    margin-left: 50%;
+}
+.hey button{
+    background-color: black;
+    color: #fff;
+    padding: 5px 40px;
+    border-radius: 5px;
+}
+.hey button:hover{
+    background-color: rgb(97, 52, 60);
+}
+.back{
+    margin-left: 10px;
+}
