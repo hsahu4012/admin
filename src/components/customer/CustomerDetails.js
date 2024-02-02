@@ -10,7 +10,7 @@ const CustomerDetails = () => {
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/customer/showallcustomer");
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}customer/showallcustomer`);
         setData(res.data);
       } catch (err) {
         console.log(err);
@@ -22,7 +22,7 @@ const CustomerDetails = () => {
  
   const handleDelete = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/customer/removeCustomer/${id}`);
+      await axios.put(`${process.env.REACT_APP_API_URL}customer/removeCustomer/${id}`);
       console.log(id)
       window.location.reload()
     } catch (err) {
