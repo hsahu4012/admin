@@ -41,7 +41,7 @@ const Header = () => {
                     <div className="navbar-header">
                         {/* <img src={logo} alt="Nirala Sangeet Sadan" className='logo-image img-fluid' /> */}
                         <a className="navbar-brand" href="./">
-                            <h2>Project Title</h2>
+                            <h2>DressHub Admin</h2>
                         </a>
                         <a id="menuToggle" className="menutoggle" onClick={showhidemenu}><FaBars /></a>
                     </div>
@@ -124,7 +124,7 @@ const Header = () => {
 
                         <div className="user-area dropdown">
                             <div>
-                            <span className='btn btn-outline-warning mx-1' to="/useradd"><FaMobileAlt  />&nbsp;9135707273</span>
+                            {/* <span className='btn btn-outline-warning mx-1' to="/useradd"><FaMobileAlt  />&nbsp;9135707273</span> */}
                                 {
                                     !loginstatus && (
                                         <Link className='btn btn-outline-primary mx-1' to="/useradd">Register</Link>
