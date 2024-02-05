@@ -22,9 +22,12 @@ const CustomerDetails = () => {
  
   const handleDelete = async (id) => {
     try {
+      const confirmed = window.confirm("Are you sure you want to delete this customer?");
+      if (confirmed) {
       await axios.put(`${process.env.REACT_APP_API_URL}customer/removeCustomer/${id}`);
       console.log(id)
       window.location.reload()
+      }
     } catch (err) {
       console.log(err);
     }
@@ -36,7 +39,7 @@ const CustomerDetails = () => {
         <div className='row'>
             <div className='col-md-12'>
             <p><Link to="/CustomerCreate" className="btn btn-success">Add New Customer</Link></p>
-            <table className="table table-bordered">
+            <table className="table table-striped table-hover">
             <thead>
                 <tr>
                     <th>No</th>

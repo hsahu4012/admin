@@ -36,8 +36,23 @@ const CustomerUpdate = () => {
   // };
 
   const updateCustomer = async (values) => {
+    try{
+        // Check if form values are unchanged
+  const isUnchanged = Object.keys(formValues).every(key => formValues[key] === values[key]);
+
+  if (isUnchanged) {
+    alert("No changes were made. Nothing to update.");
+    return;
+  }
+  //after form values update
+      const confirmed = window.confirm("Are you sure you want to Update this customer?");
+      if(confirmed === true){
     await axios.put(`${process.env.REACT_APP_API_URL}customer/updateCustomer/${id}`, values)
     navigate('/customerDetails')
+      }
+    }catch(err){
+      console.log(err)
+    }
   }
 
   useEffect(() => {
