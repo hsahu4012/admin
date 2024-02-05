@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import './Customer.css'
 import axios from 'axios'
 
+
 const CustomerCreate = () => {
   const navigate = useNavigate();
   const formValues = {
@@ -15,9 +16,15 @@ const CustomerCreate = () => {
   }
 
   const submitCustomer = async (values) => {
+   try{
+    const confirmed = window.confirm("Are you sure you want to Add New Customer???");
+    if(confirmed){
     await axios.post(`${process.env.REACT_APP_API_URL}customer/addCustomer`, values)
     navigate('/customerDetails')
-
+    }
+   }catch(error){
+     console.log(error)
+   }
   }
   return (
     <>
