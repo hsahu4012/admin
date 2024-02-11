@@ -6,19 +6,27 @@ import { Link } from "react-router-dom";
  
 const CustomerDetails = () => {
   const [data, setData] = useState([]);
- 
+  
+
+
+  
   useEffect(() => {
-    const fetchAllUsers = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}customer/showallcustomer`);
-        setData(res.data);
+      
+        const resAllUsers = await axios.get(`${process.env.REACT_APP_API_URL}customer/showallcustomer`);
+        setData(resAllUsers.data);
+
+      
+        const resUserData = await axios.get(`${process.env.REACT_APP_API_URL}customer/customerDetails`);
+        setData(resUserData.data);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchAllUsers();
+
+    fetchData();
   }, []);
- 
  
   const handleDelete = async (id) => {
     try {
@@ -43,6 +51,12 @@ const CustomerDetails = () => {
             <thead>
                 <tr>
                     <th>No</th>
+                    <th>UserId</th>
+                    <th>UserName</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Password</th>
                     <th>City</th>
                     <th>Address</th>
                     <th>Contact</th>
@@ -56,7 +70,13 @@ const CustomerDetails = () => {
                     data.map((user, i) => {
                         return (
                             <tr key={i}>
-                                <td>{user.cust_det_srno}</td>
+                            <td>{user.cust_det_srno}</td>
+                              <td>{user.userid} </td>
+                              <td>{user.username} </td>
+                              <td>{user.name} </td>
+                              <td>{user.email} </td>
+                              <td>{user.mobile} </td>
+                              <td>{user.password} </td>
                                 <td>{user.city} </td>
                                 <td>{user.address} </td>
                                 <td>{user.alternatecontact} </td>
