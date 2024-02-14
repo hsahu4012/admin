@@ -39,6 +39,10 @@ import SubjectUpdate from './components/admin/SubjectUpdate';
 import CustomerDetails from './components/customer/CustomerDetails';
 import CustomerCreate from './components/customer/CustomerCreate';
 import CustomerUpdate from './components/customer/CustomerUpdate';
+//category routes
+import CategoryDetails from './components/category/CategoryDetails';
+import CategoryCreate from './components/category/CategoryCreate';
+import CategoryUpdate from './components/category/CategoryUpdate';
 
 function App() {
 
@@ -91,6 +95,10 @@ function App() {
                     <Route path='/subjectslist' element={<SubjectList />} />
                     <Route path='/subjectadd' element={<SubjectAdd />} />
                     <Route path='/subjectedit/:id' element={<SubjectUpdate />} />
+                    
+                    <Route path='/categoryDetails' element={<CategoryDetails />} />
+                  <Route path='/categoryCreate' element={<CategoryCreate />} />
+                  <Route path='/categoryUpdate/:id' element={<CategoryUpdate />} />
                     <Route path='/' element={<DashboardAdmin />} />
                   </Routes>
                 </div>
