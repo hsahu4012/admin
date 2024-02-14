@@ -1,7 +1,6 @@
 import React from 'react'
 import { Formik, Field, Form } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
-import './Customer.css'
 import axios from 'axios'
 
 
@@ -51,7 +50,7 @@ const CustomerCreate = () => {
             <label className='col-4 my-2 text-center'>Profile:-</label>
             <Field name="profile_photo" type="file" accept="image/*" className='col-6' />
           </div> */}
-          <div className='hey'>
+          <div>
             <button type='submit'>Submit</button>
             <Link to='/customerDetails' className='btn btn-danger back'>Back</Link>
           </div>

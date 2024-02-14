@@ -6,16 +6,17 @@ import { Link } from "react-router-dom";
  
 const CategoryDetails = () => {
   const [data, setData] = useState([]);
+
+  const fetchAllUsers = async () => {
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}category/allCategory`);
+      setData(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
  
   useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}category/allCategory`);
-        setData(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchAllUsers();
   }, []);
  
@@ -23,8 +24,9 @@ const CategoryDetails = () => {
   const handleDelete = async (id) => {
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}category/romoveCategory/${id}`);
-      console.log(id)
-      window.location.reload()
+      console.log(id);
+      fetchAllUsers();
+      //window.location.reload()
     } catch (err) {
       console.log(err);
     }
@@ -46,7 +48,7 @@ const CategoryDetails = () => {
             </thead>
             <tbody>
                 {
-                    data.map((user, i) => {
+                    data && data.map((user, i) => {
                         return (
                             <tr key={i}>
                                 <td>{user.category_id}</td>

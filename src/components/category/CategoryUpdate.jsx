@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Formik, Field, Form } from 'formik'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import './Category.css'
 import axios from 'axios'
 
 const CategoryUpdate = () => {
@@ -10,7 +9,6 @@ const CategoryUpdate = () => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     categoryname: ""
-
   })
 
   useEffect(() => {
@@ -47,12 +45,12 @@ const CategoryUpdate = () => {
         <Form>
           <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>Category Name:-</label>
-            <Field name="city" type="text" className='col-6'  />
+            <Field name="categoryname" type="text" className='col-6'  />
           </div>
           
-          <div className='hey'>
-            <button type='submit'>Submit</button>
-            <Link to='/categoryDetails' className='btn btn-danger back'>Back</Link>
+          <div>
+            <button type='submit' className='btn btn-success'>Submit</button>
+            <Link to='/categoryDetails' className='btn btn-danger'>Back</Link>
           </div>
 
 

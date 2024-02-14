@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Formik, Field, Form } from 'formik'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import './Customer.css'
 import axios from 'axios'
 
 const CustomerUpdate = () => {
@@ -80,7 +79,7 @@ const CustomerUpdate = () => {
             <label className='col-4 my-2 text-center'>Pincode:-</label>
             <Field name="pincode" type="text" className='col-6' />
           </div>
-          <div className='hey'>
+          <div>
             <button type='submit'>Submit</button>
             <Link to='/customerDetails' className='btn btn-danger back'>Back</Link>
           </div>

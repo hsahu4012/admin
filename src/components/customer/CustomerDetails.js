@@ -17,9 +17,8 @@ const CustomerDetails = () => {
         const resAllUsers = await axios.get(`${process.env.REACT_APP_API_URL}customer/showallcustomer`);
         setData(resAllUsers.data);
 
-      
-        const resUserData = await axios.get(`${process.env.REACT_APP_API_URL}customer/customerDetails`);
-        setData(resUserData.data);
+        // const resUserData = await axios.get(`${process.env.REACT_APP_API_URL}customer/customerDetails`);
+        // setData(resUserData.data);
       } catch (err) {
         console.log(err);
       }
