@@ -44,6 +44,12 @@ import CategoryDetails from './components/category/CategoryDetails';
 import CategoryCreate from './components/category/CategoryCreate';
 import CategoryUpdate from './components/category/CategoryUpdate';
 
+import ProductsList from './components/admin/products/ProductsList';
+import ProductAdd from './components/admin/products/ProductAdd';
+import ProductEdit from './components/admin/products/ProductEdit';
+import ProductView from './components/admin/products/ProductView';
+
+
 function App() {
 
   //temp code to keep server live
@@ -72,11 +78,11 @@ function App() {
               <div className='row maincontent content'>
 
                 <div className='col-12 scrollPage'>
-                  
+
                   <Routes>
-                  <Route path='/customerDetails' element={<CustomerDetails />} />
-                  <Route path='/customerCreate' element={<CustomerCreate />} />
-                  <Route path='/customerUpdate/:id' element={<CustomerUpdate />} />
+                    <Route path='/customerDetails' element={<CustomerDetails />} />
+                    <Route path='/customerCreate' element={<CustomerCreate />} />
+                    <Route path='/customerUpdate/:id' element={<CustomerUpdate />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/dashboardadmin' element={<DashboardAdmin />} />
                     <Route path='/adminnotice' element={<AdminNotice />} />
@@ -99,6 +105,10 @@ function App() {
                     <Route path='/categoryDetails' element={<CategoryDetails />} />
                   <Route path='/categoryCreate' element={<CategoryCreate />} />
                   <Route path='/categoryUpdate/:id' element={<CategoryUpdate />} />
+                    <Route path='/productslist' element={<ProductsList />} />
+                    <Route path='/productadd' element={<ProductAdd />} />
+                    <Route path='/productedit/:productid' element={<ProductEdit />} />
+                    <Route path='/productview/:productid' element={<ProductView />} />
                     <Route path='/' element={<DashboardAdmin />} />
                   </Routes>
                 </div>
