@@ -49,7 +49,10 @@ import ProductAdd from './components/admin/products/ProductAdd';
 import ProductEdit from './components/admin/products/ProductEdit';
 import ProductView from './components/admin/products/ProductView';
 
-
+import Subcategorylist from './components/admin/Sub-Category/Subcategorylist';
+import Subcategoryadd from './components/admin/Sub-Category/Subcategoryadd';
+import Subcategoryedit from './components/admin/Sub-Category/Subcategoryedit';
+import Subcategoryview from './components/admin/Sub-Category/Subcategoryview';
 function App() {
 
   //temp code to keep server live
@@ -109,6 +112,10 @@ function App() {
                     <Route path='/productadd' element={<ProductAdd />} />
                     <Route path='/productedit/:productid' element={<ProductEdit />} />
                     <Route path='/productview/:productid' element={<ProductView />} />
+                    <Route path='/subcategorylist' element={<Subcategorylist />} />
+                    <Route path='/subcategoryadd' element={<Subcategoryadd />} />
+                    <Route path='/subcategoryedit/:subcategoryid' element={<Subcategoryedit />} />
+                    <Route path='/subcategoryview/:subcategoryid' element={<Subcategoryview />} />
                     <Route path='/' element={<DashboardAdmin />} />
                   </Routes>
                 </div>
