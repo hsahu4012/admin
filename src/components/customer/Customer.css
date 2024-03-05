@@ -14,3 +14,7 @@
 .back{
     margin-left: 10px;
 }
+.now{
+    display: flex;
+    justify-content: space-around;
+}

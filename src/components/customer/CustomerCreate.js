@@ -19,7 +19,7 @@ const CustomerCreate = () => {
    try{
     const confirmed = window.confirm("Are you sure you want to Add New Customer???");
     if(confirmed){
-    await axios.post(`${process.env.REACT_APP_API_URL}customer/addCustomer`, values)
+    await axios.post(`${process.env.REACT_APP_API_URL}customer/customer/addCustomer`, values)
     navigate('/customerDetails')
     }
    }catch(error){
