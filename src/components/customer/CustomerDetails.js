@@ -13,10 +13,15 @@ const CustomerDetails = () => {
         //const resAllUsers = await axios.get(`${process.env.REACT_APP_API_URL}customer/showallcustomer`);
         //  setData(resAllUsers.data);
 
+<<<<<<< HEAD
         const resUserData = await axios.get(
           `${process.env.REACT_APP_API_URL}customer/customer/customerDetails`
         );
         setData(resUserData.data);
+=======
+        // const resUserData = await axios.get(`${process.env.REACT_APP_API_URL}customer/customerDetails`);
+        // setData(resUserData.data);
+>>>>>>> e3600eca140793df5457a91393c449dead249e63
       } catch (err) {
         console.log(err);
       }

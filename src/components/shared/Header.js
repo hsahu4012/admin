@@ -39,7 +39,7 @@ const Header = () => {
             <header id="header" className="header">
                 <div className="top-left">
                     <div className="navbar-header">
-                        {/* <img src={logo} alt="Nirala Sangeet Sadan" className='logo-image img-fluid' /> */}
+                        
                         <a className="navbar-brand" href="./">
                             <h2>DressHub Admin</h2>
                         </a>
@@ -125,7 +125,7 @@ const Header = () => {
                         <div className="user-area dropdown">
                             <div>
                             {/* <span className='btn btn-outline-warning mx-1' to="/useradd"><FaMobileAlt  />&nbsp;9135707273</span> */}
-                                {
+                                {/* {
                                     !loginstatus && (
                                         <Link className='btn btn-outline-primary mx-1' to="/useradd">Register</Link>
                                     )
@@ -138,7 +138,7 @@ const Header = () => {
                                 }
                                 {
                                     (!loginstatus && (window.location.pathname !== '/')) && (<Link className='btn btn-outline-success' to="/login">Login</Link>)
-                                }
+                                } */}
                             </div>
                             {/* <a href="#" className="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img className="user-avatar rounded-circle" src="images/admin.jpg" alt="User Avatar" />

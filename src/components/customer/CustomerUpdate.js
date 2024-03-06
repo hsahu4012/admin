@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import { Formik, Field, Form } from "formik";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./Customer.css";
 import axios from "axios";
+=======
+import React, { useState, useEffect } from 'react'
+import { Formik, Field, Form } from 'formik'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios'
+>>>>>>> e3600eca140793df5457a91393c449dead249e63
 
 const CustomerUpdate = () => {
   const { id } = useParams();
@@ -101,6 +108,7 @@ const CustomerUpdate = () => {
             <label className="col-4 my-2 text-center">Password:-</label>
             <Field name="password" type="text" className="col-6" />
           </div>
+<<<<<<< HEAD
           <div className="row mb-2">
             <label className="col-4 my-2 text-center">City:-</label>
             <Field name="city" type="text" className="col-6" />
@@ -122,6 +130,11 @@ const CustomerUpdate = () => {
             <Link to="/customerDetails" className="btn btn-danger back">
               Back
             </Link>
+=======
+          <div>
+            <button type='submit'>Submit</button>
+            <Link to='/customerDetails' className='btn btn-danger back'>Back</Link>
+>>>>>>> e3600eca140793df5457a91393c449dead249e63
           </div>
         </Form>
       </Formik>

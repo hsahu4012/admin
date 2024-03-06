@@ -39,13 +39,20 @@ import SubjectUpdate from './components/admin/SubjectUpdate';
 import CustomerDetails from './components/customer/CustomerDetails';
 import CustomerCreate from './components/customer/CustomerCreate';
 import CustomerUpdate from './components/customer/CustomerUpdate';
+//category routes
+import CategoryDetails from './components/category/CategoryDetails';
+import CategoryCreate from './components/category/CategoryCreate';
+import CategoryUpdate from './components/category/CategoryUpdate';
 
 import ProductsList from './components/admin/products/ProductsList';
 import ProductAdd from './components/admin/products/ProductAdd';
 import ProductEdit from './components/admin/products/ProductEdit';
 import ProductView from './components/admin/products/ProductView';
 
-
+import Subcategorylist from './components/admin/Sub-Category/Subcategorylist';
+import Subcategoryadd from './components/admin/Sub-Category/Subcategoryadd';
+import Subcategoryedit from './components/admin/Sub-Category/Subcategoryedit';
+import Subcategoryview from './components/admin/Sub-Category/Subcategoryview';
 function App() {
 
   //temp code to keep server live
@@ -97,10 +104,18 @@ function App() {
                     <Route path='/subjectslist' element={<SubjectList />} />
                     <Route path='/subjectadd' element={<SubjectAdd />} />
                     <Route path='/subjectedit/:id' element={<SubjectUpdate />} />
+                    
+                    <Route path='/categoryDetails' element={<CategoryDetails />} />
+                  <Route path='/categoryCreate' element={<CategoryCreate />} />
+                  <Route path='/categoryUpdate/:id' element={<CategoryUpdate />} />
                     <Route path='/productslist' element={<ProductsList />} />
                     <Route path='/productadd' element={<ProductAdd />} />
                     <Route path='/productedit/:productid' element={<ProductEdit />} />
                     <Route path='/productview/:productid' element={<ProductView />} />
+                    <Route path='/subcategorylist' element={<Subcategorylist />} />
+                    <Route path='/subcategoryadd' element={<Subcategoryadd />} />
+                    <Route path='/subcategoryedit/:subcategoryid' element={<Subcategoryedit />} />
+                    <Route path='/subcategoryview/:subcategoryid' element={<Subcategoryview />} />
                     <Route path='/' element={<DashboardAdmin />} />
                   </Routes>
                 </div>
