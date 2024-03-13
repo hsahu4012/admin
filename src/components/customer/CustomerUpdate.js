@@ -118,7 +118,7 @@ const CustomerUpdate = () => {
             <Field name="pincode" type="text" className="col-6" />
           </div>
           <div className="hey">
-            <button type="submit">Submit</button>
+            <button type="submit">Submit Now</button>
             <Link to="/customerDetails" className="btn btn-danger back">
               Back
             </Link>

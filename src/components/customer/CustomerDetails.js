@@ -102,7 +102,7 @@ const CustomerDetails = () => {
                         onClick={() => handleDelete(user.userid)}
                         className="btn btn-danger"
                       >
-                        Delete
+                        Delete Now
                       </button>
                     </td>
                   </tr>
