@@ -15,6 +15,7 @@ const UserAdd: FC = () => {
 
     const url = process.env.REACT_APP_API_URL + 'users/adduser';
     const response = await axios.post(url, values);
+    console.log(values)
     console.log(response);
     if (response.status === 201) {
       setStatus(true);
