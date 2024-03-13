@@ -1,19 +1,11 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import { Formik, Field, Form } from "formik";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import "./Customer.css";
 import axios from "axios";
-=======
-import React, { useState, useEffect } from 'react'
-import { Formik, Field, Form } from 'formik'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import axios from 'axios'
->>>>>>> e3600eca140793df5457a91393c449dead249e63
+import "./Customer.css";
 
 const CustomerUpdate = () => {
   const { id } = useParams();
-  console.log(id, "ayan");
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: "",
@@ -28,7 +20,9 @@ const CustomerUpdate = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}customer/customerById/${id}`)
+      .get(
+        `${process.env.REACT_APP_API_URL}customer/customer/customerById/${id}`
+      )
       .then((res) => {
         console.log(res);
         let obj = {
@@ -67,7 +61,6 @@ const CustomerUpdate = () => {
         "Are you sure you want to Update this customer?"
       );
       if (confirmed === true) {
-        console.log(values, "abcd");
         await axios.put(
           `${process.env.REACT_APP_API_URL}customer/updateCustomerDetails/${id}`,
           values
@@ -108,7 +101,6 @@ const CustomerUpdate = () => {
             <label className="col-4 my-2 text-center">Password:-</label>
             <Field name="password" type="text" className="col-6" />
           </div>
-<<<<<<< HEAD
           <div className="row mb-2">
             <label className="col-4 my-2 text-center">City:-</label>
             <Field name="city" type="text" className="col-6" />
@@ -130,11 +122,6 @@ const CustomerUpdate = () => {
             <Link to="/customerDetails" className="btn btn-danger back">
               Back
             </Link>
-=======
-          <div>
-            <button type='submit'>Submit</button>
-            <Link to='/customerDetails' className='btn btn-danger back'>Back</Link>
->>>>>>> e3600eca140793df5457a91393c449dead249e63
           </div>
         </Form>
       </Formik>
