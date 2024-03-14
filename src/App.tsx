@@ -53,6 +53,9 @@ import Subcategorylist from './components/admin/Sub-Category/Subcategorylist';
 import Subcategoryadd from './components/admin/Sub-Category/Subcategoryadd';
 import Subcategoryedit from './components/admin/Sub-Category/Subcategoryedit';
 import Subcategoryview from './components/admin/Sub-Category/Subcategoryview';
+import Orderslist from './components/orders/Orderslist';
+import OrdersUpdate from './components/orders/OrdersUpdate';
+import OrdersCreate from './components/orders/OrdersCreate';
 function App() {
 
   //temp code to keep server live
@@ -83,6 +86,9 @@ function App() {
                 <div className='col-12 scrollPage'>
 
                   <Routes>
+                  <Route path='/orders' element={<Orderslist />} />
+                  <Route path='/orderCreate' element={<OrdersCreate />} />
+                  <Route path='/orderUpdate/:id' element={<OrdersUpdate />} />
                     <Route path='/customerDetails' element={<CustomerDetails />} />
                     <Route path='/customerCreate' element={<CustomerCreate />} />
                     <Route path='/customerUpdate/:id' element={<CustomerUpdate />} />
