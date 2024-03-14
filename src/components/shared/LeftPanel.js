@@ -48,6 +48,10 @@ const LeftPanel = () => {
                     <Link to="/subcategorylist">Sub-Category</Link>
                   </li>
                   <li className="menu-item-has-children dropdown">
+                    <Link to="/addressdetails">Address</Link>
+                  </li>
+
+                  <li className="menu-item-has-children dropdown">
                     <Link to="/orders">Orders</Link>
                   </li>
 

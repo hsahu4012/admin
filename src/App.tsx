@@ -53,6 +53,11 @@ import Subcategorylist from './components/admin/Sub-Category/Subcategorylist';
 import Subcategoryadd from './components/admin/Sub-Category/Subcategoryadd';
 import Subcategoryedit from './components/admin/Sub-Category/Subcategoryedit';
 import Subcategoryview from './components/admin/Sub-Category/Subcategoryview';
+
+import Addressdetails from './components/admin/Address/Addressdetails';
+import Addressadd from './components/admin/Address/Addressadd';
+import Addressupdate from './components/admin/Address/Addressupdate';
+
 import Orderslist from './components/orders/Orderslist';
 import OrdersUpdate from './components/orders/OrdersUpdate';
 import OrdersCreate from './components/orders/OrdersCreate';
@@ -122,6 +127,10 @@ function App() {
                     <Route path='/subcategoryadd' element={<Subcategoryadd />} />
                     <Route path='/subcategoryedit/:subcategoryid' element={<Subcategoryedit />} />
                     <Route path='/subcategoryview/:subcategoryid' element={<Subcategoryview />} />
+                    <Route path='/addressdetails' element={<Addressdetails />} />
+                    <Route path='/addressadd' element={<Addressadd />} />
+                    <Route path='/addressupdate/:addressid' element={<Addressupdate />} />
+          
                     <Route path='/' element={<DashboardAdmin />} />
                   </Routes>
                 </div>
