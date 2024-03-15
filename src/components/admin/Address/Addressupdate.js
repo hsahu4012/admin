@@ -6,7 +6,7 @@
  
   
   const AddressUpdate = () => {
-    const { id } = useParams();
+    const { addressid } = useParams();
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
       name: "",
@@ -25,9 +25,10 @@
     useEffect(() => {
       axios
         .get(
-          `${process.env.REACT_APP_API_URL}address/addressById/${id}`
+          `${process.env.REACT_APP_API_URL}address/addressById/${addressid}`
         )
         .then((res) => {
+          
           console.log(res);
           let obj = {
             
@@ -44,10 +45,10 @@
             landmark:res.data[0].landmark,
           };
           setFormValues(obj);
-          console.log(res.data[0]);
+          console.log(res.data);
         })
         .catch((err) => console.log(err));
-    }, [id]);
+    }, [addressid]);
   
   
     const updateAddress = async (values) => {
@@ -67,7 +68,7 @@
         );
         if (confirmed === true) {
           await axios.put(
-            `${process.env.REACT_APP_API_URL}address/updateAddress/${id}`,
+            `${process.env.REACT_APP_API_URL}address/updateAddress/${addressid}`,
             values
           );
           navigate("/addressdetails");
