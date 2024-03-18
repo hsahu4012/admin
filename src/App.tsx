@@ -61,6 +61,9 @@ import Addressupdate from './components/admin/Address/Addressupdate';
 import Orderslist from './components/orders/Orderslist';
 import OrdersUpdate from './components/orders/OrdersUpdate';
 import OrdersCreate from './components/orders/OrdersCreate';
+import WishlistList from './components/wishlist/WishlistList';
+import WishlistAdd from './components/wishlist/WishlistAdd';
+import WishlistUpdate from './components/wishlist/WishlistUpdate';
 function App() {
 
   //temp code to keep server live
@@ -91,6 +94,9 @@ function App() {
                 <div className='col-12 scrollPage'>
 
                   <Routes>
+                  <Route path='/wishlistUpdate/:id' element={<WishlistUpdate/>} />
+                  <Route path='/wishlistCreate' element={<WishlistAdd />} />
+                  <Route path='/wishlist' element={<WishlistList />} />
                   <Route path='/orders' element={<Orderslist />} />
                   <Route path='/orderCreate' element={<OrdersCreate />} />
                   <Route path='/orderUpdate/:id' element={<OrdersUpdate />} />
