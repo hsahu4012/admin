@@ -57,6 +57,9 @@ const LeftPanel = () => {
                   <li className="menu-item-has-children dropdown">
                     <Link to="/wishlist">WishList</Link>
                   </li>
+                  <li className="menu-item-has-children dropdown">
+                    <Link to="/orderDetails">Orders Details</Link>
+                  </li>
 
                   {/* <li className="menu-title">Student Options</li>
                                         <li className="menu-item-has-children dropdown"><Link to='/profile' >Profile</Link></li>
