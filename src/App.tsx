@@ -64,6 +64,9 @@ import OrdersCreate from './components/orders/OrdersCreate';
 import WishlistList from './components/wishlist/WishlistList';
 import WishlistAdd from './components/wishlist/WishlistAdd';
 import WishlistUpdate from './components/wishlist/WishlistUpdate';
+import OrderDetailsList from './components/order details/OrderDetailList';
+import OrderDetailAdd from './components/order details/OrderDetailAdd';
+import OrderDetailUpdate from './components/order details/OrderDetailUpdate';
 function App() {
 
   //temp code to keep server live
@@ -94,6 +97,9 @@ function App() {
                 <div className='col-12 scrollPage'>
 
                   <Routes>
+                  <Route path='/orderDetailsUpdate/:id' element={<OrderDetailUpdate />} />
+                  <Route path='/orderDetailsCreate' element={<OrderDetailAdd />} />
+                  <Route path='/orderDetails' element={<OrderDetailsList />} />
                   <Route path='/wishlistUpdate/:id' element={<WishlistUpdate/>} />
                   <Route path='/wishlistCreate' element={<WishlistAdd />} />
                   <Route path='/wishlist' element={<WishlistList />} />
