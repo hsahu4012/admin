@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form } from "formik";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const ProductAdd = () => {
+   
+    const [categories, setCategories] = useState([]);
+    const [subcategories, setSubcategories] = useState([]);
 
     const initialFormValues = {
         prod_name: "",
@@ -15,6 +18,27 @@ const ProductAdd = () => {
         discount: "",
         prod_desc: ""
     }
+      useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const url = process.env.REACT_APP_API_URL + 'category/allCategory';
+                const response = await axios.get(url);
+                setCategories(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchCategories()
+      },[])    
+      const handleCategoryChange = async (categoryId) => {
+        try {
+            const url = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
+            const response = await axios.get(url);
+            setSubcategories(response.data.filter(subcategory => subcategory.category_id === parseInt(categoryId)));
+        } catch (error) {
+            console.log(error);
+        }
+    }     
 
     const addNewProduct = async (values) => {
         //call api to add new product
@@ -44,6 +68,8 @@ const ProductAdd = () => {
                     };
                 }}
             >
+                                {({ values, setFieldValue }) => (
+
                 <div className='row'>
                     <Form className='examAddForm'>
                         <div className='row'>
@@ -52,13 +78,26 @@ const ProductAdd = () => {
                         </div>
 
                         <div className='row'>
-                            <label htmlFor="email" className='col-4 my-2'>Category</label>
-                            <Field name="category" className='col-8' type="text" required />
+                            <label htmlFor="category" className='col-4 my-2'>Category</label>
+                            <Field name="category" as="select" className='col-8' type="text" onChange={(e) => {
+                                    setFieldValue('category', e.target.value);
+                                    handleCategoryChange(e.target.value);
+                                }}
+                                required >
+                                    <option value="">Select a category</option>
+                                {categories.map(category => (
+                                    <option key={category.category_id} value={category.category_id}>{category.categoryname}</option>
+                                ))}
+                                    </Field>
                         </div>
 
                         <div className='row'>
-                            <label htmlFor="mobile" className='col-4 my-2'>Subcategory</label>
-                            <Field name="subcategory" type="text" className='col-8' required />
+                            <label htmlFor="subcategory" className='col-4 my-2'>Subcategory</label>
+                            <Field name="subcategory" as="select" type="text" className='col-8' required >
+                                 <option value="">Select a subcategory</option>
+                                {subcategories.map(subcategory => (
+                                    <option key={subcategory.subcategory_id} value={subcategory.subcategory_id}>{subcategory.subcategoryname}</option>
+                                ))} </Field>
                         </div>
 
                         <div className='row'>
@@ -97,6 +136,7 @@ const ProductAdd = () => {
                         <br></br>
                     </Form>
                 </div>
+                                )}
             </Formik>
 
             <div className='row'>
