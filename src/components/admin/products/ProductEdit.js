@@ -41,7 +41,7 @@ const ProductEdit = () => {
         try {
             const url = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
             const response = await axios.get(url);
-            setSubcategories(response.data.filter(subcategory => subcategory.category_id === parseInt(categoryId)));
+            setSubcategories(response.data.filter(subcategory => subcategory.category_id === categoryId));
         } catch (error) {
             console.log(error);
         }
@@ -50,8 +50,8 @@ const ProductEdit = () => {
     const editProduct = async (values) => {
         try {
             const { category, subcategory, ...otherValues } = values;
-            const categoryObject = categories.find(cat => cat.category_id === parseInt(category));
-            const subcategoryObject = subcategories.find(subcat => subcat.subcategory_id === parseInt(subcategory));
+            const categoryObject = categories.find(cat => cat.category_id === category);
+            const subcategoryObject = subcategories.find(subcat => subcat.subcategory_id === subcategory);
 
             const updatedValues = {
                 ...otherValues,
@@ -62,7 +62,7 @@ const ProductEdit = () => {
             const url = process.env.REACT_APP_API_URL + 'products/updateProduct/' + productid;
             const response = await axios.put(url, updatedValues);
             if (response.status === 200) {
-                // Fetch the updated product data
+                // Fetch the updated product data 
                 const updatedProductUrl = process.env.REACT_APP_API_URL + 'products/productById/' + productid;
                 const updatedProductResponse = await axios.get(updatedProductUrl);
                 setProduct(updatedProductResponse.data);
