@@ -49,6 +49,10 @@ import ProductAdd from './components/admin/products/ProductAdd';
 import ProductEdit from './components/admin/products/ProductEdit';
 import ProductView from './components/admin/products/ProductView';
 
+import ComplainsList from './components/Complains/ComplainsList';
+import ComplainsAdd from './components/Complains/ComplainsAdd';
+import ComplainsEdit from './components/Complains/ComplainsEdit';
+
 import Subcategorylist from './components/admin/Sub-Category/Subcategorylist';
 import Subcategoryadd from './components/admin/Sub-Category/Subcategoryadd';
 import Subcategoryedit from './components/admin/Sub-Category/Subcategoryedit';
@@ -67,6 +71,8 @@ import WishlistUpdate from './components/wishlist/WishlistUpdate';
 import OrderDetailsList from './components/order details/OrderDetailList';
 import OrderDetailAdd from './components/order details/OrderDetailAdd';
 import OrderDetailUpdate from './components/order details/OrderDetailUpdate';
+
+
 function App() {
 
   //temp code to keep server live
@@ -139,6 +145,11 @@ function App() {
                     <Route path='/subcategoryadd' element={<Subcategoryadd />} />
                     <Route path='/subcategoryedit/:subcategoryid' element={<Subcategoryedit />} />
                     <Route path='/subcategoryview/:subcategoryid' element={<Subcategoryview />} />
+                    {/* complains route */}
+                    <Route path='/complainslist' element={<ComplainsList />} />
+                    <Route path='/complainsadd' element={<ComplainsAdd />} />
+                    <Route path='/complainsedit/:complainid' element={<ComplainsEdit />} />
+
                     <Route path='/addressdetails' element={<Addressdetails />} />
                     <Route path='/addressadd' element={<Addressadd />} />
                     <Route path='/addressupdate/:addressid' element={<Addressupdate />} />
