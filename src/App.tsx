@@ -39,7 +39,7 @@ import SubjectUpdate from './components/admin/SubjectUpdate';
 import CustomerDetails from './components/customer/CustomerDetails';
 import CustomerCreate from './components/customer/CustomerCreate';
 import CustomerUpdate from './components/customer/CustomerUpdate';
-//category routes
+
 import CategoryDetails from './components/category/CategoryDetails';
 import CategoryCreate from './components/category/CategoryCreate';
 import CategoryUpdate from './components/category/CategoryUpdate';
@@ -49,6 +49,7 @@ import ProductAdd from './components/admin/products/ProductAdd';
 import ProductEdit from './components/admin/products/ProductEdit';
 import ProductView from './components/admin/products/ProductView';
 
+//complain routes
 import ComplainsList from './components/Complains/ComplainsList';
 import ComplainsAdd from './components/Complains/ComplainsAdd';
 import ComplainsEdit from './components/Complains/ComplainsEdit';
