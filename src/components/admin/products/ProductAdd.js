@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form } from "formik";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import JoditEditor from 'jodit-react';
 
 const ProductAdd = () => {
    
@@ -34,7 +35,7 @@ const ProductAdd = () => {
         try {
             const url = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
             const response = await axios.get(url);
-            setSubcategories(response.data.filter(subcategory => subcategory.category_id === parseInt(categoryId)));
+            setSubcategories(response.data.filter(subcategory => subcategory.category_id === categoryId));
         } catch (error) {
             console.log(error);
         }
@@ -121,10 +122,15 @@ const ProductAdd = () => {
                         </div>
 
                         <div className='row'>
-                            <label htmlFor="password" className='col-4 my-2'>Description</label>
-                            <Field name="prod_desc" type="text" className='col-8' required />
+                            <label htmlFor="prod_desc" className='col-4 my-2'>Description:</label>
+                            <div className='col-8'>
+                                <JoditEditor
+                                    value={values.prod_desc}
+                                    onChange={(content) => setFieldValue('prod_desc', content)}
+                                />
+                            </div>
                         </div>
-
+                        
                         <div className='row'>
                             <div className='text-center my-4'>
                                 <button type="submit" className='btn btn-success'>Add Product</button>
