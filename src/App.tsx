@@ -73,6 +73,10 @@ import OrderDetailsList from './components/order details/OrderDetailList';
 import OrderDetailAdd from './components/order details/OrderDetailAdd';
 import OrderDetailUpdate from './components/order details/OrderDetailUpdate';
 
+import VendorList from './components/admin/VendorList';
+import VendorAdd from './components/admin/VendorAdd';
+import VendorUpdate from './components/admin/VendorUpdate';
+
 
 function App() {
 
@@ -154,7 +158,13 @@ function App() {
                     <Route path='/addressdetails' element={<Addressdetails />} />
                     <Route path='/addressadd' element={<Addressadd />} />
                     <Route path='/addressupdate/:addressid' element={<Addressupdate />} />
-          
+
+                    <Route path='/vendorDetails' element={<VendorList />} />
+                    <Route path='/vendoradd' element={<VendorAdd />} />
+                    <Route path='/vendoredit/:vendorid' element={<VendorUpdate />} />
+
+
+
                     <Route path='/' element={<DashboardAdmin />} />
                   </Routes>
                 </div>
