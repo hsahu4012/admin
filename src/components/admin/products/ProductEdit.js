@@ -18,6 +18,8 @@ const ProductEdit = () => {
                 const url = process.env.REACT_APP_API_URL + 'products/productById/' + id;
                 const response = await axios.get(url);
                 setProduct(response.data);
+                handleCategoryChange(response.data.category);
+                
             } catch (error) {
                 console.log(error);
             }
