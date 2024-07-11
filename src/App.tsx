@@ -39,7 +39,7 @@ import SubjectUpdate from './components/admin/SubjectUpdate';
 import CustomerDetails from './components/customer/CustomerDetails';
 import CustomerCreate from './components/customer/CustomerCreate';
 import CustomerUpdate from './components/customer/CustomerUpdate';
-//category routes
+
 import CategoryDetails from './components/category/CategoryDetails';
 import CategoryCreate from './components/category/CategoryCreate';
 import CategoryUpdate from './components/category/CategoryUpdate';
@@ -48,6 +48,11 @@ import ProductsList from './components/admin/products/ProductsList';
 import ProductAdd from './components/admin/products/ProductAdd';
 import ProductEdit from './components/admin/products/ProductEdit';
 import ProductView from './components/admin/products/ProductView';
+
+//complain routes
+import ComplainsList from './components/Complains/ComplainsList';
+import ComplainsAdd from './components/Complains/ComplainsAdd';
+import ComplainsEdit from './components/Complains/ComplainsEdit';
 
 import Subcategorylist from './components/admin/Sub-Category/Subcategorylist';
 import Subcategoryadd from './components/admin/Sub-Category/Subcategoryadd';
@@ -145,6 +150,11 @@ function App() {
                     <Route path='/subcategoryadd' element={<Subcategoryadd />} />
                     <Route path='/subcategoryedit/:subcategoryid' element={<Subcategoryedit />} />
                     <Route path='/subcategoryview/:subcategoryid' element={<Subcategoryview />} />
+                    {/* complains route */}
+                    <Route path='/complainslist' element={<ComplainsList />} />
+                    <Route path='/complainsadd' element={<ComplainsAdd />} />
+                    <Route path='/complainsedit/:complainid' element={<ComplainsEdit />} />
+
                     <Route path='/addressdetails' element={<Addressdetails />} />
                     <Route path='/addressadd' element={<Addressadd />} />
                     <Route path='/addressupdate/:addressid' element={<Addressupdate />} />
