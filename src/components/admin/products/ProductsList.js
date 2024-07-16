@@ -65,6 +65,7 @@ const ProductsList = () => {
                                 <td>{temp.category}</td>
                                 <td>{temp.subcategory}</td>
                                 <td>{temp.price}</td>
+                                <td><img src={process.env.REACT_APP_API_URL + temp.image} style={{height: '50px'}}/></td>
                                 <td>{temp.image}</td>
                                 <td>{temp.brand}</td>
                                 <td>{temp.discount}</td>
