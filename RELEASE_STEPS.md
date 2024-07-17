@@ -3,8 +3,8 @@
 3) npm run build
 4) zip contents of build folder
 5) deploy on server | delete old files, upload and unzip
-PROD - exam.niralasangeetsadan.com
-DEV - examhub.codeacetechnologies.com
+PROD - 
+DEV - https://grocerz.hashedbit.com/
 6) also cut and keep the zip folder in deployed on local repo
 7) revert local changes of env and app.js
 8) update changelog and commit to master
