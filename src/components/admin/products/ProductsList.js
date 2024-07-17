@@ -9,8 +9,8 @@ const ProductsList = () => {
         try {
             const url = process.env.REACT_APP_API_URL + 'products/allProducts';
             const response = await axios.get(url);
-            console.log(response.data);
-            setProducts(response.data);
+            const sortedProducts = response.data.sort((a, b) => b.srno - a.srno);
+            setProducts(sortedProducts);
         }
         catch (error) {
             console.log(error);
@@ -48,10 +48,10 @@ const ProductsList = () => {
                         <th>Category</th>
                         <th>SubCategory</th>
                         <th>Price</th>
-                        <th>Image</th>
+                        {/* <th>Image</th> */}
                         <th>Brand</th>
                         <th>Discount</th>
-                        <th>Description</th>
+                        {/* <th>Description</th> */}
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -65,11 +65,11 @@ const ProductsList = () => {
                                 <td>{temp.category}</td>
                                 <td>{temp.subcategory}</td>
                                 <td>{temp.price}</td>
-                                <td><img src={process.env.REACT_APP_API_URL + temp.image} style={{height: '50px'}}/></td>
-                                <td>{temp.image}</td>
+                                {/* <td><img src={process.env.REACT_APP_API_URL + temp.image} style={{height: '50px'}}/></td> */}
+                                {/* <td>{temp.image}</td> */}
                                 <td>{temp.brand}</td>
                                 <td>{temp.discount}</td>
-                                <td>{temp.prod_desc}</td>
+                                {/* <td>{temp.prod_desc}</td> */}
                                 <td>
                                 <Link to={`/productview/${temp.productid}`} className='btn btn-success'>View</Link>
                                 <Link to={`/productedit/${temp.productid}`} className='btn btn-warning'>Edit</Link>
