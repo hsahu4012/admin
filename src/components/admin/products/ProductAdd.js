@@ -8,12 +8,16 @@ const ProductAdd = () => {
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
     const [imageFile, setImageFile] = useState(null);
+    const [brands, setBrands] = useState([]);
+    const [discountAmount, setDiscountAmount] = useState("");
+    const [discountPercentage, setDiscountPercentage] = useState("");
 
     const initialFormValues = {
         prod_name: "",
         category: "",
         subcategory: "",
         price: "",
+        stock_quantity: "",
         brand: "",
         discount: "",
         prod_desc: ""
@@ -34,9 +38,13 @@ const ProductAdd = () => {
 
     const handleCategoryChange = async (categoryId) => {
         try {
-            const url = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
-            const response = await axios.get(url);
-            setSubcategories(response.data.filter(subcategory => subcategory.category_id === categoryId));
+            const subcategoryUrl = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
+            const subcategoryResponse = await axios.get(subcategoryUrl);
+            setSubcategories(subcategoryResponse.data.filter(subcategory => subcategory.category_id === categoryId));
+            
+            const brandUrl = process.env.REACT_APP_API_URL + `brand/brandbycategoryid/${categoryId}`;
+            const brandResponse = await axios.get(brandUrl);
+            setBrands(brandResponse.data);
         } catch (error) {
             console.log(error);
         }
@@ -51,6 +59,7 @@ const ProductAdd = () => {
         formData.append('category', values.category);
         formData.append('subcategory', values.subcategory);
         formData.append('price', values.price);
+        formData.append('stock_quantity', values.stock_quantity);
         formData.append('brand', values.brand);
         formData.append('discount', values.discount);
         formData.append('prod_desc', values.prod_desc);
@@ -73,6 +82,22 @@ const ProductAdd = () => {
         }
     };
 
+    const handleDiscountPercentageChange = (percentage, setFieldValue, values) => {
+        setDiscountPercentage(percentage);
+        const calculatedDiscount = (values.price * percentage) / 100;
+        setDiscountAmount(calculatedDiscount.toFixed(2));
+        setFieldValue('discount', calculatedDiscount.toFixed(2));
+       
+    }
+
+    const handleDiscountAmountChange = (amount, setFieldValue, values) => {
+        setDiscountAmount(amount);
+        setFieldValue('discount', amount);
+        const calculatedPercentage = (amount / values.price) * 100;
+        setDiscountPercentage(calculatedPercentage.toFixed(2));
+
+    }
+
     return (
         <div>
             <h2>Products Add</h2>
@@ -80,7 +105,9 @@ const ProductAdd = () => {
                 initialValues={initialFormValues}
                 onSubmit={async (values, { resetForm }) => {
                     await addNewProduct(values);
-                    resetForm();
+                        resetForm();
+                        setDiscountAmount("");
+                        setDiscountPercentage("");   
                 }}
             >
                 {({ values, setFieldValue }) => (
@@ -116,7 +143,15 @@ const ProductAdd = () => {
 
                             <div className='row'>
                                 <label htmlFor="price" className='col-4 my-2'>Price</label>
-                                <Field name="price" type="number" className='col-8' required />
+                                <Field name="price" type="number" className='col-8' onChange={(e) => {
+                                    setFieldValue('price', e.target.value);
+                                    handleDiscountPercentageChange(discountPercentage, setFieldValue, { price: e.target.value });
+                                }} required />
+                            </div>
+
+                            <div className='row'>
+                                <label htmlFor="stock_quantity" className='col-4 my-2'>Quantity</label>
+                                <Field name="stock_quantity" type="number" className='col-8' required />
                             </div>
 
                             <div className='row'>
@@ -124,17 +159,35 @@ const ProductAdd = () => {
                                 <input name="image" type="file" className='col-8' onChange={(e) => {
                                     setImageFile(e.target.files[0]);
                                     setFieldValue('image', e.target.files[0]);
-                                }} required />
+                                }} />
                             </div>
 
                             <div className='row'>
                                 <label htmlFor="brand" className='col-4 my-2'>Brand</label>
-                                <Field name="brand" type="text" className='col-8' required />
+                                <Field name="brand" as="select" className='col-8' required >
+                                    <option value="">Select a brand</option>
+                                    {brands.map(brand => (
+                                        <option key={brand.brand_id} value={brand.brand_id}>{brand.brand_name}</option>
+                                    ))}
+                                </Field>
                             </div>
 
                             <div className='row'>
-                                <label htmlFor="discount" className='col-4 my-2'>Discount</label>
-                                <Field name="discount" type="number" className='col-8' required />
+                                <label htmlFor="password" className='col-4 my-2'>Discount</label>
+                                <div className='col-8'>
+                                    <div className="row">
+                                        <div className="col">
+                                            <Field name="discount" type="number" placeholder="Amount" className='col-8' value={discountAmount} onChange={(e) => {
+                                                handleDiscountAmountChange(e.target.value, setFieldValue, values);
+                                            }} />
+                                        </div>
+                                        <div className="col">
+                                            <Field name="discount_percentage" type="number" placeholder="Percentage" className='col-8' value={discountPercentage} onChange={(e) => {
+                                                handleDiscountPercentageChange(e.target.value, setFieldValue, values);
+                                            }} />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className='row'>
