@@ -27,11 +27,14 @@ const ProductView = () => {
             <h2>Products View</h2>
 
             <div>Product Name - {product.prod_name}</div>
-            <div>Price - {product.price}</div>
             <div>Category - {product.category}</div>
+            <div>Subcategory - {product.subcategory}</div>
+            <div>Price - {product.price}</div>
+            <div>Brand - {product.brand}</div>
+            <div>Stock Quantity - {product.stock_quantity}</div>
             <div>Discount - {product.discount}</div>
             <div>Description - {product.prod_desc}</div>
-
+            <div>Image - <img src={`${process.env.REACT_APP_API_URL}${product.image}`} alt="Product" style={{ height: '50px' }} /></div>
 
             <div className='row'>
                             <div className='text-center my-4'>
