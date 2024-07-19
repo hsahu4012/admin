@@ -162,3 +162,8 @@ code {
   background-color: #f7f7f7;
   overflow-x: hidden;
 }
+
+.product-view {
+  height: 300px;
+  width: auto;
+}

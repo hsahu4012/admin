@@ -26,15 +26,15 @@ const ProductView = () => {
         <div>
             <h2>Products View</h2>
 
-            <div>Product Name - {product.prod_name}</div>
-            <div>Category - {product.category}</div>
-            <div>Subcategory - {product.subcategory}</div>
-            <div>Price - {product.price}</div>
-            <div>Brand - {product.brand}</div>
-            <div>Stock Quantity - {product.stock_quantity}</div>
-            <div>Discount - {product.discount}</div>
-            <div>Description - {product.prod_desc}</div>
-            <div>Image - <img src={`${process.env.REACT_APP_API_URL}${product.image}`} alt="Product" style={{ height: '50px' }} /></div>
+            <div><b>Product Name -</b> {product.prod_name}</div>
+            <div><b>Category -</b> {product.category}</div>
+            <div><b>Subcategory -</b> {product.subcategory}</div>
+            <div><b>Price -</b> {product.price}</div>
+            <div><b>Brand -</b> {product.brand}</div>
+            <div><b>Stock Quantity -</b> {product.stock_quantity}</div>
+            <div><b>Discount -</b> {product.discount}</div>
+            <div><b>Description -</b> <div dangerouslySetInnerHTML={{ __html: product.prod_desc }} /></div>
+            <div><b>Image -</b> <img src={`${process.env.REACT_APP_API_URL}${product.image}`} alt="Product" className='product-view' /></div>
 
             <div className='row'>
                             <div className='text-center my-4'>
