@@ -42,7 +42,7 @@ const BrandCreate = () => {
                         type="file"
                         value={brandImage}
                         onChange={(e) => setBrandImage(e.target.value)}
-                        required
+                        
                     />
                 </div>
                 <div>
@@ -51,7 +51,7 @@ const BrandCreate = () => {
                         type="text"
                         value={vendorId}
                         onChange={(e) => setVendorId(e.target.value)}
-                        required
+                        
                     />
                 </div>
                 <button type="submit">Add Brand</button>
