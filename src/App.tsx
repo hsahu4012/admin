@@ -77,6 +77,7 @@ import VendorList from './components/admin/VendorList';
 import VendorAdd from './components/admin/VendorAdd';
 import VendorUpdate from './components/admin/VendorUpdate';
 
+import ImageList from './components/imageup/ImageList';
 
 function App() {
 
@@ -93,6 +94,10 @@ function App() {
     setInterval(() => callApiQsList(), 10000)
   }, [])
   //temp code to keep server live
+
+  // const handleUploadSuccess = () => {
+  //   console.log(`File uploaded successfully.`);
+  // };
 
   return (
     <>
@@ -163,7 +168,7 @@ function App() {
                     <Route path='/vendoradd' element={<VendorAdd />} />
                     <Route path='/vendoredit/:vendorid' element={<VendorUpdate />} />
 
-
+                    <Route path='/imageList' element={<ImageList />} />
 
                     <Route path='/' element={<DashboardAdmin />} />
                   </Routes>
