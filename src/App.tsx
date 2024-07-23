@@ -54,6 +54,11 @@ import ComplainsList from './components/Complains/ComplainsList';
 import ComplainsAdd from './components/Complains/ComplainsAdd';
 import ComplainsEdit from './components/Complains/ComplainsEdit';
 
+//brand routes
+import BrandList from './components/brand/BrandList';
+import BrandCreate from './components/brand/BrandCreate';
+import BrandUpdate from './components/brand/BrandUpdate';
+
 import Subcategorylist from './components/admin/Sub-Category/Subcategorylist';
 import Subcategoryadd from './components/admin/Sub-Category/Subcategoryadd';
 import Subcategoryedit from './components/admin/Sub-Category/Subcategoryedit';
@@ -154,6 +159,11 @@ function App() {
                     <Route path='/complainslist' element={<ComplainsList />} />
                     <Route path='/complainsadd' element={<ComplainsAdd />} />
                     <Route path='/complainsedit/:complainid' element={<ComplainsEdit />} />
+
+                    {/* brand route */}
+                    <Route path='/brandlist' element={<BrandList />} />
+                    <Route path='/brandcreate' element={<BrandCreate />} />
+                    <Route path='/brandupdate/:brandid' element={<BrandUpdate />} />
 
                     <Route path='/addressdetails' element={<Addressdetails />} />
                     <Route path='/addressadd' element={<Addressadd />} />
