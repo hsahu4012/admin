@@ -20,7 +20,7 @@ import Login from './components/common/Login';
 
 
 import QsAdd from './components/admin/QsAdd';
-import BulkQsAdd from './components/admin/BulkQsAdd';
+import BulkProductAdd from './components/admin/BulkQsAdd';
 import QsEdit from './components/admin/QsEdit';
 import QsList from './components/admin/QsList';
 import ExamsList from './components/admin/ExamsList';
@@ -127,7 +127,7 @@ function App() {
                     <Route path='/login' element={<Login />} />
                     <Route path='/qslist' element={<QsList />} />
                     <Route path='/qsadd' element={<QsAdd />} />
-                    <Route path='/Bulkqsadd' element={<BulkQsAdd />} />
+                    <Route path='/Bulkqsadd' element={<BulkProductAdd />} />
                     <Route path='/qsedit/:id' element={<QsEdit />} />
                     <Route path='/examslist' element={<ExamsList />} />
                     <Route path='/examsadd' element={<ExamsAdd />} />
