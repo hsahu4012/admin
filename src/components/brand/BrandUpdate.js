@@ -1,69 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Formik, Field, Form } from 'formik';
 
 const BrandUpdate = () => {
-    const { id } = useParams(); // Get the brand ID from the URL
-    const [brandName, setBrandName] = useState('');
-    const navigate = useNavigate();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [formValues, setFormValues] = useState({
+    brand_name: '',
+  });
 
-    // Fetch existing brand data when the component mounts
-    useEffect(() => {
-        const fetchBrandData = async () => {
-            try {
-                const response = await axios.get(`http://localhost:4000/brand/brandbyid/${id}`);
-                if (response.data.length > 0) {
-                    const brand = response.data[0]; // Assuming the response is an array with one object
-                    setBrandName(brand.brand_name);
-                } else {
-                    console.error('Brand not found');
-                }
-            } catch (error) {
-                console.error('Error fetching brand data:', error);
-            }
-        };
-
-        fetchBrandData();
-    }, [id]);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            const response = await axios.put(`http://localhost:4000/brand/updatebrand/${id}`, {
-                brand_name: brandName // Send the brand_name only
-            });
-
-            console.log('Update Response:', response.data);
-
-            // Check if any rows were affected
-            if (response.data.affectedRows > 0) {
-                navigate('/brandlist'); // Navigate to BrandList page
-            } else {
-                console.error('Update failed. No rows affected. Check if the record exists and the ID is correct.');
-            }
-        } catch (error) {
-            console.error('Error updating brand:', error);
+  useEffect(() => {
+    const fetchBrandDetails = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}brand/brandbyid/${id}`);
+        const brand = response.data && response.data.length > 0 ? response.data[0] : null;
+        if (brand) {
+          setFormValues({
+            brand_name: brand.brand_name,
+          });
+        } else {
+          setFormValues({ brand_name: '' }); // Set default values if no brand found
         }
+      } catch (err) {
+        console.error(err);
+        setFormValues({ brand_name: '' }); // Set default values in case of error
+      }
     };
 
-    return (
-        <div>
-            <h2>Update Brand</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Brand Name:</label>
-                    <input
-                        type="text"
-                        value={brandName}
-                        onChange={(e) => setBrandName(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Update Brand</button>
-            </form>
-        </div>
-    );
+    fetchBrandDetails();
+  }, [id]);
+
+  const updateBrand = async (values) => {
+    try {
+      const isUnchanged = Object.keys(formValues).every(
+        (key) => formValues[key] === values[key]
+      );
+
+      if (isUnchanged) {
+        alert("No changes were made. Nothing to update.");
+        return;
+      }
+      const confirmed = window.confirm("Are you sure you want to update this brand?");
+      if (confirmed) {
+        await axios.put(`${process.env.REACT_APP_API_URL}brand/updatebrand/${id}`, values);
+        navigate('/BrandList');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <div className="text-center mb-5">
+      <h2>Update Brand</h2>
+      <br />
+
+      <Formik
+        enableReinitialize={true}
+        initialValues={formValues}
+        onSubmit={(values) => updateBrand(values)}
+      >
+        <Form className="brandUpdateForm">
+          <div className="row mb-2">
+            <label className="col-4 my-2 text-center">Brand Name:</label>
+            <Field name="brand_name" type="text" className="col-6" required />
+          </div>
+
+          <div className="text-center my-4">
+            <button type="submit" className="py-1">Submit</button>
+            <Link to="/BrandList" className="btn btn-danger back">Back</Link>
+          </div>
+        </Form>
+      </Formik>
+    </div>
+  );
 };
 
 export default BrandUpdate;

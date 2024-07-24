@@ -163,7 +163,7 @@ function App() {
                     {/* brand route */}
                     <Route path='/brandlist' element={<BrandList />} />
                     <Route path='/brandcreate' element={<BrandCreate />} />
-                    <Route path='/brandupdate/:brandid' element={<BrandUpdate />} />
+                    <Route path='/brandupdate/:id' element={<BrandUpdate />} />
 
                     <Route path='/addressdetails' element={<Addressdetails />} />
                     <Route path='/addressadd' element={<Addressadd />} />
