@@ -20,6 +20,7 @@ const BrandList = () => {
   return (
     <div>
       <h1>Brand List</h1>
+      <Link to='/brandcreate' className='btn btn-primary'>Add new Brand</Link>
       <table className='table table-responsive'>
         <thead>
           <tr>
@@ -41,7 +42,7 @@ const BrandList = () => {
           ))}
         </tbody>
       </table>
-      <Link to='/brandcreate' className='btn btn-primary'>Add new Brand</Link>
+      
     </div>
   );
 };
