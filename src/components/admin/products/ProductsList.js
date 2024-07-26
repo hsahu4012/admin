@@ -39,6 +39,9 @@ const ProductsList = () => {
         <div>
             <h2>Products List</h2>
             <Link to='/productadd' className='btn btn-primary'>Create New Products</Link>
+            <div>
+            <Link to='/bulkqsadd' className='btn btn-primary'>Bulk Products upload</Link>
+            </div>
             <table className='table table-responsive'>
                 <thead>
                     <tr>
