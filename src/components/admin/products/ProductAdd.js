@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form } from "formik";
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import JoditEditor from 'jodit-react';
 
 const ProductAdd = () => {
@@ -11,6 +11,9 @@ const ProductAdd = () => {
     const [brands, setBrands] = useState([]);
     const [discountAmount, setDiscountAmount] = useState("");
     const [discountPercentage, setDiscountPercentage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const initialFormValues = {
         prod_name: "",
@@ -67,8 +70,6 @@ const ProductAdd = () => {
         formData.append('productid', productid);
         // formData.append('datestamp', datestamp);
 
-        console.log([...formData.entries()]); 
-
         try {
             const url = process.env.REACT_APP_API_URL + 'products/addProuduct';
             const response = await axios.post(url, formData, {
@@ -77,8 +78,12 @@ const ProductAdd = () => {
                 }
             });
             console.log(response.data);
+            navigate('/productslist'); // Redirect on successful response
         } catch (error) {
             console.error(error);
+            setError('Failed to add product. Please try again.'); // Show error message on failure
+        } finally {
+            setLoading(false); // Stop the loader
         }
     };
 
@@ -87,7 +92,6 @@ const ProductAdd = () => {
         const calculatedDiscount = (values.price * percentage) / 100;
         setDiscountAmount(calculatedDiscount.toFixed(2));
         setFieldValue('discount', calculatedDiscount.toFixed(2));
-       
     }
 
     const handleDiscountAmountChange = (amount, setFieldValue, values) => {
@@ -95,7 +99,6 @@ const ProductAdd = () => {
         setFieldValue('discount', amount);
         const calculatedPercentage = (amount / values.price) * 100;
         setDiscountPercentage(calculatedPercentage.toFixed(2));
-
     }
 
     return (
@@ -104,10 +107,12 @@ const ProductAdd = () => {
             <Formik
                 initialValues={initialFormValues}
                 onSubmit={async (values, { resetForm }) => {
+                    setLoading(true); // Start the loader
+                    setError(""); // Reset error message
                     await addNewProduct(values);
-                        resetForm();
-                        setDiscountAmount("");
-                        setDiscountPercentage("");   
+                    resetForm();
+                    setDiscountAmount("");
+                    setDiscountPercentage("");   
                 }}
             >
                 {({ values, setFieldValue }) => (
@@ -202,9 +207,19 @@ const ProductAdd = () => {
 
                             <div className='row'>
                                 <div className='text-center my-4'>
-                                    <button type="submit" className='btn btn-success'>Add Product</button>
+                                    <button type="submit" className='btn btn-success' disabled={loading}>
+                                        {loading ? 'Adding...' : 'Add Product'}
+                                    </button>
                                 </div>
                             </div>
+
+                            {error && (
+                                <div className='row'>
+                                    <div className='col-12 my-2'>
+                                        <p style={{ color: 'red' }}>{error}</p>
+                                    </div>
+                                </div>
+                            )}
                         </Form>
                     </div>
                 )}
