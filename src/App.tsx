@@ -20,7 +20,7 @@ import Login from './components/common/Login';
 
 
 import QsAdd from './components/admin/QsAdd';
-import BulkQsAdd from './components/admin/BulkQsAdd';
+import BulkProductAdd from './components/admin/BulkQsAdd';
 import QsEdit from './components/admin/QsEdit';
 import QsList from './components/admin/QsList';
 import ExamsList from './components/admin/ExamsList';
@@ -53,6 +53,11 @@ import ProductView from './components/admin/products/ProductView';
 import ComplainsList from './components/Complains/ComplainsList';
 import ComplainsAdd from './components/Complains/ComplainsAdd';
 import ComplainsEdit from './components/Complains/ComplainsEdit';
+
+//brand routes
+import BrandList from './components/brand/BrandList';
+import BrandCreate from './components/brand/BrandCreate';
+import BrandUpdate from './components/brand/BrandUpdate';
 
 import Subcategorylist from './components/admin/Sub-Category/Subcategorylist';
 import Subcategoryadd from './components/admin/Sub-Category/Subcategoryadd';
@@ -127,7 +132,7 @@ function App() {
                     <Route path='/login' element={<Login />} />
                     <Route path='/qslist' element={<QsList />} />
                     <Route path='/qsadd' element={<QsAdd />} />
-                    <Route path='/Bulkqsadd' element={<BulkQsAdd />} />
+                    <Route path='/Bulkqsadd' element={<BulkProductAdd />} />
                     <Route path='/qsedit/:id' element={<QsEdit />} />
                     <Route path='/examslist' element={<ExamsList />} />
                     <Route path='/examsadd' element={<ExamsAdd />} />
@@ -154,6 +159,11 @@ function App() {
                     <Route path='/complainslist' element={<ComplainsList />} />
                     <Route path='/complainsadd' element={<ComplainsAdd />} />
                     <Route path='/complainsedit/:complainid' element={<ComplainsEdit />} />
+
+                    {/* brand route */}
+                    <Route path='/brandlist' element={<BrandList />} />
+                    <Route path='/brandcreate' element={<BrandCreate />} />
+                    <Route path='/brandupdate/:id' element={<BrandUpdate />} />
 
                     <Route path='/addressdetails' element={<Addressdetails />} />
                     <Route path='/addressadd' element={<Addressadd />} />
