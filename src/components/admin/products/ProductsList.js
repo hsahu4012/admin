@@ -66,13 +66,13 @@ const ProductsList = () => {
                                 <td>{index + 1}</td>
                                 <td>{temp.productid}</td>
                                 <td>{temp.prod_name}</td>
-                                <td>{temp.category}</td>
-                                <td>{temp.subcategory}</td>
+                                <td>{temp.categoryname}</td>
+                                <td>{temp.subcategoryname}</td>
                                 <td>{temp.price}</td>
                                 <td>{temp.stock_quantity}</td>
                                 {/* <td><img src={process.env.REACT_APP_API_URL + temp.image} style={{height: '50px'}}/></td> */}
                                 {/* <td>{temp.image}</td> */}
-                                <td>{temp.brand}</td>
+                                <td>{temp.brand_name}</td>
                                 <td>{temp.discount}</td>
                                 {/* <td>{temp.prod_desc}</td> */}
                                 <td>
