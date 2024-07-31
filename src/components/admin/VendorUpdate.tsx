@@ -9,15 +9,15 @@ const _ = require('lodash');
 const VendorUpdate: FC = () => {
 
   const { vendorid } = useParams();
-  const id=vendorid
+  const id = vendorid
   console.log('user id - ', id)
-  const vendorDataIntialState = { vendor_id: id, vendor_name: "", vendor_description: ""}
+  const vendorDataIntialState = { vendor_id: id, vendor_name: "", vendor_description: "" }
   const [updateData, SetUpdateData] = useState(vendorDataIntialState);
   const navigate = useNavigate();
 
   const callVendorUpdateApi = async (data: any) => {
     //console.log('data-----------', data)
-    const url = process.env.REACT_APP_API_URL + 'vendor/updatevendor/ '+ id;
+    const url = process.env.REACT_APP_API_URL + 'vendor/updatevendor/ ' + id;
     const response = await axios.put(url, data);
     console.log(response);
   }
@@ -26,7 +26,7 @@ const VendorUpdate: FC = () => {
     // Needs to be changed
     const url = process.env.REACT_APP_API_URL + 'vendor/vendorbyid/' + id;
     const response = await axios.get(url);
-    console.log(response);
+    console.log(response.data);
     return response.data;
   }
 
@@ -34,8 +34,18 @@ const VendorUpdate: FC = () => {
     (async () => {
       // To be used when api provided
       let data = await getVendorbyIdApi(id);
-      SetUpdateData(data[0]);
-      //console.log(data);
+      // SetUpdateData(data[0]);
+      // console.log(data[0]);
+
+      for (let i = 0; i < data.length; i++) {
+        let tempId: number = Number(data[i].vendor_id);
+        if (tempId == Number(id)) {
+          // console.log("Vendor name : "+data[i].vendor_name);
+          SetUpdateData(data[i]);
+          break;
+        }
+      }
+
     })();
   }, [])
 
@@ -44,7 +54,10 @@ const VendorUpdate: FC = () => {
       <h4 className='bg-info bg-opacity-25 text-center py-2 mb-3'>Update Vendor Details</h4>
       <Formik
         enableReinitialize={true}
-        initialValues={updateData}
+        initialValues={{
+          name: updateData.vendor_name,
+          mobile: updateData.vendor_description
+        }}
         onSubmit={async (values) => {
           //console.log('values', values);
           if (_.isEqual(values, updateData)) {
@@ -55,6 +68,7 @@ const VendorUpdate: FC = () => {
             var val = confirm("Sure you want to update data?");
             if (val === true) {
               await callVendorUpdateApi(values);
+              // console.log(values);
               alert("Updated successfully");
               navigate('/venderlist');
             } else {
