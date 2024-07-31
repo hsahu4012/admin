@@ -11,11 +11,11 @@ const CategoryDetails = () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}category/allCategory`);
       const categories = res.data;
-      const images = await Promise.all(categories.map(async category => {
-        const imgRes = await axios.get(`${process.env.REACT_APP_API_URL}categoryimage/${category.category_id}`);
-        return { ...category, image: imgRes.data[0] };
-      }));
-      setData(images);
+      // const images = await Promise.all(categories.map(async category => {
+      //   const imgRes = await axios.get(`${process.env.REACT_APP_API_URL}categoryimage/${category.category_id}`);
+      //   return { ...category, image: imgRes.data[0] };
+      // }));
+      setData(categories);
     } catch (err) {
       console.log(err);
     }
