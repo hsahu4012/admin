@@ -21,9 +21,14 @@ const CategoryUpdate = () => {
           categoryname: res.data[0].categoryname,
         }
         setFormValues(obj);
-        console.log(res.data[0])
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
+
+    axios.get(`${process.env.REACT_APP_API_URL}categoryimage/${id}`)
+      .then(res => {
+        setCurrentImage(res.data[0]); // Assuming one image per category
+      })
+      .catch(err => console.log(err));
   }, [id]);
 
   const updateCategory = async (values) => {
@@ -40,9 +45,10 @@ const CategoryUpdate = () => {
     }
   }
 
-  useEffect(() => {
-    console.log('formValues', formValues)
-  }, [formValues])
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
 
   return (
     <>

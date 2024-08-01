@@ -27,10 +27,10 @@ const ProductView = () => {
             <h2>Products View</h2>
 
             <div><b>Product Name -</b> {product.prod_name}</div>
-            <div><b>Category -</b> {product.category}</div>
-            <div><b>Subcategory -</b> {product.subcategory}</div>
+            <div><b>Category -</b> {product.categoryname}</div>
+            <div><b>Subcategory -</b> {product.subcategoryname}</div>
             <div><b>Price -</b> {product.price}</div>
-            <div><b>Brand -</b> {product.brand}</div>
+            <div><b>Brand -</b> {product.brand_name}</div>
             <div><b>Stock Quantity -</b> {product.stock_quantity}</div>
             <div><b>Discount -</b> {product.discount}</div>
             <div><b>Description -</b> <div dangerouslySetInnerHTML={{ __html: product.prod_desc }} /></div>

@@ -32,40 +32,51 @@ const LeftPanel = () => {
                   {/* <li className="menu-item-has-children dropdown"></li>
                                         <li className="menu-item-has-children dropdown"></li> */}
                   <li className="menu-title">Admin Options</li>
-                  <li className="menu-item-has-children dropdown">
-                    <Link to="/userslist">Users</Link>
+                  
+                  <li className="menu-item-has-children dropdown bg-success bg-opacity-25">
+                    <Link to="/brandlist">Brands</Link>
                   </li>
-                  <li className="menu-item-has-children dropdown">
-                    <Link to="/customerDetails">Customers</Link>
-                  </li>
-                  <li className="menu-item-has-children dropdown">
-                    <Link to="/productslist">Products</Link>
-                  </li>
-                  <li className="menu-item-has-children dropdown">
+                  <li className="menu-item-has-children dropdown bg-success bg-opacity-25">
                     <Link to="/categoryDetails">Category</Link>
                   </li>
-                  <li className="menu-item-has-children dropdown">
+                  <li className="menu-item-has-children dropdown bg-success bg-opacity-25">
                     <Link to="/subcategorylist">Sub-Category</Link>
                   </li>
-                  <li className="menu-item-has-children dropdown">
+                  <li className="menu-item-has-children dropdown bg-success bg-opacity-25">
+                    <Link to="/productslist">Products</Link>
+                  </li>
+                  
+                  <li className="menu-item-has-children dropdown bg-warning bg-opacity-25">
+                    <Link to="/userslist">Users</Link>
+                  </li>
+                  <li className="menu-item-has-children dropdown bg-warning bg-opacity-25">
+                    <Link to="/customerDetails">Customers</Link>
+                  </li>
+                  <li className="menu-item-has-children dropdown bg-warning bg-opacity-25">
                     <Link to="/addressdetails">Address</Link>
                   </li>
 
-                  <li className="menu-item-has-children dropdown">
+                  <li className="menu-item-has-children dropdown bg-primary bg-opacity-25">
                     <Link to="/orders">Orders</Link>
-                  </li>
-                  <li className="menu-item-has-children dropdown">
-                    <Link to="/wishlist">WishList</Link>
                   </li>
                   <li className="menu-item-has-children dropdown">
                     <Link to="/orderDetails">Orders Details</Link>
                   </li>
+
                   <li className="menu-item-has-children dropdown">
-                    <Link to="/brandlist">Brands</Link>
-                  </li>
+                    <Link to="/wishlist">WishList</Link>
+                  </li>                  
+                  
                   <li className="menu-item-has-children dropdown">
                     <Link to="/complainslist">Complains</Link>
+                  </li>
+
+                  <li className="menu-item-has-children dropdown">
                     <Link to="/vendorDetails">Vendor</Link>
+                  </li>
+
+                  <li className="menu-item-has-children dropdown">
+                    <Link to="/imageList">Image Upload</Link>
                   </li>
 
                   {/* <li className="menu-title">Student Options</li>

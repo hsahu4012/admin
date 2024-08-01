@@ -9,8 +9,10 @@ const CategoryCreate = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   
+  const [uploadStatus, setUploadStatus] = useState('');
+  const [file, setFile] = useState(null);
   const formValues = {
-    categoryname: "" // Ensure this matches the name used in Field
+    categoryname: ""
   }
 
   const submitCategory = async (values) => {
@@ -28,6 +30,10 @@ const CategoryCreate = () => {
     }
   }
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
   return (
     <>
       <h3 className='text-center mb-5'>Category Create</h3>
@@ -37,7 +43,12 @@ const CategoryCreate = () => {
             <label className='col-4 my-2 text-center'>Category Name:</label>
             <Field name="categoryname" type="text" className='col-6' required />
           </div>
-
+          <div>
+            <br />
+            <input type="file" onChange={handleFileChange} />
+            {uploadStatus && <p>{uploadStatus}</p>}
+            <br />
+          </div>
           <div>
             <button type='submit' className='btn btn-success' disabled={loading}>
               {loading ? 'Submitting...' : 'Submit'}
