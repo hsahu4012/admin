@@ -118,15 +118,15 @@ function App() {
                 <div className='col-12 scrollPage'>
 
                   <Routes>
-                  <Route path='/orderDetailsUpdate/:id' element={<OrderDetailUpdate />} />
-                  <Route path='/orderDetailsCreate' element={<OrderDetailAdd />} />
-                  <Route path='/orderDetails' element={<OrderDetailsList />} />
-                  <Route path='/wishlistUpdate/:id' element={<WishlistUpdate/>} />
-                  <Route path='/wishlistCreate' element={<WishlistAdd />} />
-                  <Route path='/wishlist' element={<WishlistList />} />
-                  <Route path='/orders' element={<Orderslist />} />
-                  <Route path='/orderCreate' element={<OrdersCreate />} />
-                  <Route path='/orderUpdate/:id' element={<OrdersUpdate />} />
+                    <Route path='/orderDetailsUpdate/:id' element={<OrderDetailUpdate />} />
+                    <Route path='/orderDetailsCreate' element={<OrderDetailAdd />} />
+                    <Route path='/orderDetails' element={<OrderDetailsList />} />
+                    <Route path='/wishlistUpdate/:id' element={<WishlistUpdate />} />
+                    <Route path='/wishlistCreate' element={<WishlistAdd />} />
+                    <Route path='/wishlist' element={<WishlistList />} />
+                    <Route path='/orders' element={<Orderslist />} />
+                    <Route path='/orderCreate' element={<OrdersCreate />} />
+                    <Route path='/orderUpdate/:id' element={<OrdersUpdate />} />
                     <Route path='/customerDetails' element={<CustomerDetails />} />
                     <Route path='/customerCreate' element={<CustomerCreate />} />
                     <Route path='/customerUpdate/:id' element={<CustomerUpdate />} />
@@ -148,10 +148,10 @@ function App() {
                     <Route path='/subjectslist' element={<SubjectList />} />
                     <Route path='/subjectadd' element={<SubjectAdd />} />
                     <Route path='/subjectedit/:id' element={<SubjectUpdate />} />
-                    
+
                     <Route path='/categoryDetails' element={<CategoryDetails />} />
-                  <Route path='/categoryCreate' element={<CategoryCreate />} />
-                  <Route path='/categoryUpdate/:id' element={<CategoryUpdate />} />
+                    <Route path='/categoryCreate' element={<CategoryCreate />} />
+                    <Route path='/categoryUpdate/:id' element={<CategoryUpdate />} />
                     <Route path='/productslist' element={<ProductsList />} />
                     <Route path='/productadd' element={<ProductAdd />} />
                     <Route path='/productedit/:productid' element={<ProductEdit />} />

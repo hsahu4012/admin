@@ -41,7 +41,7 @@ const Header = () => {
                     <div className="navbar-header">
                         
                         <a className="navbar-brand" href="./">
-                            <h2>DressHub Admin</h2>
+                            <h2>Grocji Admin</h2>
                         </a>
                         <a id="menuToggle" className="menutoggle" onClick={showhidemenu}><FaBars /></a>
                     </div>
