@@ -43,7 +43,7 @@ const ProductAdd = () => {
     const handleCategoryChange = async (categoryId, setFieldValue) => {
         setLoadingCategories(true); // Show loader
 
-        setTimeout(async () => {
+        
             try {
                 const subcategoryUrl = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
                 const subcategoryResponse = await axios.get(subcategoryUrl);
@@ -57,7 +57,7 @@ const ProductAdd = () => {
             } finally {
                 setLoadingCategories(false); 
             }
-        }, 1000); // Simulated delay of 1000ms (1 seconds) for visibility
+       
     };
 
     const addNewProduct = async (values) => {
