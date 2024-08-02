@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Field, Form } from "formik";
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const Subcategoryedit = () => {
     const { subcategoryid } = useParams();
     const [subcategory, setSubcategory] = useState({});
     const [imageFile, setImageFile] = useState(null);
     const [imageName, setImageName] = useState('');
+    const [loading, setLoading] = useState(false); 
     const navigate = useNavigate();
 
     const fetchSubcategoryById = async (subcategoryid) => {
@@ -28,6 +31,7 @@ const Subcategoryedit = () => {
     };
 
     const editNewSubcategory = async (values, subcategoryid) => {
+        setLoading(true); // Line 33: Start loader
         try {
             const url = process.env.REACT_APP_API_URL + 'subcategory/updateSubCategory/' + subcategoryid;
             const formData = new FormData();
@@ -42,10 +46,18 @@ const Subcategoryedit = () => {
             });
             console.log(response.data);
             if (response.status === 200) {
-                navigate('/subcategorylist');
+                toast.success('Subcategory updated successfully!'); 
+                setLoading(false); 
+    
+                
+                setTimeout(() => {
+                    navigate('/subcategorylist');
+                }, 3000); 
             }
+     
         } catch (error) {
             console.log(error);
+            setLoading(false); 
         }
     };
 
@@ -77,7 +89,6 @@ const Subcategoryedit = () => {
                             </div>
 
                             <div className='row'>
-                                
                                 <div className='col-8'>
                                     <label htmlFor="image" className='col-4 my-2'>Image</label>
                                     <input
@@ -98,7 +109,9 @@ const Subcategoryedit = () => {
 
                             <div className='row'>
                                 <div className='text-center my-4'>
-                                    <button type="submit" className='btn btn-success'>Edit Subcategory</button>
+                                    <button type="submit" className='btn btn-success' disabled={loading}>
+                                        {loading ? 'Updating...' : 'Edit Subcategory'} 
+                                    </button>
                                 </div>
                             </div>
                         </Form>
@@ -111,6 +124,8 @@ const Subcategoryedit = () => {
                     <Link to="/subcategorylist" className='btn btn-primary'>Back to Subcategory List</Link>
                 </div>
             </div>
+
+            <ToastContainer /> {/* Line 91 */}
         </div>
     );
 };
