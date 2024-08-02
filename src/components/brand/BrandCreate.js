@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const BrandCreate = () => {
     const [brandName, setBrandName] = useState('');
-    const [brandImage, setBrandImage] = useState(''); // Changed from string to file
+    const [brandImage, setBrandImage] = useState(''); 
     const [vendorId, setVendorId] = useState('');
     const [loading, setLoading] = useState(false); // Loading state
     const navigate = useNavigate();
@@ -47,6 +47,7 @@ const BrandCreate = () => {
                     <label>Brand Image URL:</label>
                     <input
                         type="file"
+                        value={brandImage}
                         onChange={(e) => setBrandImage(e.target.files[0])} // Handle file input
                     />
                 </div>
