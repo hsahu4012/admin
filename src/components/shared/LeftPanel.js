@@ -32,7 +32,7 @@ const LeftPanel = () => {
                   {/* <li className="menu-item-has-children dropdown"></li>
                                         <li className="menu-item-has-children dropdown"></li> */}
                   <li className="menu-title">Admin Options</li>
-                  
+
                   <li className="menu-item-has-children dropdown bg-success bg-opacity-25">
                     <Link to="/brandlist">Brands</Link>
                   </li>
@@ -45,7 +45,7 @@ const LeftPanel = () => {
                   <li className="menu-item-has-children dropdown bg-success bg-opacity-25">
                     <Link to="/productslist">Products</Link>
                   </li>
-                  
+
                   <li className="menu-item-has-children dropdown bg-warning bg-opacity-25">
                     <Link to="/userslist">Users</Link>
                   </li>
@@ -65,8 +65,8 @@ const LeftPanel = () => {
 
                   <li className="menu-item-has-children dropdown">
                     <Link to="/wishlist">WishList</Link>
-                  </li>                  
-                  
+                  </li>
+
                   <li className="menu-item-has-children dropdown">
                     <Link to="/complainslist">Complains</Link>
                   </li>
@@ -77,6 +77,10 @@ const LeftPanel = () => {
 
                   <li className="menu-item-has-children dropdown">
                     <Link to="/imageList">Image Upload</Link>
+                  </li>
+
+                  <li className="menu-item-has-children dropdown">
+                    <Link to="/login">Login</Link>
                   </li>
 
                   {/* <li className="menu-title">Student Options</li>
