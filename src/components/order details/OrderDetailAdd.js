@@ -18,7 +18,7 @@ const OrderDetailAdd = () => {
       );
       if (confirmed) {
         await axios.post(
-          `${process.env.REACT_APP_API_URL}orders/addToOrderProducts`,
+          `${process.env.REACT_APP_API_URL}orderdetails/addToOrderProducts`,
           values
         );
         navigate("/orderDetails");

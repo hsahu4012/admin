@@ -45,6 +45,7 @@ const CategoryDetails = () => {
             <thead>
               <tr>
                 <th>Sr No.</th>
+                <th>Category ID</th>
                 <th>Category Name</th>
                 <th>Image</th>
                 <th>Actions</th>
@@ -55,6 +56,7 @@ const CategoryDetails = () => {
                 data && data.map((user, i) => (
                   <tr key={i}>
                     <td>{i+1}</td>
+                    <td>{user.category_id}</td>
                     <td>{user.categoryname}</td>
                     <td>
                     {user.image ? (

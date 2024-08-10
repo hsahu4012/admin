@@ -8,7 +8,7 @@ const Orderslist = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}order/allOrders`
+        `${process.env.REACT_APP_API_URL}orders/allOrders`
       );
       setOrders(response.data);
     };

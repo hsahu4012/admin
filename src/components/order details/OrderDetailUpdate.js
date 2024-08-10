@@ -49,7 +49,7 @@ const OrderDetailUpdate = () => {
       );
       if (confirmed === true) {
         await axios.put(
-          `${process.env.REACT_APP_API_URL}orders/updateOrderProductDetails/${id}`,
+          `${process.env.REACT_APP_API_URL}orderdetails/updateOrderProductDetails/${id}`,
           values
         );
         navigate("/orderDetails");

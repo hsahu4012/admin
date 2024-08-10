@@ -9,7 +9,7 @@ const OrderDetailsList = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}orders/orderDetails`
+          `${process.env.REACT_APP_API_URL}orderdetails/orderDetails`
         );
         setData(response.data);
       } catch (error) {
@@ -26,7 +26,7 @@ const OrderDetailsList = () => {
       );
       if (confirmed) {
         await axios.put(
-          `${process.env.REACT_APP_API_URL}orders/removeOrderProduct/${id}`
+          `${process.env.REACT_APP_API_URL}orderdetails/removeOrderProduct/${id}`
         );
 
         window.location.reload();

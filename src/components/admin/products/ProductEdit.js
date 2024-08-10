@@ -74,8 +74,8 @@ const ProductEdit = () => {
         formData.append('stock_quantity', values.stock_quantity);
         formData.append('brand', values.brand);
         formData.append('discount', values.discount);
-        formData.append('prod_desc', values.prod_desc);
-        formData.append('image', imageFile);
+        // formData.append('prod_desc', values.prod_desc);
+        // formData.append('image', imageFile);
        
 
       
@@ -181,13 +181,13 @@ const ProductEdit = () => {
                             <Field name="stock_quantity" type="number" className='col-8' required />
                         </div>
 
-                        <div className='row'>
+                        {/* <div className='row'>
                             <label htmlFor="image" className='col-4 my-2'>Image:</label>
                             <input name="image" type="file" className='col-8' onChange={(e) => {
                                 setImageFile(e.target.files[0]);
                                 setFieldValue('image', e.target.files[0]);
                             }} />
-                        </div>
+                        </div> */}
 
                         <div className='row'>
                             <label htmlFor="brand" className='col-4 my-2'>Brand:</label>
@@ -217,7 +217,7 @@ const ProductEdit = () => {
                             </div>
                         </div>
 
-                        <div className='row'>
+                        {/* <div className='row'>
                             <label htmlFor="prod_desc" className='col-4 my-2'>Description:</label>
                             <div className='col-8'>
                                 <JoditEditor
@@ -225,7 +225,7 @@ const ProductEdit = () => {
                                     onChange={(content) => setFieldValue('prod_desc', content)}
                                 />
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className='row'>
                             <div className='col-12 text-center'>
