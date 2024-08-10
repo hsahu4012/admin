@@ -2,20 +2,24 @@ import React, { useState, useEffect } from 'react'
 import { Formik, Field, Form } from 'formik'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const CategoryUpdate = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
     categoryname: ""
   });
-  const [file, setFile] = useState(null);
-  const [currentImage, setCurrentImage] = useState(null);
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}category/getById/${id}`)
       .then(res => {
-        const obj = { categoryname: res.data[0].categoryname };
+        console.log(res)
+        let obj = {
+          categoryname: res.data[0].categoryname,
+        }
         setFormValues(obj);
       })
       .catch(err => console.log(err));
@@ -28,19 +32,17 @@ const CategoryUpdate = () => {
   }, [id]);
 
   const updateCategory = async (values) => {
-    console.log("done");
-    await axios.put(`${process.env.REACT_APP_API_URL}category/updateCategory/${id}`, values);
-    if (file) {
-      const formData = new FormData();
-      formData.append('image', file);
-      console.log("done");
-      await axios.put(`${process.env.REACT_APP_API_URL}categoryimage/update/${id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+    setLoading(true);
+    try {
+      await axios.put(`${process.env.REACT_APP_API_URL}category/updateCategory/${id}`, values)
+      toast.success('Category updated successfully!');
+      navigate('/categoryDetails')
+    } catch (error) {
+      console.log(error)
+      toast.error('Error updating category!');
+    } finally {
+      setLoading(false);
     }
-    navigate('/categoryDetails');
   }
 
   const handleFileChange = (e) => {
@@ -58,25 +60,14 @@ const CategoryUpdate = () => {
             <Field name="categoryname" type="text" className='col-6' />
           </div>
           <div>
-            <label>Current Image:</label>
-            {currentImage ? (
-              <div>
-                <img src={`/uploads/${currentImage.image_path}`} alt="Category" />
-              </div>
-            ) : (
-              <p>No image uploaded</p>
-            )}
-          </div>
-          <div>
-            <label>New Image:</label>
-            <input type="file" onChange={handleFileChange} />
-          </div>
-          <div>
-            <button type='submit' className='btn btn-success'>Submit</button>
+            <button type='submit' className='btn btn-success' disabled={loading}>
+              {loading ? 'Updating...' : 'Submit'}
+            </button>
             <Link to='/categoryDetails' className='btn btn-danger'>Back</Link>
           </div>
         </Form>
       </Formik>
+      <ToastContainer />
     </>
   )
 }
