@@ -2,9 +2,13 @@ import React, { useState } from 'react'
 import { Formik, Field, Form } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const CategoryCreate = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  
   const [uploadStatus, setUploadStatus] = useState('');
   const [file, setFile] = useState(null);
   const formValues = {
@@ -12,21 +16,17 @@ const CategoryCreate = () => {
   }
 
   const submitCategory = async (values) => {
+    setLoading(true);
+    console.log(values);
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}category/addCategory`, values);
-      if (file) {
-        const formData = new FormData();
-        formData.append('image', file);
-        await axios.post(`${process.env.REACT_APP_API_URL}categoryimage/upload/${data.category_id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        setUploadStatus('Image uploaded successfully');
-      }
-      navigate('/categoryDetails');
+      await axios.post(`${process.env.REACT_APP_API_URL}category/addCategory`, values)
+      toast.success('Category created successfully!');
+      navigate('/categoryDetails')
     } catch (error) {
-      console.error(error);
+      console.log(error)
+      toast.error('Error creating category!');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -50,11 +50,14 @@ const CategoryCreate = () => {
             <br />
           </div>
           <div>
-            <button type='submit' className='btn btn-success'>Submit</button>
+            <button type='submit' className='btn btn-success' disabled={loading}>
+              {loading ? 'Submitting...' : 'Submit'}
+            </button>
             <Link to='/categoryDetails' className='btn btn-danger back'>Back</Link>
           </div>
         </Form>
       </Formik>
+      <ToastContainer />
     </>
   )
 }
