@@ -26,7 +26,7 @@ const CategoryUpdate = () => {
 
     axios.get(`${process.env.REACT_APP_API_URL}categoryimage/${id}`)
       .then(res => {
-        setCurrentImage(res.data[0]); // Assuming one image per category
+        //setCurrentImage(res.data[0]); // Assuming one image per category
       })
       .catch(err => console.log(err));
   }, [id]);
@@ -46,7 +46,7 @@ const CategoryUpdate = () => {
   }
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    //setFile(e.target.files[0]);
   };
 
 
