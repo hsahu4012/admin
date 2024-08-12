@@ -11,17 +11,17 @@ const Login = () => {
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState("");
   // const [loginStatus, setLoginStatus] = useState(false);
-  // const localContext = useContext(DataAppContext);
+  const localContext = useContext(DataAppContext);
 
   const navigate = useNavigate();
 
   const login = async (values: any) => {
     setLoader(true);
-    console.log("values", values);
+    // console.log("values", values);
     const url = process.env.REACT_APP_API_URL + "users/login";
     try {
       const response = await axios.post(url, values);
-      console.log(response.data);
+      // console.log(response.data);
       setLoader(false);
 
       const { token, userId, userType } = response.data;
@@ -32,7 +32,7 @@ const Login = () => {
         localStorage.setItem("usertype", userType);
         navigate("/brandlist");
         // setLoginStatus(true);
-        // localContext.login_user();
+        localContext.login_user();
 
         // if (userType === 2) {
         //   navigate("/brandlist");
