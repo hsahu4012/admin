@@ -1,54 +1,66 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { DataAppContext } from '../../DataContext';
-import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../images/nss.png';
-import { FaBars, FaMobileAlt  } from "react-icons/fa";
+import React, { useContext, useEffect, useState } from "react";
+import { DataAppContext } from "../../DataContext";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../images/nss.png";
+import { FaBars, FaMobileAlt } from "react-icons/fa";
 
 const Header = () => {
+  const localContext = useContext(DataAppContext);
+  const navigate = useNavigate();
+  const [showmenu, setShowMenu] = useState(false);
 
-    const localContext = useContext(DataAppContext);
-    const navigate = useNavigate();
-    const [showmenu, setShowMenu] = useState(false);
+  const { appstate, showhidemenu } = localContext;
+  // const { loginstatus } = appstate;
 
-    const { appstate, showhidemenu } = localContext;
-    // const { loginstatus } = appstate;
+  // const loginstatus = window.localStorage.getItem('jwttoken');
 
-    const loginstatus = window.localStorage.getItem('jwttoken');
+  // const logout_user = () => {
+  //     window.localStorage.removeItem('jwttoken');
+  //     window.localStorage.removeItem('userid');
+  //     window.localStorage.removeItem('usertype');
+  //     checkLoginandRedirect();
+  // }
 
-    const logout_user = () => {
-        window.localStorage.removeItem('jwttoken');
-        window.localStorage.removeItem('userid');
-        window.localStorage.removeItem('usertype');
-        checkLoginandRedirect();
-    }
+  // const checkLoginandRedirect = () => {
+  //     const token = localStorage.getItem('jwttoken');
+  //     const pageurl = window.location.href.split('/')[3];
+  //     if (!token && (pageurl !== 'useradd')) {
+  //         //navigate('/login')
+  //     }
+  // }
 
-    const checkLoginandRedirect = () => {
-        const token = localStorage.getItem('jwttoken');
-        const pageurl = window.location.href.split('/')[3];
-        if (!token && (pageurl !== 'useradd')) {
-            //navigate('/login')
-        }
-    }
+  // useEffect(() => {
+  //     checkLoginandRedirect();
+  // }, [])
 
-    useEffect(() => {
-        checkLoginandRedirect();
-    }, [])
-    return (
+  // const securePages = ["/brandlist", "/categoryDetails"];
+  // const checkPageAccess = () => {
+  //   const token = localStorage.getItem("jwttoken");
+  //   let currentPage = window.location.pathname;
+  //   if (securePages.includes(currentPage) && !token) {
+  //     navigate("/login");
+  //   }
+  // };
 
-        <>
-            <header id="header" className="header">
-                <div className="top-left">
-                    <div className="navbar-header">
-                        
-                        <a className="navbar-brand" href="./">
-                            <h2>Grocji Admin</h2>
-                        </a>
-                        <a id="menuToggle" className="menutoggle" onClick={showhidemenu}><FaBars /></a>
-                    </div>
-                </div>
-                <div className="top-right">
-                    <div className="header-menu">
-                        {/* <div className="header-left">
+  // useEffect(() => {
+  //   checkPageAccess();
+  // }, [navigate]);
+  return (
+    <>
+      <header id="header" className="header">
+        <div className="top-left">
+          <div className="navbar-header">
+            <a className="navbar-brand" href="./">
+              <h2>Grocji Admin</h2>
+            </a>
+            <a id="menuToggle" className="menutoggle" onClick={showhidemenu}>
+              <FaBars />
+            </a>
+          </div>
+        </div>
+        <div className="top-right">
+          <div className="header-menu">
+            {/* <div className="header-left">
                             <button className="search-trigger"><i className="fa fa-search"></i></button>
                             <div className="form-inline">
                                 <form className="search-form">
@@ -122,10 +134,10 @@ const Header = () => {
                             </div>
                         </div> */}
 
-                        <div className="user-area dropdown">
-                            <div>
-                            {/* <span className='btn btn-outline-warning mx-1' to="/useradd"><FaMobileAlt  />&nbsp;9135707273</span> */}
-                                {/* {
+            <div className="user-area dropdown">
+              <div>
+                {/* <span className='btn btn-outline-warning mx-1' to="/useradd"><FaMobileAlt  />&nbsp;9135707273</span> */}
+                {/* {
                                     !loginstatus && (
                                         <Link className='btn btn-outline-primary mx-1' to="/useradd">Register</Link>
                                     )
@@ -139,8 +151,8 @@ const Header = () => {
                                 {
                                     (!loginstatus && (window.location.pathname !== '/')) && (<Link className='btn btn-outline-success' to="/login">Login</Link>)
                                 } */}
-                            </div>
-                            {/* <a href="#" className="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              </div>
+              {/* <a href="#" className="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img className="user-avatar rounded-circle" src="images/admin.jpg" alt="User Avatar" />
                             </a>
 
@@ -153,15 +165,12 @@ const Header = () => {
 
                                 <a className="nav-link" href="#"><i className="fa fa-power -off"></i>Logout</a>
                             </div> */}
+            </div>
+          </div>
+        </div>
+      </header>
+    </>
+  );
+};
 
-
-                        </div>
-
-                    </div>
-                </div>
-            </header>
-        </>
-    )
-}
-
-export default Header
+export default Header;

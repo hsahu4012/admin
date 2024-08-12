@@ -1,103 +1,104 @@
-import React, { useEffect } from 'react';
-import './App.css';
-import axios from 'axios';
-import Header from './components/shared/Header';
-import Footer from './components/shared/Footer';
-import LeftPanel from './components/shared/LeftPanel';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import './style.css';
-import './template.css';
-import './cs-skin-elastic.css';
-import DataApp from './DataContext';
+import React, { useContext, useEffect } from "react";
+import "./App.css";
+import axios from "axios";
+import Header from "./components/shared/Header";
+import Footer from "./components/shared/Footer";
+import LeftPanel from "./components/shared/LeftPanel";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "./style.css";
+import "./template.css";
+import "./cs-skin-elastic.css";
+import DataApp from "./DataContext";
+import { DataAppContext } from "./DataContext";
 
-import SecureHeader from './components/shared/SecureHeader';
-import SecureFooter from './components/shared/SecureFooter';
-import SecureLeftPanel from './components/shared/SecureLeftPanel';
+import SecureHeader from "./components/shared/SecureHeader";
+import SecureFooter from "./components/shared/SecureFooter";
+import SecureLeftPanel from "./components/shared/SecureLeftPanel";
 
-import Home from './components/common/Home';
-import Login from './components/common/Login';
+import Home from "./components/common/Home";
+import Login from "./components/common/Login";
 
+import QsAdd from "./components/admin/QsAdd";
+import BulkProductAdd from "./components/admin/BulkQsAdd";
+import QsEdit from "./components/admin/QsEdit";
+import QsList from "./components/admin/QsList";
+import ExamsList from "./components/admin/ExamsList";
+import ExamsAdd from "./components/admin/ExamsAdd";
+import ExamsUpdate from "./components/admin/ExamsUpdate";
+import DashboardAdmin from "./components/admin/DashboardAdmin";
+import AdminNotice from "./components/admin/Notice";
 
-import QsAdd from './components/admin/QsAdd';
-import BulkProductAdd from './components/admin/BulkQsAdd';
-import QsEdit from './components/admin/QsEdit';
-import QsList from './components/admin/QsList';
-import ExamsList from './components/admin/ExamsList';
-import ExamsAdd from './components/admin/ExamsAdd';
-import ExamsUpdate from './components/admin/ExamsUpdate';
-import DashboardAdmin from './components/admin/DashboardAdmin';
-import AdminNotice from './components/admin/Notice';
+import UsersList from "./components/admin/UsersList";
+import UserAdd from "./components/admin/UserAdd";
+import UserUpdate from "./components/admin/UserUpdate";
+import Profile from "./components/common/Profile";
+import SubjectList from "./components/admin/SubjectList";
+import SubjectAdd from "./components/admin/SubjectAdd";
+import SubjectUpdate from "./components/admin/SubjectUpdate";
+import CustomerDetails from "./components/customer/CustomerDetails";
+import CustomerCreate from "./components/customer/CustomerCreate";
+import CustomerUpdate from "./components/customer/CustomerUpdate";
 
-import UsersList from './components/admin/UsersList';
-import UserAdd from './components/admin/UserAdd';
-import UserUpdate from './components/admin/UserUpdate';
-import Profile from './components/common/Profile';
-import SubjectList from './components/admin/SubjectList';
-import SubjectAdd from './components/admin/SubjectAdd';
-import SubjectUpdate from './components/admin/SubjectUpdate';
-import CustomerDetails from './components/customer/CustomerDetails';
-import CustomerCreate from './components/customer/CustomerCreate';
-import CustomerUpdate from './components/customer/CustomerUpdate';
+import CategoryDetails from "./components/category/CategoryDetails";
+import CategoryCreate from "./components/category/CategoryCreate";
+import CategoryUpdate from "./components/category/CategoryUpdate";
 
-import CategoryDetails from './components/category/CategoryDetails';
-import CategoryCreate from './components/category/CategoryCreate';
-import CategoryUpdate from './components/category/CategoryUpdate';
-
-import ProductsList from './components/admin/products/ProductsList';
-import ProductAdd from './components/admin/products/ProductAdd';
-import ProductEdit from './components/admin/products/ProductEdit';
-import ProductView from './components/admin/products/ProductView';
+import ProductsList from "./components/admin/products/ProductsList";
+import ProductAdd from "./components/admin/products/ProductAdd";
+import ProductEdit from "./components/admin/products/ProductEdit";
+import ProductView from "./components/admin/products/ProductView";
 
 //complain routes
-import ComplainsList from './components/Complains/ComplainsList';
-import ComplainsAdd from './components/Complains/ComplainsAdd';
-import ComplainsEdit from './components/Complains/ComplainsEdit';
+import ComplainsList from "./components/Complains/ComplainsList";
+import ComplainsAdd from "./components/Complains/ComplainsAdd";
+import ComplainsEdit from "./components/Complains/ComplainsEdit";
 
 //brand routes
-import BrandList from './components/brand/BrandList';
-import BrandCreate from './components/brand/BrandCreate';
-import BrandUpdate from './components/brand/BrandUpdate';
+import BrandList from "./components/brand/BrandList";
+import BrandCreate from "./components/brand/BrandCreate";
+import BrandUpdate from "./components/brand/BrandUpdate";
 
-import Subcategorylist from './components/admin/Sub-Category/Subcategorylist';
-import Subcategoryadd from './components/admin/Sub-Category/Subcategoryadd';
-import Subcategoryedit from './components/admin/Sub-Category/Subcategoryedit';
-import Subcategoryview from './components/admin/Sub-Category/Subcategoryview';
+import Subcategorylist from "./components/admin/Sub-Category/Subcategorylist";
+import Subcategoryadd from "./components/admin/Sub-Category/Subcategoryadd";
+import Subcategoryedit from "./components/admin/Sub-Category/Subcategoryedit";
+import Subcategoryview from "./components/admin/Sub-Category/Subcategoryview";
 
-import Addressdetails from './components/admin/Address/Addressdetails';
-import Addressadd from './components/admin/Address/Addressadd';
-import Addressupdate from './components/admin/Address/Addressupdate';
+import Addressdetails from "./components/admin/Address/Addressdetails";
+import Addressadd from "./components/admin/Address/Addressadd";
+import Addressupdate from "./components/admin/Address/Addressupdate";
 
-import Orderslist from './components/orders/Orderslist';
-import OrdersUpdate from './components/orders/OrdersUpdate';
-import OrdersCreate from './components/orders/OrdersCreate';
-import WishlistList from './components/wishlist/WishlistList';
-import WishlistAdd from './components/wishlist/WishlistAdd';
-import WishlistUpdate from './components/wishlist/WishlistUpdate';
-import OrderDetailsList from './components/order details/OrderDetailList';
-import OrderDetailAdd from './components/order details/OrderDetailAdd';
-import OrderDetailUpdate from './components/order details/OrderDetailUpdate';
+import Orderslist from "./components/orders/Orderslist";
+import OrdersUpdate from "./components/orders/OrdersUpdate";
+import OrdersCreate from "./components/orders/OrdersCreate";
+import WishlistList from "./components/wishlist/WishlistList";
+import WishlistAdd from "./components/wishlist/WishlistAdd";
+import WishlistUpdate from "./components/wishlist/WishlistUpdate";
+import OrderDetailsList from "./components/order details/OrderDetailList";
+import OrderDetailAdd from "./components/order details/OrderDetailAdd";
+import OrderDetailUpdate from "./components/order details/OrderDetailUpdate";
 
-import VendorList from './components/admin/VendorList';
-import VendorAdd from './components/admin/VendorAdd';
-import VendorUpdate from './components/admin/VendorUpdate';
+import VendorList from "./components/admin/VendorList";
+import VendorAdd from "./components/admin/VendorAdd";
+import VendorUpdate from "./components/admin/VendorUpdate";
 
-import ImageList from './components/imageup/ImageList';
+import ImageList from "./components/imageup/ImageList";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 function App() {
-
   //temp code to keep server live
   const callApiQsList = async () => {
-    console.log('running.............................')
+    console.log("running.............................");
     try {
-      const url = process.env.REACT_APP_API_URL + 'products/allProducts';
+      const url = process.env.REACT_APP_API_URL + "products/allProducts";
       const response = await axios.get(url);
+    } catch (error) {
+      console.log(error);
     }
-    catch (error) { console.log(error); }
-  }
+  };
   useEffect(() => {
-    setInterval(() => callApiQsList(), 10000)
-  }, [])
+    setInterval(() => callApiQsList(), 10000);
+  }, []);
   //temp code to keep server live
 
   // const handleUploadSuccess = () => {
@@ -113,77 +114,379 @@ function App() {
             {/* <div className='container-fluid'> */}
             <div id="right-panel" className="right-panel">
               <Header />
-              <div className='row maincontent content'>
-
-                <div className='col-12 scrollPage'>
-
+              <div className="row maincontent content">
+                <div className="col-12 scrollPage">
                   <Routes>
-                    <Route path='/orderDetailsUpdate/:id' element={<OrderDetailUpdate />} />
-                    <Route path='/orderDetailsCreate' element={<OrderDetailAdd />} />
-                    <Route path='/orderDetails' element={<OrderDetailsList />} />
-                    <Route path='/wishlistUpdate/:id' element={<WishlistUpdate />} />
-                    <Route path='/wishlistCreate' element={<WishlistAdd />} />
-                    <Route path='/wishlist' element={<WishlistList />} />
-                    <Route path='/orders' element={<Orderslist />} />
-                    <Route path='/orderCreate' element={<OrdersCreate />} />
-                    <Route path='/orderUpdate/:id' element={<OrdersUpdate />} />
-                    <Route path='/customerDetails' element={<CustomerDetails />} />
-                    <Route path='/customerCreate' element={<CustomerCreate />} />
-                    <Route path='/customerUpdate/:id' element={<CustomerUpdate />} />
-                    <Route path='/profile' element={<Profile />} />
-                    <Route path='/dashboardadmin' element={<DashboardAdmin />} />
-                    <Route path='/adminnotice' element={<AdminNotice />} />
-                    <Route path='/home' element={<Home />} />
-                    <Route path='/login' element={<Login />} />
-                    <Route path='/qslist' element={<QsList />} />
-                    <Route path='/qsadd' element={<QsAdd />} />
-                    <Route path='/Bulkqsadd' element={<BulkProductAdd />} />
-                    <Route path='/qsedit/:id' element={<QsEdit />} />
-                    <Route path='/examslist' element={<ExamsList />} />
-                    <Route path='/examsadd' element={<ExamsAdd />} />
-                    <Route path='/examsupdate/:examId' element={<ExamsUpdate />} />
-                    <Route path='/userslist' element={<UsersList />} />
-                    <Route path='/useradd' element={<UserAdd />} />
-                    <Route path='/useredit/:id' element={<UserUpdate />} />
-                    <Route path='/subjectslist' element={<SubjectList />} />
-                    <Route path='/subjectadd' element={<SubjectAdd />} />
-                    <Route path='/subjectedit/:id' element={<SubjectUpdate />} />
+                    <Route
+                      path="/orderDetailsUpdate/:id"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: OrderDetailUpdate }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/orderDetailsCreate"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: OrderDetailAdd }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/orderDetails"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: OrderDetailsList }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/wishlistUpdate/:id"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: WishlistUpdate }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/wishlistCreate"
+                      element={
+                        <ProtectedRoutes props={{ Component: WishlistAdd }} />
+                      }
+                    />
+                    <Route
+                      path="/wishlist"
+                      element={
+                        <ProtectedRoutes props={{ Component: WishlistList }} />
+                      }
+                    />
+                    <Route
+                      path="/orders"
+                      element={
+                        <ProtectedRoutes props={{ Component: Orderslist }} />
+                      }
+                    />
+                    <Route
+                      path="/orderCreate"
+                      element={
+                        <ProtectedRoutes props={{ Component: OrdersCreate }} />
+                      }
+                    />
+                    <Route
+                      path="/orderUpdate/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: OrdersUpdate }} />
+                      }
+                    />
+                    <Route
+                      path="/customerDetails"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: CustomerDetails }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/customerCreate"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: CustomerCreate }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/customerUpdate/:id"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: CustomerUpdate }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/profile"
+                      element={
+                        <ProtectedRoutes props={{ Component: Profile }} />
+                      }
+                    />
+                    <Route
+                      path="/dashboardadmin"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: DashboardAdmin }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/adminnotice"
+                      element={
+                        <ProtectedRoutes props={{ Component: AdminNotice }} />
+                      }
+                    />
+                    <Route
+                      path="/home"
+                      element={<ProtectedRoutes props={{ Component: Home }} />}
+                    />
+                    <Route
+                      path="/login"
+                      element={<ProtectedRoutes props={{ Component: Login }} />}
+                    />
+                    <Route
+                      path="/qslist"
+                      element={
+                        <ProtectedRoutes props={{ Component: QsList }} />
+                      }
+                    />
+                    <Route
+                      path="/qsadd"
+                      element={<ProtectedRoutes props={{ Component: QsAdd }} />}
+                    />
+                    <Route
+                      path="/Bulkqsadd"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: BulkProductAdd }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/qsedit/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: QsEdit }} />
+                      }
+                    />
+                    <Route
+                      path="/examslist"
+                      element={
+                        <ProtectedRoutes props={{ Component: ExamsList }} />
+                      }
+                    />
+                    <Route
+                      path="/examsadd"
+                      element={
+                        <ProtectedRoutes props={{ Component: ExamsAdd }} />
+                      }
+                    />
+                    <Route
+                      path="/examsupdate/:examId"
+                      element={
+                        <ProtectedRoutes props={{ Component: ExamsUpdate }} />
+                      }
+                    />
+                    <Route
+                      path="/userslist"
+                      element={
+                        <ProtectedRoutes props={{ Component: UsersList }} />
+                      }
+                    />
+                    <Route
+                      path="/useradd"
+                      element={
+                        <ProtectedRoutes props={{ Component: UserAdd }} />
+                      }
+                    />
+                    <Route
+                      path="/useredit/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: UserUpdate }} />
+                      }
+                    />
+                    <Route
+                      path="/subjectslist"
+                      element={
+                        <ProtectedRoutes props={{ Component: SubjectList }} />
+                      }
+                    />
+                    <Route
+                      path="/subjectadd"
+                      element={
+                        <ProtectedRoutes props={{ Component: SubjectAdd }} />
+                      }
+                    />
+                    <Route
+                      path="/subjectedit/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: SubjectUpdate }} />
+                      }
+                    />
 
-                    <Route path='/categoryDetails' element={<CategoryDetails />} />
-                    <Route path='/categoryCreate' element={<CategoryCreate />} />
-                    <Route path='/categoryUpdate/:id' element={<CategoryUpdate />} />
-                    <Route path='/productslist' element={<ProductsList />} />
-                    <Route path='/productadd' element={<ProductAdd />} />
-                    <Route path='/productedit/:productid' element={<ProductEdit />} />
-                    <Route path='/productview/:productid' element={<ProductView />} />
-                    <Route path='/subcategorylist' element={<Subcategorylist />} />
-                    <Route path='/subcategoryadd' element={<Subcategoryadd />} />
-                    <Route path='/subcategoryedit/:subcategoryid' element={<Subcategoryedit />} />
-                    <Route path='/subcategoryview/:subcategoryid' element={<Subcategoryview />} />
+                    <Route
+                      path="/categoryDetails"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: CategoryDetails }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/categoryCreate"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: CategoryCreate }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/categoryUpdate/:id"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: CategoryUpdate }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/productslist"
+                      element={
+                        <ProtectedRoutes props={{ Component: ProductsList }} />
+                      }
+                    />
+                    <Route
+                      path="/productadd"
+                      element={
+                        <ProtectedRoutes props={{ Component: ProductAdd }} />
+                      }
+                    />
+                    <Route
+                      path="/productedit/:productid"
+                      element={
+                        <ProtectedRoutes props={{ Component: ProductEdit }} />
+                      }
+                    />
+                    <Route
+                      path="/productview/:productid"
+                      element={
+                        <ProtectedRoutes props={{ Component: ProductView }} />
+                      }
+                    />
+                    <Route
+                      path="/subcategorylist"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: Subcategorylist }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/subcategoryadd"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: Subcategoryadd }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/subcategoryedit/:subcategoryid"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: Subcategoryedit }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/subcategoryview/:subcategoryid"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: Subcategoryview }}
+                        />
+                      }
+                    />
                     {/* complains route */}
-                    <Route path='/complainslist' element={<ComplainsList />} />
-                    <Route path='/complainsadd' element={<ComplainsAdd />} />
-                    <Route path='/complainsedit/:complainid' element={<ComplainsEdit />} />
+                    <Route
+                      path="/complainslist"
+                      element={
+                        <ProtectedRoutes props={{ Component: ComplainsList }} />
+                      }
+                    />
+                    <Route
+                      path="/complainsadd"
+                      element={
+                        <ProtectedRoutes props={{ Component: ComplainsAdd }} />
+                      }
+                    />
+                    <Route
+                      path="/complainsedit/:complainid"
+                      element={
+                        <ProtectedRoutes props={{ Component: ComplainsEdit }} />
+                      }
+                    />
 
                     {/* brand route */}
-                    <Route path='/brandlist' element={<BrandList />} />
-                    <Route path='/brandcreate' element={<BrandCreate />} />
-                    <Route path='/brandupdate/:id' element={<BrandUpdate />} />
+                    <Route
+                      path="/brandlist"
+                      element={
+                        <ProtectedRoutes props={{ Component: BrandList }} />
+                      }
+                    />
+                    <Route
+                      path="/brandcreate"
+                      element={
+                        <ProtectedRoutes props={{ Component: BrandCreate }} />
+                      }
+                    />
+                    <Route
+                      path="/brandupdate/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: BrandUpdate }} />
+                      }
+                    />
 
-                    <Route path='/addressdetails' element={<Addressdetails />} />
-                    <Route path='/addressadd' element={<Addressadd />} />
-                    <Route path='/addressupdate/:addressid' element={<Addressupdate />} />
+                    <Route
+                      path="/addressdetails"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: Addressdetails }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/addressadd"
+                      element={
+                        <ProtectedRoutes props={{ Component: Addressadd }} />
+                      }
+                    />
+                    <Route
+                      path="/addressupdate/:addressid"
+                      element={
+                        <ProtectedRoutes props={{ Component: Addressupdate }} />
+                      }
+                    />
 
-                    <Route path='/vendorDetails' element={<VendorList />} />
-                    <Route path='/vendoradd' element={<VendorAdd />} />
-                    <Route path='/vendoredit/:vendorid' element={<VendorUpdate />} />
+                    <Route
+                      path="/vendorDetails"
+                      element={
+                        <ProtectedRoutes props={{ Component: VendorList }} />
+                      }
+                    />
+                    <Route
+                      path="/vendoradd"
+                      element={
+                        <ProtectedRoutes props={{ Component: VendorAdd }} />
+                      }
+                    />
+                    <Route
+                      path="/vendoredit/:vendorid"
+                      element={
+                        <ProtectedRoutes props={{ Component: VendorUpdate }} />
+                      }
+                    />
 
-                    <Route path='/imageList' element={<ImageList />} />
+                    <Route
+                      path="/imageList"
+                      element={
+                        <ProtectedRoutes props={{ Component: ImageList }} />
+                      }
+                    />
 
-                    <Route path='/' element={<DashboardAdmin />} />
+                    <Route
+                      path="/"
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: DashboardAdmin }}
+                        />
+                      }
+                    />
                   </Routes>
                 </div>
-
               </div>
               <Footer />
             </div>
