@@ -87,18 +87,18 @@ import ProtectedRoutes from "./ProtectedRoutes";
 
 function App() {
   //temp code to keep server live
-  const callApiQsList = async () => {
-    console.log("running.............................");
-    try {
-      const url = process.env.REACT_APP_API_URL + "products/allProducts";
-      const response = await axios.get(url);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    setInterval(() => callApiQsList(), 10000);
-  }, []);
+  // const callApiQsList = async () => {
+  //   console.log("running.............................");
+  //   try {
+  //     const url = process.env.REACT_APP_API_URL + "products/allProducts";
+  //     const response = await axios.get(url);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   setInterval(() => callApiQsList(), 10000);
+  // }, []);
   //temp code to keep server live
 
   // const handleUploadSuccess = () => {
