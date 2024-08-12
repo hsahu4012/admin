@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Field, Form } from "formik";
-
+import JoditEditor from 'jodit-react';
 const ProductEdit = () => {
     const { productid } = useParams();
     const navigate = useNavigate();
-
+    const editor = useRef(null);
     const [product, setProduct] = useState({});
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
@@ -236,8 +236,16 @@ const ProductEdit = () => {
                         </div>
 
                         <div className='row'>
-                            <label htmlFor="prod_desc" className='col-4 my-2'>Description:</label>
-                            <Field name="prod_desc" as="textarea" className='col-8' />
+                            <label htmlFor="prod_desc" className='col-4 my-2'>Product Description</label>
+                            <div className='col-8'>
+                                <JoditEditor
+                                    ref={editor}
+                                    value={values.prod_desc || ''}
+                                    onChange={(newContent) => {
+                                        setFieldValue('prod_desc', newContent);
+                                    }}
+                                />
+                            </div>
                         </div>
 
                         <div className='row'>
