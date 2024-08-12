@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Field, Form } from "formik";
-import JoditEditor from 'jodit-react';
 
 const ProductEdit = () => {
     const { productid } = useParams();
@@ -22,6 +21,7 @@ const ProductEdit = () => {
                 const url = process.env.REACT_APP_API_URL + 'products/productById/' + id;
                 const response = await axios.get(url);
                 setProduct(response.data);
+                setImageFile(null); // Clear the imageFile state when fetching product
                 handleCategoryChange(response.data.category);
                 
                 const calculatedDiscountPercentage = (response.data.discount / response.data.price) * 100;
@@ -62,36 +62,37 @@ const ProductEdit = () => {
 
     const editProduct = async (values) => {
         try {
-        const formData = new FormData();
-        const { category, subcategory, ...otherValues } = values;
-        const categoryObject = categories.find(cat => cat.category_id === category);
-        const subcategoryObject = subcategories.find(subcat => subcat.subcategory_id === subcategory);
-
-        formData.append('prod_name', values.prod_name);
-        formData.append('category', categoryObject ? categoryObject.category_id : '');
-        formData.append('subcategory', subcategoryObject ? subcategoryObject.subcategory_id : '');
-        formData.append('price', values.price);
-        formData.append('stock_quantity', values.stock_quantity);
-        formData.append('brand', values.brand);
-        formData.append('discount', values.discount);
-        // formData.append('prod_desc', values.prod_desc);
-        // formData.append('image', imageFile);
-       
-
-      
+            const formData = new FormData();
+            const { category, subcategory, ...otherValues } = values;
+            const categoryObject = categories.find(cat => cat.category_id === category);
+            const subcategoryObject = subcategories.find(subcat => subcat.subcategory_id === subcategory);
+            formData.append('prod_name', values.prod_name);
+            formData.append('category', categoryObject ? categoryObject.category_id : '');
+            formData.append('subcategory', subcategoryObject ? subcategoryObject.subcategory_id : '');
+            formData.append('price', values.price);
+            formData.append('stock_quantity', values.stock_quantity);
+            formData.append('brand', values.brand);
+            formData.append('discount', values.discount);
+            formData.append('productid', productid);
+            if (imageFile) {
+                formData.append('image', imageFile);
+            } else {
+                formData.append('image', 'true');
+            }
+            if (values.prod_desc) {
+                formData.append('prod_desc', values.prod_desc);
+            }
             const url = process.env.REACT_APP_API_URL + 'products/updateProduct/' + productid;
             const response = await axios.put(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+
             if (response.status === 200) {
-                // Fetch the updated product data 
                 const updatedProductUrl = process.env.REACT_APP_API_URL + 'products/productById/' + productid;
                 const updatedProductResponse = await axios.get(updatedProductUrl);
                 setProduct(updatedProductResponse.data);
-
-                // Navigate to the product list page
                 navigate('/productslist');
             }
         } catch (error) {
@@ -112,8 +113,6 @@ const ProductEdit = () => {
         const calculatedPercentage = (amount / values.price) * 100;
         setDiscountPercentage(calculatedPercentage.toFixed(2));
     }
-
-   
 
     return (
         <div>
@@ -181,13 +180,18 @@ const ProductEdit = () => {
                             <Field name="stock_quantity" type="number" className='col-8' required />
                         </div>
 
-                        {/* <div className='row'>
+                        <div className='row'>
                             <label htmlFor="image" className='col-4 my-2'>Image:</label>
-                            <input name="image" type="file" className='col-8' onChange={(e) => {
-                                setImageFile(e.target.files[0]);
-                                setFieldValue('image', e.target.files[0]);
-                            }} />
-                        </div> */}
+                            <input 
+                                name="image" 
+                                type="file" 
+                                className='col-8' 
+                                onChange={(e) => {
+                                    setImageFile(e.target.files[0]);
+                                    setFieldValue('image', e.target.files[0]);
+                                }} 
+                            />
+                        </div>
 
                         <div className='row'>
                             <label htmlFor="brand" className='col-4 my-2'>Brand:</label>
@@ -204,40 +208,49 @@ const ProductEdit = () => {
                             <div className='col-8'>
                                 <div className="row">
                                     <div className="col">
-                                        <Field name="discount" type="number" placeholder="Amount" className='col-8' value={discountAmount} onChange={(e) => {
-                                            handleDiscountAmountChange(e.target.value, setFieldValue, values);
-                                        }} />
+                                        <Field 
+                                            name="discount" 
+                                            type="number" 
+                                            placeholder="Amount" 
+                                            className='col-8' 
+                                            value={discountAmount} 
+                                            onChange={(e) => {
+                                                handleDiscountAmountChange(e.target.value, setFieldValue, values);
+                                            }} 
+                                        />
                                     </div>
                                     <div className="col">
-                                        <Field name="discount_percentage" type="number" placeholder="Percentage" className='col-8' value={discountPercentage} onChange={(e) => {
-                                            handleDiscountPercentageChange(e.target.value, setFieldValue, values);
-                                        }} />
+                                        <Field 
+                                            name="discount_percentage" 
+                                            type="number" 
+                                            placeholder="Percentage" 
+                                            className='col-8' 
+                                            value={discountPercentage} 
+                                            onChange={(e) => {
+                                                handleDiscountPercentageChange(e.target.value, setFieldValue, values);
+                                            }} 
+                                        />
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* <div className='row'>
+                        <div className='row'>
                             <label htmlFor="prod_desc" className='col-4 my-2'>Description:</label>
-                            <div className='col-8'>
-                                <JoditEditor
-                                    value={values.prod_desc}
-                                    onChange={(content) => setFieldValue('prod_desc', content)}
-                                />
-                            </div>
-                        </div> */}
+                            <Field name="prod_desc" as="textarea" className='col-8' />
+                        </div>
 
                         <div className='row'>
                             <div className='col-12 text-center'>
                                 <button type="submit" className='btn btn-primary'>Update Product</button>
-                                <Link to="/productslist" className='btn btn-secondary ml-2'>Back to Product Lis</Link>
+                                <Link to="/productslist" className='btn btn-secondary ml-2'>Back to Product List</Link>
                             </div>
                         </div>
                     </Form>
                 )}
             </Formik>
         </div>
-    )
+    );
 }
 
 export default ProductEdit;
