@@ -105,13 +105,17 @@ const Login = () => {
                 </div>
               </div>
               <br></br>
-              <button type="submit" className="btn btn-primary">
-                {loader ? "Logging In" : "Log In"}
-              </button>
-              <br></br>
+              <div className="form-group row">
+                <div className="col-sm-7 offset-sm-5">
+                  <button type="submit" className="btn btn-primary col-sm-12">
+                    {loader ? "Logging In" : "Log In"}
+                  </button>
+                </div>
+              </div>
+              {/* <br></br>
               <p className="mt-3">
                 Don't have an account? <Link to="/register">Register</Link>
-              </p>
+              </p> */}
             </Form>
           </Formik>
 
