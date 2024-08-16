@@ -48,6 +48,7 @@ import ProductsList from "./components/admin/products/ProductsList";
 import ProductAdd from "./components/admin/products/ProductAdd";
 import ProductEdit from "./components/admin/products/ProductEdit";
 import ProductView from "./components/admin/products/ProductView";
+import ProductCopy from "./components/admin/products/ProductCopy";
 
 //complain routes
 import ComplainsList from "./components/Complains/ComplainsList";
@@ -356,6 +357,12 @@ function App() {
                       path="/productview/:productid"
                       element={
                         <ProtectedRoutes props={{ Component: ProductView }} />
+                      }
+                    />
+                     <Route
+                      path="/productcopy/:productid"
+                      element={
+                        <ProtectedRoutes props={{ Component: ProductCopy }} />
                       }
                     />
                     <Route
