@@ -22,7 +22,7 @@ const Settingslist = () => {
         "Are you sure you want to delete this setting?"
       );
       if (confirmed) {
-        await axios.delete(
+        await axios.put(
           `${process.env.REACT_APP_API_URL}settings/removesetting/${id}`
         );
 
