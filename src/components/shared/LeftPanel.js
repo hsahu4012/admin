@@ -78,6 +78,10 @@ const LeftPanel = () => {
                     </li>
 
                     <li className="menu-item-has-children dropdown">
+                      <Link to="/settingslist">Settings</Link>
+                    </li>
+
+                    <li className="menu-item-has-children dropdown">
                       <Link to="/imageList">Image Upload</Link>
                     </li>
 
