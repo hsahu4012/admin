@@ -7,6 +7,7 @@ import JoditEditor from 'jodit-react';
 const ProductAdd = () => {
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState([]);
     const [imageFile, setImageFile] = useState(null);
     const [brands, setBrands] = useState([]);
     const [discountAmount, setDiscountAmount] = useState("");
@@ -14,6 +15,7 @@ const ProductAdd = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [loadingCategories, setLoadingCategories] = useState(false); 
+
     const navigate = useNavigate();
 
     const initialFormValues = {
@@ -40,43 +42,44 @@ const ProductAdd = () => {
         fetchCategories();
     }, []);
 
-    const handleCategoryChange = async (categoryId, setFieldValue) => {
-        setLoadingCategories(true); // Show loader
-
-        
-            try {
-                const subcategoryUrl = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
-                const subcategoryResponse = await axios.get(subcategoryUrl);
-                setSubcategories(subcategoryResponse.data.filter(subcategory => subcategory.category_id === categoryId));
-                
-                const brandUrl = process.env.REACT_APP_API_URL + `brand/brandbycategoryid/${categoryId}`;
-                const brandResponse = await axios.get(brandUrl);
-                setBrands(brandResponse.data);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoadingCategories(false); 
-            }
-       
+    const handleCategoryChange = async (categoryId) => {
+        try {
+            setLoadingCategories(true); // Show loader
+            const subcategoryUrl = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
+            const subcategoryResponse = await axios.get(subcategoryUrl);
+            setSubcategories(subcategoryResponse.data.filter(subcategory => subcategory.category_id === categoryId));
+            
+            const brandUrl = process.env.REACT_APP_API_URL + `brand/brandbycategoryid/${categoryId}`;
+            const brandResponse = await axios.get(brandUrl);
+            setBrands(brandResponse.data);
+        } catch (error) {
+            console.log(error);
+        }
+        finally{
+            setLoadingCategories(false); 
+        }
     };
 
     const addNewProduct = async (values) => {
         const formData = new FormData();
-        const productid = parseInt(Math.random() * 10000000000);
+        // const productid = parseInt(Math.random() * 10000000000);
+        // // const datestamp = Date.now();
+        const changedSubcategory = selectedCategory.join('#');
 
         formData.append('prod_name', values.prod_name);
         formData.append('category', values.category);
-        formData.append('subcategory', values.subcategory);
+        formData.append('subcategory', changedSubcategory);
         formData.append('price', values.price);
         formData.append('stock_quantity', values.stock_quantity);
         formData.append('brand', values.brand);
         formData.append('discount', values.discount);
         formData.append('prod_desc', values.prod_desc);
         formData.append('image', imageFile);
-        formData.append('productid', productid);
+        // formData.append('productid', productid);
+        // formData.append('datestamp', datestamp);
 
         try {
-            const url = process.env.REACT_APP_API_URL + 'products/addProuduct';
+            const url = process.env.REACT_APP_API_URL + 'products/addProduct';
             const response = await axios.post(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -90,6 +93,7 @@ const ProductAdd = () => {
         } finally {
             setLoading(false); // Stop the loader
         }
+
     };
 
     const handleDiscountPercentageChange = (percentage, setFieldValue, values) => {
@@ -106,6 +110,15 @@ const ProductAdd = () => {
         setDiscountPercentage(calculatedPercentage.toFixed(2));
     }
 
+    const handleCheck = (e) => {
+        const { checked, value } = e.target;
+        if (checked) {
+            setSelectedCategory([...selectedCategory, value]);
+        } else {
+            setSelectedCategory(selectedCategory.filter(category => category !== value));
+        }
+    }
+
     return (
         <div>
             <h2>Products Add</h2>
@@ -116,6 +129,7 @@ const ProductAdd = () => {
                     setError(""); // Reset error message
                     await addNewProduct(values);
                     resetForm();
+                    setSubcategories([]);
                     setDiscountAmount("");
                     setDiscountPercentage("");   
                 }}
@@ -132,7 +146,7 @@ const ProductAdd = () => {
                                 <label htmlFor="category" className='col-4 my-2'>Category</label>
                                 <Field name="category" as="select" className='col-8' type="text" onChange={(e) => {
                                     setFieldValue('category', e.target.value);
-                                    handleCategoryChange(e.target.value, setFieldValue);
+                                    handleCategoryChange(e.target.value);
                                 }} required>
                                     <option value="">Select a category</option>
                                     {categories.map(category => (
@@ -140,6 +154,7 @@ const ProductAdd = () => {
                                     ))}
                                 </Field>
                             </div>
+
 
                             {loadingCategories && (
                                 <div className='row'>
@@ -150,13 +165,13 @@ const ProductAdd = () => {
                             )}
 
                             <div className='row'>
-                                <label htmlFor="subcategory" className='col-4 my-2'>Subcategory</label>
-                                <Field name="subcategory" as="select" type="text" className='col-8' required>
-                                    <option value="">Select a subcategory</option>
-                                    {subcategories.map(subcategory => (
-                                        <option key={subcategory.subcategory_id} value={subcategory.subcategory_id}>{subcategory.subcategoryname}</option>
-                                    ))}
-                                </Field>
+                                {/* <label htmlFor="subcategory" className='col-4 my-2'></label> */}
+                                {subcategories.map(subcategory => (
+                                    <div key={subcategory.subcategory_id} style={{paddingLeft: '49.5%'}}>
+                                        <input style={{width: '5%'}} type="checkbox" name="subcategory" value={subcategory.subcategory_id} onChange={e => handleCheck(e)}/>
+                                        <label htmlFor='subcategory'>{subcategory.subcategoryname}</label>
+                                    </div>
+                                ))}
                             </div>
 
                             <div className='row'>
