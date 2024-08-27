@@ -82,6 +82,10 @@ import VendorList from "./components/admin/VendorList";
 import VendorAdd from "./components/admin/VendorAdd";
 import VendorUpdate from "./components/admin/VendorUpdate";
 
+import Settingslist from "./components/settings/Settingslist";
+import SettingCreate from "./components/settings/SettingCreate";
+import SettingUpdate from "./components/settings/SettingUpdate";
+
 import ImageList from "./components/imageup/ImageList";
 import ProtectedRoutes from "./ProtectedRoutes";
 
@@ -469,6 +473,25 @@ function App() {
                         <ProtectedRoutes props={{ Component: VendorUpdate }} />
                       }
                     />
+
+                    <Route
+                      path="/settingslist"
+                      element={
+                        <ProtectedRoutes props={{ Component: Settingslist }} />
+                      }
+                    />
+                     <Route
+                      path="/settingCreate"
+                      element={
+                        <ProtectedRoutes props={{ Component: SettingCreate  }} />
+                      }
+                    />
+                    <Route
+                      path="/settingUpdate/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: SettingUpdate }} />
+                      }
+                    /> 
 
                     <Route
                       path="/imageList"
