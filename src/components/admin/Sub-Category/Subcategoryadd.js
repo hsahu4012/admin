@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Field, Form } from "formik";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Subcategoryadd = () => {
     const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -12,7 +15,7 @@ const Subcategoryadd = () => {
                 const response = await axios.get(process.env.REACT_APP_API_URL + 'category/allCategory');
                 setCategories(response.data);
             } catch (error) {
-                console.error('Error in  fetching categories:');
+                console.error('Error in fetching categories:', error);
             }
         };
         
@@ -20,43 +23,42 @@ const Subcategoryadd = () => {
     }, []);
 
     const initialFormValues = {
-       
         subcategoryname: "",
-        subcategory_id:"",
-        category_id:""
-        
-    }
+        subcategory_id: "",
+        category_id: ""
+    };
 
     const addNewSubcategory = async (values) => {
-    // Call API to add new product
+        setLoading(true); 
         try {
             const url = process.env.REACT_APP_API_URL + 'subCategory/addSubCategory';
             const response = await axios.post(url, values);
             console.log(response.data);
-        
-        // Alert indicating successful addition
-            window.alert('Subcategory added successfully!');
-        
-        return false;
+
+            
+            toast.success('Subcategory added successfully!');
+
+            setLoading(false); 
+            return { error: false };
         } catch (error) {
-        console.log(error);
+            console.error('Error adding subcategory:', error);
+            setLoading(false); 
+            return { error: true };
         }
-}
+    };
 
     return (
         <div>
-            <h2> Add-Subcategory</h2>
+            <h2>Add Subcategory</h2>
             <br />
             <br />
             <Formik
                 initialValues={initialFormValues}
                 onSubmit={async (values, { resetForm }) => {
-                    //console.log(values);
                     const { error } = await addNewSubcategory(values);
                     if (!error) {
-                    resetForm();
-                    };
-    
+                        resetForm();
+                    }
                 }}
             >
                 <div className='row'>
@@ -66,7 +68,7 @@ const Subcategoryadd = () => {
                             <Field name="subcategoryname" type="text" className='col-8' required />
                         </div>
                         <div className='row'>
-                            <label htmlFor="name" className='col-4 my-2'>Category_id:</label>
+                            <label htmlFor="name" className='col-4 my-2'>Category ID:</label>
                             <Field name="category_id" as="select" className='col-8' required>
                                 <option value="">Select Category</option>
                                 {categories.map((category) => (
@@ -76,17 +78,14 @@ const Subcategoryadd = () => {
                                 ))}
                             </Field>
                         </div>
-                       
-
                         <div className='row'>
                             <div className='text-center my-4'>
-                                <button type="submit" className='btn btn-success'>Add Subcategory</button>
+                                <button type="submit" className='btn btn-success' disabled={loading}>
+                                    {loading ? 'Adding...' : 'Add Subcategory'}
+                                </button>
                             </div>
                         </div>
-
-
-
-                        <br></br>
+                        <br />
                     </Form>
                 </div>
             </Formik>
@@ -97,9 +96,11 @@ const Subcategoryadd = () => {
                 </div>
             </div>
 
+            <ToastContainer />
         </div>
-    )
-}
-
+    );
+};
 
 export default Subcategoryadd;
+
+
