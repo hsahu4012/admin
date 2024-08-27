@@ -4,34 +4,52 @@ import { Link } from 'react-router-dom';
 
 const ProductsList = () => {
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const fetchProductsList = async () => {
+    const fetchCategories = async () => {
         try {
-            const url = process.env.REACT_APP_API_URL + 'products/allProducts';
+            const url = process.env.REACT_APP_API_URL + 'category/allCategory';
             const response = await axios.get(url);
-            const sortedProducts = response.data.sort((a, b) => b.srno - a.srno);
-            setProducts(sortedProducts);
+            setCategories(response.data);
         }
         catch (error) {
             console.log(error);
         }
     }
 
-    const deleteProduct = async(productid) => {
-        //api call for delete
+    const fetchProductsList = async () => {
+        try {
+            const url = process.env.REACT_APP_API_URL + 'products/allProducts';
+            const response = await axios.get(url);
+            setProducts(response.data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleCategoryClick = (categoryName) => {
+        setSelectedCategory(categoryName);
+    }
+
+    const filteredProducts = selectedCategory
+        ? products.filter(product => product.categoryname === selectedCategory)
+        : products;
+
+    const deleteProduct = async (productid) => {
         try {
             const url = process.env.REACT_APP_API_URL + 'products/removeProduct/' + productid;
-            const response = await axios.put(url);
-            //console.log(response);
-            //setUserList(response.data);
+            await axios.put(url);
             fetchProductsList();
-          }
-          catch (error) {
+        }
+        catch (error) {
             console.log(error);
-          }
+        }
     }
 
     useEffect(() => {
+        fetchCategories();
         fetchProductsList();
     }, [])
 
@@ -40,7 +58,19 @@ const ProductsList = () => {
             <h2>Products List</h2>
             <Link to='/productadd' className='btn btn-primary'>Create New Products</Link>
             <div>
-            <Link to='/bulkqsadd' className='btn btn-primary'>Bulk Products upload</Link>
+                <Link to='/bulkqsadd' className='btn btn-primary'>Bulk Products upload</Link>
+            </div>
+            <div>
+                <h3>Categories</h3>
+                {categories.map(category => (
+                    <button 
+                        key={category.categoryname} 
+                        onClick={() => handleCategoryClick(category.categoryname)} 
+                        className='btn btn-primary m-1'
+                    >
+                        {category.categoryname}
+                    </button>
+                ))}
             </div>
             <table className='table table-responsive'>
                 <thead>
@@ -52,17 +82,15 @@ const ProductsList = () => {
                         <th>SubCategory</th>
                         <th>Price</th>
                         <th>Stock Quantity</th>
-                        {/* <th>Image</th> */}
                         <th>Brand</th>
                         <th>Discount</th>
-                        {/* <th>Description</th> */}
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        products && products.map((temp, index) => (
-                            <tr>
+                        filteredProducts.map((temp, index) => (
+                            <tr key={temp.productid}>
                                 <td>{index + 1}</td>
                                 <td>{temp.productid}</td>
                                 <td>{temp.prod_name}</td>
@@ -70,16 +98,13 @@ const ProductsList = () => {
                                 <td>{temp.subcategoryname}</td>
                                 <td>{temp.price}</td>
                                 <td>{temp.stock_quantity}</td>
-                                {/* <td><img src={process.env.REACT_APP_API_URL + temp.image} style={{height: '50px'}}/></td> */}
-                                {/* <td>{temp.image}</td> */}
                                 <td>{temp.brand_name}</td>
                                 <td>{temp.discount}</td>
-                                {/* <td>{temp.prod_desc}</td> */}
                                 <td>
-                                <Link to={`/productview/${temp.productid}`} className='btn btn-success'>View</Link>
-                                <Link to={`/productedit/${temp.productid}`} className='btn btn-warning'>Edit</Link>
-                                <button onClick={() => deleteProduct(temp.productid)} className='btn btn-danger'>Delete</button>
-                                    </td>
+                                    <Link to={`/productview/${temp.productid}`} className='btn btn-success'>View</Link>
+                                    <Link to={`/productedit/${temp.productid}`} className='btn btn-warning'>Edit</Link>
+                                    <button onClick={() => deleteProduct(temp.productid)} className='btn btn-danger'>Delete</button>
+                                </td>
                             </tr>
                         ))
                     }
@@ -89,4 +114,4 @@ const ProductsList = () => {
     )
 }
 
-export default ProductsList
+export default ProductsList;
