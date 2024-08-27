@@ -13,6 +13,7 @@ const ProductAdd = () => {
     const [discountPercentage, setDiscountPercentage] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [loadingCategories, setLoadingCategories] = useState(false); 
     const navigate = useNavigate();
 
     const initialFormValues = {
@@ -39,24 +40,29 @@ const ProductAdd = () => {
         fetchCategories();
     }, []);
 
-    const handleCategoryChange = async (categoryId) => {
-        try {
-            const subcategoryUrl = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
-            const subcategoryResponse = await axios.get(subcategoryUrl);
-            setSubcategories(subcategoryResponse.data.filter(subcategory => subcategory.category_id === categoryId));
-            
-            const brandUrl = process.env.REACT_APP_API_URL + `brand/brandbycategoryid/${categoryId}`;
-            const brandResponse = await axios.get(brandUrl);
-            setBrands(brandResponse.data);
-        } catch (error) {
-            console.log(error);
-        }
+    const handleCategoryChange = async (categoryId, setFieldValue) => {
+        setLoadingCategories(true); // Show loader
+
+        
+            try {
+                const subcategoryUrl = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
+                const subcategoryResponse = await axios.get(subcategoryUrl);
+                setSubcategories(subcategoryResponse.data.filter(subcategory => subcategory.category_id === categoryId));
+                
+                const brandUrl = process.env.REACT_APP_API_URL + `brand/brandbycategoryid/${categoryId}`;
+                const brandResponse = await axios.get(brandUrl);
+                setBrands(brandResponse.data);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoadingCategories(false); 
+            }
+       
     };
 
     const addNewProduct = async (values) => {
         const formData = new FormData();
         const productid = parseInt(Math.random() * 10000000000);
-        // const datestamp = Date.now();
 
         formData.append('prod_name', values.prod_name);
         formData.append('category', values.category);
@@ -68,7 +74,6 @@ const ProductAdd = () => {
         formData.append('prod_desc', values.prod_desc);
         formData.append('image', imageFile);
         formData.append('productid', productid);
-        // formData.append('datestamp', datestamp);
 
         try {
             const url = process.env.REACT_APP_API_URL + 'products/addProuduct';
@@ -127,7 +132,7 @@ const ProductAdd = () => {
                                 <label htmlFor="category" className='col-4 my-2'>Category</label>
                                 <Field name="category" as="select" className='col-8' type="text" onChange={(e) => {
                                     setFieldValue('category', e.target.value);
-                                    handleCategoryChange(e.target.value);
+                                    handleCategoryChange(e.target.value, setFieldValue);
                                 }} required>
                                     <option value="">Select a category</option>
                                     {categories.map(category => (
@@ -135,6 +140,14 @@ const ProductAdd = () => {
                                     ))}
                                 </Field>
                             </div>
+
+                            {loadingCategories && (
+                                <div className='row'>
+                                    <div className='text-center col-12'>
+                                        <p>Loading...</p>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className='row'>
                                 <label htmlFor="subcategory" className='col-4 my-2'>Subcategory</label>
@@ -178,7 +191,7 @@ const ProductAdd = () => {
                             </div>
 
                             <div className='row'>
-                                <label htmlFor="password" className='col-4 my-2'>Discount</label>
+                                <label htmlFor="discount" className='col-4 my-2'>Discount</label>
                                 <div className='col-8'>
                                     <div className="row">
                                         <div className="col">
