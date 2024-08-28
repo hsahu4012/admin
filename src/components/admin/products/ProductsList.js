@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 const ProductsList = () => {
@@ -52,6 +52,7 @@ const ProductsList = () => {
 
     return (
         <div>
+            <ToastContainer />
             <h2>Products List</h2>
             <Link to='/productadd' className='btn btn-primary'>Create New Product</Link>
             <div>
