@@ -5,53 +5,52 @@ import { Link } from 'react-router-dom';
 const ProductsList = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [categoryname, setCategoryname] = useState(null);
 
     const fetchCategories = async () => {
         try {
             const url = process.env.REACT_APP_API_URL + 'category/allCategory';
             const response = await axios.get(url);
             setCategories(response.data);
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
         }
-    }
+    };
 
-    const fetchProductsList = async () => {
+    const fetchProductsList = async (categoryname) => {
         try {
-            const url = process.env.REACT_APP_API_URL + 'products/allProducts';
-            const response = await axios.get(url);
-            setProducts(response.data);
-        }
-        catch (error) {
+            if (categoryname) {
+                const url = process.env.REACT_APP_API_URL + `products/CategoryByName?categoryname=${encodeURIComponent(categoryname)}`;
+                const response = await axios.get(url);
+                setProducts(response.data);
+            } else {
+                
+                setProducts(null);
+            }
+        } catch (error) {
             console.log(error);
         }
-    }
+    };
 
-    const handleCategoryClick = (categoryName) => {
-        setSelectedCategory(categoryName);
-    }
-
-    const filteredProducts = selectedCategory
-        ? products.filter(product => product.categoryname === selectedCategory)
-        : products;
+    const handleCategoryClick = (categoryname) => {
+        setCategoryname(categoryname);
+        fetchProductsList(categoryname); 
+    };
 
     const deleteProduct = async (productid) => {
         try {
             const url = process.env.REACT_APP_API_URL + 'products/removeProduct/' + productid;
             await axios.put(url);
-            fetchProductsList();
-        }
-        catch (error) {
+            fetchProductsList(categoryname); 
+        } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     useEffect(() => {
         fetchCategories();
-        fetchProductsList();
-    }, [])
+        fetchProductsList(categoryname); 
+    }, [categoryname]);
 
     return (
         <div>
@@ -88,30 +87,28 @@ const ProductsList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        filteredProducts.map((temp, index) => (
-                            <tr key={temp.productid}>
-                                <td>{index + 1}</td>
-                                <td>{temp.productid}</td>
-                                <td>{temp.prod_name}</td>
-                                <td>{temp.categoryname}</td>
-                                <td>{temp.subcategoryname}</td>
-                                <td>{temp.price}</td>
-                                <td>{temp.stock_quantity}</td>
-                                <td>{temp.brand_name}</td>
-                                <td>{temp.discount}</td>
-                                <td>
-                                    <Link to={`/productview/${temp.productid}`} className='btn btn-success'>View</Link>
-                                    <Link to={`/productedit/${temp.productid}`} className='btn btn-warning'>Edit</Link>
-                                    <button onClick={() => deleteProduct(temp.productid)} className='btn btn-danger'>Delete</button>
-                                </td>
-                            </tr>
-                        ))
-                    }
+                    {products && products.map((temp, index) => (
+                        <tr key={temp.productid}>
+                            <td>{index + 1}</td>
+                            <td>{temp.productid}</td>
+                            <td>{temp.prod_name}</td>
+                            <td>{temp.categoryname}</td>
+                            <td>{temp.subcategory}</td>
+                            <td>{temp.price}</td>
+                            <td>{temp.stock_quantity}</td>
+                            <td>{temp.brand}</td>
+                            <td>{temp.discount}</td>
+                            <td>
+                                <Link to={`/productview/${temp.productid}`} className='btn btn-success'>View</Link>
+                                <Link to={`/productedit/${temp.productid}`} className='btn btn-warning'>Edit</Link>
+                                <button onClick={() => deleteProduct(temp.productid)} className='btn btn-danger'>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
-    )
-}
+    );
+};
 
 export default ProductsList;
