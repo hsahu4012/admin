@@ -14,6 +14,7 @@ const ProductsList = () => {
         try {
             const url = process.env.REACT_APP_API_URL + 'products/allProducts';
             const response = await axios.get(url);
+             console.log(response.data);
             if (Array.isArray(response.data)) {
                 const sortedProducts = response.data.sort((a, b) => b.srno - a.srno);
                 setProducts(sortedProducts);
@@ -61,7 +62,7 @@ const ProductsList = () => {
                     pauseOnHover: true,
                     draggable: true,
                 });
-                fetchProductsList(); // Refresh the product list after deletion
+                fetchProductsList(); 
             }
         } catch (error) {
             console.error("Error deleting product:", error);
@@ -171,6 +172,10 @@ const ProductsList = () => {
                                         Save
                                     </button>
                                 )}
+                                {/* <td>
+                                <img src={temp.image_url} alt={temp.prod_name} style={{ width: '50px', height: '50px' }} /> 
+                            </td> */}
+                            {/* <td>{temp.description}</td>  */}
                                 <Link to={`/productview/${temp.productid}`} className='btn btn-success'>
                                     View
                                 </Link>
