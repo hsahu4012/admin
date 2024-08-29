@@ -82,6 +82,11 @@ import VendorList from "./components/admin/VendorList";
 import VendorAdd from "./components/admin/VendorAdd";
 import VendorUpdate from "./components/admin/VendorUpdate";
 
+import TeamList from "./components/Ourteam/TeamList";
+import AddTeam from "./components/Ourteam/AddTeam";
+import UpdateTeam from "./components/Ourteam/UpdateTeam";
+
+
 import Settingslist from "./components/settings/Settingslist";
 import SettingCreate from "./components/settings/SettingCreate";
 import SettingUpdate from "./components/settings/SettingUpdate";
@@ -471,6 +476,25 @@ function App() {
                       path="/vendoredit/:vendorid"
                       element={
                         <ProtectedRoutes props={{ Component: VendorUpdate }} />
+                      }
+                    />
+
+                    <Route
+                      path="/teamlist"
+                      element={
+                        <ProtectedRoutes props={{ Component: TeamList }} />
+                      }
+                    />
+                    <Route
+                      path="/addteam"
+                      element={
+                        <ProtectedRoutes props={{ Component: AddTeam }} />
+                      }
+                    />
+                    <Route
+                      path="/updateteam/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: UpdateTeam }} />
                       }
                     />
 
