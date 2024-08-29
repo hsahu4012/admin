@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 const ProductsList = () => {
     const [products, setProducts] = useState([]);
+    const [editingProductId, setEditingProductId] = useState(null);
+    const [editedValues, setEditedValues] = useState({});
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
 
@@ -12,12 +14,11 @@ const ProductsList = () => {
         try {
             const url = process.env.REACT_APP_API_URL + 'products/allProducts';
             const response = await axios.get(url);
-            console.log(response.data);
             if (Array.isArray(response.data)) {
                 const sortedProducts = response.data.sort((a, b) => b.srno - a.srno);
                 setProducts(sortedProducts);
             } else {
-                setProducts([]); 
+                setProducts([]);
             }
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -25,9 +26,31 @@ const ProductsList = () => {
         }
     };
 
+    const handleEditClick = (productid, field, value) => {
+        setEditingProductId(productid);
+        setEditedValues({ ...editedValues, [field]: value });
+    };
+
+    const handleValueChange = (field, value) => {
+        setEditedValues({ ...editedValues, [field]: value });
+    };
+
+    const handleSaveClick = async (productid) => {
+        try {
+            const url = process.env.REACT_APP_API_URL + `products/updateProduct/${productid}`;
+            await axios.put(url, editedValues);
+            toast.success('Product updated successfully!');
+            setEditingProductId(null);
+            fetchProductsList();
+        } catch (error) {
+            console.error("Error updating product:", error);
+            toast.error('Failed to update the product.');
+        }
+    };
+
     const deleteProduct = async (productid) => {
         try {
-            const url = process.env.REACT_APP_API_URL + 'products/removeProduct/' + productid;
+            const url = `${process.env.REACT_APP_API_URL}products/removeProduct/${productid}`;
             const response = await axios.put(url);
             if (response.status === 200) {
                 toast.success('Product deleted successfully!', {
@@ -38,7 +61,7 @@ const ProductsList = () => {
                     pauseOnHover: true,
                     draggable: true,
                 });
-                fetchProductsList(); 
+                fetchProductsList(); // Refresh the product list after deletion
             }
         } catch (error) {
             console.error("Error deleting product:", error);
@@ -69,8 +92,6 @@ const ProductsList = () => {
                         <th>Stock Quantity</th>
                         <th>Brand</th>
                         <th>Discount</th>
-                        {/* <th>Image</th>
-                        <th>Description</th> */}
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -82,15 +103,74 @@ const ProductsList = () => {
                             <td>{temp.prod_name}</td>
                             <td>{temp.categoryname}</td>
                             <td>{temp.subcategoryname}</td>
-                            <td>{temp.price}</td>
-                            <td>{temp.stock_quantity}</td>
-                            <td>{temp.brand_name}</td>
-                            <td>{temp.discount}</td>
-                            {/* <td>
-                                <img src={temp.image_url} alt={temp.prod_name} style={{ width: '50px', height: '50px' }} /> 
-                            </td> */}
-                            {/* <td>{temp.description}</td>  */}
                             <td>
+                                {editingProductId === temp.productid ? (
+                                    <input 
+                                        type="text" 
+                                        value={editedValues.price || temp.price} 
+                                        onChange={(e) => handleValueChange('price', e.target.value)} 
+                                        style={{ width: '60px' }} 
+                                    />
+                                ) : (
+                                    temp.price
+                                )}
+                                <button 
+                                    onClick={() => handleEditClick(temp.productid, 'price', temp.price)} 
+                                    className='btn btn-warning'
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    Edit
+                                </button>
+                            </td>
+                            <td>
+                                {editingProductId === temp.productid ? (
+                                    <input 
+                                        type="text" 
+                                        value={editedValues.stock_quantity || temp.stock_quantity} 
+                                        onChange={(e) => handleValueChange('stock_quantity', e.target.value)} 
+                                        style={{ width: '60px' }} 
+                                    />
+                                ) : (
+                                    temp.stock_quantity
+                                )}
+                                <button 
+                                    onClick={() => handleEditClick(temp.productid, 'stock_quantity', temp.stock_quantity)} 
+                                    className='btn btn-warning'
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    Edit
+                                </button>
+                            </td>
+                            <td>{temp.brand_name}</td>
+                            <td>
+                                {editingProductId === temp.productid ? (
+                                    <input 
+                                        type="text" 
+                                        value={editedValues.discount || temp.discount} 
+                                        onChange={(e) => handleValueChange('discount', e.target.value)} 
+                                        style={{ width: '60px' }} 
+                                    />
+                                ) : (
+                                    temp.discount
+                                )}
+                                <button 
+                                    onClick={() => handleEditClick(temp.productid, 'discount', temp.discount)} 
+                                    className='btn btn-warning'
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    Edit
+                                </button>
+                            </td>
+                            <td>
+                                {editingProductId === temp.productid && (
+                                    <button 
+                                        onClick={() => handleSaveClick(temp.productid)} 
+                                        className='btn btn-success'
+                                        style={{ marginRight: '10px' }}
+                                    >
+                                        Save
+                                    </button>
+                                )}
                                 <Link to={`/productview/${temp.productid}`} className='btn btn-success'>
                                     View
                                 </Link>
