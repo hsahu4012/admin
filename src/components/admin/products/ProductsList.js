@@ -97,6 +97,8 @@ const ProductsList = () => {
                                 <Link to={`/productedit/${temp.productid}`} className='btn btn-warning'>
                                     Edit
                                 </Link>
+                                <button className='btn-dark'><Link to={`/productcopy/${temp.productid}`}>Copy</Link></button>
+
                                 <button
                                     onClick={() => {
                                         setIsDeleteModalOpen(true);
