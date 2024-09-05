@@ -1,9 +1,9 @@
-1) Go to master branch | take latest pull of master
+1) Go to master branch | take latest pull of master and dp health check
 2) update env to prod | comment continuous api call in app.js
 3) npm run build
 4) zip contents of build folder
 5) deploy on server | delete old files, upload and unzip
-PROD - 
+PROD - https://admin.grocji.com/
 DEV - https://grocerz.hashedbit.com/
 6) also cut and keep the zip folder in deployed on local repo
 7) revert local changes of env and app.js
