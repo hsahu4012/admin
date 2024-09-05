@@ -83,6 +83,10 @@ import VendorList from "./components/admin/VendorList";
 import VendorAdd from "./components/admin/VendorAdd";
 import VendorUpdate from "./components/admin/VendorUpdate";
 
+import DiscountList from "./components/discount/DiscountList";
+import AddDiscount from "./components/discount/AddDiscount";
+import UpdateDiscount from "./components/discount/UpdateDiscount";
+
 import Settingslist from "./components/settings/Settingslist";
 import SettingCreate from "./components/settings/SettingCreate";
 import SettingUpdate from "./components/settings/SettingUpdate";
@@ -478,6 +482,25 @@ function App() {
                       path="/vendoredit/:vendorid"
                       element={
                         <ProtectedRoutes props={{ Component: VendorUpdate }} />
+                      }
+                    />
+
+                    <Route
+                      path="/discountlist"
+                      element={
+                        <ProtectedRoutes props={{ Component: DiscountList }} />
+                      }
+                    />
+                     <Route
+                      path="/adddiscount"
+                      element={
+                        <ProtectedRoutes props={{ Component: AddDiscount  }} />
+                      }
+                    />
+                    <Route
+                      path="/updatediscount/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: UpdateDiscount }} />
                       }
                     />
 
