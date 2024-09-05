@@ -79,13 +79,22 @@ import OrderDetailsList from "./components/order details/OrderDetailList";
 import OrderDetailAdd from "./components/order details/OrderDetailAdd";
 import OrderDetailUpdate from "./components/order details/OrderDetailUpdate";
 
+import ContactList from "./components/contact/ContactList";
+import AddContact from "./components/contact/AddContact";
+import UpdateContact from "./components/contact/UpdateContact";
+
 import VendorList from "./components/admin/VendorList";
 import VendorAdd from "./components/admin/VendorAdd";
 import VendorUpdate from "./components/admin/VendorUpdate";
 
+
 import DiscountList from "./components/discount/DiscountList";
 import AddDiscount from "./components/discount/AddDiscount";
 import UpdateDiscount from "./components/discount/UpdateDiscount";
+        
+import TeamList from "./components/Ourteam/TeamList";
+import AddTeam from "./components/Ourteam/AddTeam";
+import UpdateTeam from "./components/Ourteam/UpdateTeam";       
 
 import Settingslist from "./components/settings/Settingslist";
 import SettingCreate from "./components/settings/SettingCreate";
@@ -467,6 +476,25 @@ function App() {
                     />
 
                     <Route
+                      path="/ContactList"
+                      element={
+                        <ProtectedRoutes props={{ Component: ContactList }} />
+                      }
+                    />
+                    <Route
+                      path="/AddContact"
+                      element={
+                        <ProtectedRoutes props={{ Component: AddContact }} />
+                      }
+                    />
+                    <Route
+                      path="/UpdateContact/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: UpdateContact }} />
+                      }
+                    />
+
+                    <Route
                       path="/vendorDetails"
                       element={
                         <ProtectedRoutes props={{ Component: VendorList }} />
@@ -486,6 +514,7 @@ function App() {
                     />
 
                     <Route
+
                       path="/discountlist"
                       element={
                         <ProtectedRoutes props={{ Component: DiscountList }} />
@@ -501,6 +530,26 @@ function App() {
                       path="/updatediscount/:id"
                       element={
                         <ProtectedRoutes props={{ Component: UpdateDiscount }} />
+                        }
+                    />
+                    
+                   <Route
+                      path="/teamlist"
+                      element={
+                        <ProtectedRoutes props={{ Component: TeamList }} />
+                      }
+                    />
+                    <Route
+                      path="/addteam"
+                      element={
+                        <ProtectedRoutes props={{ Component: AddTeam }} />
+                      }
+                    />
+                    <Route
+                      path="/updateteam/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: UpdateTeam }} />
+
                       }
                     />
 

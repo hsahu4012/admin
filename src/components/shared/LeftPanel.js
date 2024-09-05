@@ -74,11 +74,19 @@ const LeftPanel = () => {
                     </li>
 
                     <li className="menu-item-has-children dropdown">
+
                       <Link to="/discountlist">Discount</Link>
+
+                      <Link to="/contactList">Contact</Link>
+
                     </li>
 
                     <li className="menu-item-has-children dropdown">
                       <Link to="/vendorDetails">Vendor</Link>
+                    </li>
+
+                    <li className="menu-item-has-children dropdown">
+                      <Link to="/TeamList">Our Team</Link>
                     </li>
 
                     <li className="menu-item-has-children dropdown">

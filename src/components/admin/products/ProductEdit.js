@@ -10,6 +10,7 @@ const ProductEdit = () => {
     const [product, setProduct] = useState({});
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState([]);
     const [imageFile, setImageFile] = useState(null);
     const [brands, setBrands] = useState([]);
     const [discountAmount, setDiscountAmount] = useState("");
@@ -23,6 +24,7 @@ const ProductEdit = () => {
                 setProduct(response.data);
                 setImageFile(null); // Clear the imageFile state when fetching product
                 handleCategoryChange(response.data.category);
+                setSelectedCategory(response.data.subcategory.split("#"));
                 
                 const calculatedDiscountPercentage = (response.data.discount / response.data.price) * 100;
                 setDiscountAmount(response.data.discount);
@@ -65,10 +67,12 @@ const ProductEdit = () => {
             const formData = new FormData();
             const { category, subcategory, ...otherValues } = values;
             const categoryObject = categories.find(cat => cat.category_id === category);
-            const subcategoryObject = subcategories.find(subcat => subcat.subcategory_id === subcategory);
+            // const subcategoryObject = subcategories.find(subcat => subcat.subcategory_id === subcategory);
+            const changedSubcategory = selectedCategory.join('#');
             formData.append('prod_name', values.prod_name);
             formData.append('category', categoryObject ? categoryObject.category_id : '');
-            formData.append('subcategory', subcategoryObject ? subcategoryObject.subcategory_id : '');
+            // formData.append('subcategory', subcategoryObject ? subcategoryObject.subcategory_id : '');
+            formData.append('subcategory', changedSubcategory);
             formData.append('price', values.price);
             formData.append('stock_quantity', values.stock_quantity);
             formData.append('brand', values.brand);
@@ -95,6 +99,7 @@ const ProductEdit = () => {
                 setProduct(updatedProductResponse.data);
                 navigate('/productslist');
             }
+            console.log(changedSubcategory)
         } catch (error) {
             console.log(error);
         }
@@ -112,6 +117,15 @@ const ProductEdit = () => {
         setFieldValue('discount', amount);
         const calculatedPercentage = (amount / values.price) * 100;
         setDiscountPercentage(calculatedPercentage.toFixed(2));
+    }
+
+    const handleCheck = (e) => {
+        const { checked, value } = e.target;
+        if (checked) {
+            setSelectedCategory([...selectedCategory, value]);
+        } else {
+            setSelectedCategory(selectedCategory.filter(category => category !== value));
+        }
     }
 
     return (
@@ -152,7 +166,7 @@ const ProductEdit = () => {
                             </Field>
                         </div>
 
-                        <div className='row'>
+                        {/* <div className='row'>
                             <label htmlFor="subcategory" className='col-4 my-2'>Subcategory:</label>
                             <Field
                                 name="subcategory"
@@ -165,7 +179,20 @@ const ProductEdit = () => {
                                     <option key={subcategory.subcategory_id} value={subcategory.subcategory_id}>{subcategory.subcategoryname}</option>
                                 ))}
                             </Field>
-                        </div>
+                        </div> */}
+
+                            <div className='row'>
+                                {/* <label htmlFor="subcategory" className='col-4 my-2'></label> */}
+                                {subcategories.map(subcategory => (
+                                    <div key={subcategory.subcategory_id} style={{paddingLeft: '49.5%'}}>
+                                        <input style={{width: '5%'}} type="checkbox" name="subcategory" 
+                                        value={subcategory.subcategory_id} onChange={e => handleCheck(e)} 
+                                        checked={selectedCategory.includes((subcategory.subcategory_id))}/>
+
+                                        <label htmlFor='subcategory'>{subcategory.subcategoryname}</label>
+                                    </div>
+                                ))}
+                            </div>
 
                         <div className='row'>
                             <label htmlFor="price" className='col-4 my-2'>Price:</label>
