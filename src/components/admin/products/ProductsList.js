@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const ProductsList = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [categoryname, setCategoryname] = useState(null);
+    const [categoryid, setCategoryid] = useState(null);
     const [editingProductId, setEditingProductId] = useState(null);
     const [editedValues, setEditedValues] = useState({});
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -25,7 +25,7 @@ const ProductsList = () => {
     const fetchProductsList = async (categoryname) => {
         try {
             if (categoryname) {
-                const url = process.env.REACT_APP_API_URL + `products/CategoryByName?categoryname=${encodeURIComponent(categoryname)}`;
+                const url = process.env.REACT_APP_API_URL + `products/allProductsByCategory?categoryid=${encodeURIComponent(categoryname)}`;
                 const response = await axios.get(url);
                 setProducts(response.data);
             } else {
@@ -36,9 +36,10 @@ const ProductsList = () => {
         }
     };
 
-    const handleCategoryClick = (categoryname) => {
-        setCategoryname(categoryname);
-        fetchProductsList(categoryname);
+    const handleCategoryClick = (categoryid) => {
+        setCategoryid(categoryid);
+        window.localStorage.setItem('admin_categoryid', categoryid )
+        fetchProductsList(categoryid);
     };
 
     const deleteProduct = async (productid) => {
@@ -53,7 +54,7 @@ const ProductsList = () => {
                 pauseOnHover: true,
                 draggable: true,
             });
-            fetchProductsList(categoryname);
+            fetchProductsList(categoryid);
             console.log(response.data);
             if (Array.isArray(response.data)) {
                 const sortedProducts = response.data.sort((a, b) => b.srno - a.srno);
@@ -82,7 +83,8 @@ const ProductsList = () => {
             await axios.put(url, editedValues);
             toast.success('Product updated successfully!');
             setEditingProductId(null);
-            fetchProductsList();
+            fetchProductsList(categoryid);
+            //fetchProductsList();
         } catch (error) {
             console.error("Error updating product:", error);
             toast.error('Failed to update the product.');
@@ -112,23 +114,34 @@ const ProductsList = () => {
 
     useEffect(() => {
         fetchCategories();
-        fetchProductsList(categoryname);
-    }, [categoryname]);
+        fetchProductsList(categoryid);
+    }, [categoryid]);
+
+    useEffect(() => {
+        let admin_categoryid = localStorage.getItem('admin_categoryid');
+        setCategoryid(admin_categoryid);
+        if(admin_categoryid) {
+            console.log('calling if------------------')
+            fetchProductsList(admin_categoryid);
+        }
+        else{
+            console.log('calling else------------------')
+            //fetchProductsList(categories[0].category_id);
+        }
+    }, []);
 
     return (
         <div>
             <ToastContainer />
             <h2>Products List</h2>
-            <Link to='/productadd' className='btn btn-primary'>Create New Product</Link>
-            <div>
-                <Link to='/bulkqsadd' className='btn btn-primary'>Bulk Products Upload</Link>
-            </div>
+            <Link to='/productadd' className='btn btn-primary'>Create New Product</Link>&nbsp;<Link to='/bulkqsadd' className='btn btn-primary'>Bulk Products Upload</Link>
+            
             <div>
                 <h3>Categories</h3>
                 {categories.map(category => (
                     <button
                         key={category.categoryname}
-                        onClick={() => handleCategoryClick(category.categoryname)}
+                        onClick={() => handleCategoryClick(category.category_id)}
                         className='btn btn-primary m-1'
                     >
                         {category.categoryname}
@@ -252,7 +265,7 @@ const ProductsList = () => {
                             </td>
 
 
-                            <td>
+                            {/* <td>
                                 <Link to={`/productview/${temp.productid}`} className='btn btn-success'>View</Link>
                                 <Link to={`/productedit/${temp.productid}`} className='btn btn-warning'>Edit</Link>
                                 <button
@@ -262,7 +275,7 @@ const ProductsList = () => {
                                     }}
                                     className='btn btn-danger'>Delete
                                 </button>
-                            </td>
+                            </td> */}
 
                         </tr>
                     ))}
