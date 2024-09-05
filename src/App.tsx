@@ -79,6 +79,10 @@ import OrderDetailsList from "./components/order details/OrderDetailList";
 import OrderDetailAdd from "./components/order details/OrderDetailAdd";
 import OrderDetailUpdate from "./components/order details/OrderDetailUpdate";
 
+import ContactList from "./components/contact/ContactList";
+import AddContact from "./components/contact/AddContact";
+import UpdateContact from "./components/contact/UpdateContact";
+
 import VendorList from "./components/admin/VendorList";
 import VendorAdd from "./components/admin/VendorAdd";
 import VendorUpdate from "./components/admin/VendorUpdate";
@@ -459,6 +463,25 @@ function App() {
                       path="/addressupdate/:addressid"
                       element={
                         <ProtectedRoutes props={{ Component: Addressupdate }} />
+                      }
+                    />
+
+                    <Route
+                      path="/ContactList"
+                      element={
+                        <ProtectedRoutes props={{ Component: ContactList }} />
+                      }
+                    />
+                    <Route
+                      path="/AddContact"
+                      element={
+                        <ProtectedRoutes props={{ Component: AddContact }} />
+                      }
+                    />
+                    <Route
+                      path="/UpdateContact/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: UpdateContact }} />
                       }
                     />
 
