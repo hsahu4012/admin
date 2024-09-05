@@ -48,6 +48,7 @@ import ProductsList from "./components/admin/products/ProductsList";
 import ProductAdd from "./components/admin/products/ProductAdd";
 import ProductEdit from "./components/admin/products/ProductEdit";
 import ProductView from "./components/admin/products/ProductView";
+import ProductCopy from "./components/admin/products/ProductCopy";
 
 //complain routes
 import ComplainsList from "./components/Complains/ComplainsList";
@@ -78,9 +79,22 @@ import OrderDetailsList from "./components/order details/OrderDetailList";
 import OrderDetailAdd from "./components/order details/OrderDetailAdd";
 import OrderDetailUpdate from "./components/order details/OrderDetailUpdate";
 
+import ContactList from "./components/contact/ContactList";
+import AddContact from "./components/contact/AddContact";
+import UpdateContact from "./components/contact/UpdateContact";
+
 import VendorList from "./components/admin/VendorList";
 import VendorAdd from "./components/admin/VendorAdd";
 import VendorUpdate from "./components/admin/VendorUpdate";
+
+import TeamList from "./components/Ourteam/TeamList";
+import AddTeam from "./components/Ourteam/AddTeam";
+import UpdateTeam from "./components/Ourteam/UpdateTeam";
+
+
+import Settingslist from "./components/settings/Settingslist";
+import SettingCreate from "./components/settings/SettingCreate";
+import SettingUpdate from "./components/settings/SettingUpdate";
 
 import ImageList from "./components/imageup/ImageList";
 import ProtectedRoutes from "./ProtectedRoutes";
@@ -358,6 +372,12 @@ function App() {
                         <ProtectedRoutes props={{ Component: ProductView }} />
                       }
                     />
+                     <Route
+                      path="/productcopy/:productid"
+                      element={
+                        <ProtectedRoutes props={{ Component: ProductCopy }} />
+                      }
+                    />
                     <Route
                       path="/subcategorylist"
                       element={
@@ -452,6 +472,25 @@ function App() {
                     />
 
                     <Route
+                      path="/ContactList"
+                      element={
+                        <ProtectedRoutes props={{ Component: ContactList }} />
+                      }
+                    />
+                    <Route
+                      path="/AddContact"
+                      element={
+                        <ProtectedRoutes props={{ Component: AddContact }} />
+                      }
+                    />
+                    <Route
+                      path="/UpdateContact/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: UpdateContact }} />
+                      }
+                    />
+
+                    <Route
                       path="/vendorDetails"
                       element={
                         <ProtectedRoutes props={{ Component: VendorList }} />
@@ -469,6 +508,44 @@ function App() {
                         <ProtectedRoutes props={{ Component: VendorUpdate }} />
                       }
                     />
+
+                    <Route
+                      path="/teamlist"
+                      element={
+                        <ProtectedRoutes props={{ Component: TeamList }} />
+                      }
+                    />
+                    <Route
+                      path="/addteam"
+                      element={
+                        <ProtectedRoutes props={{ Component: AddTeam }} />
+                      }
+                    />
+                    <Route
+                      path="/updateteam/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: UpdateTeam }} />
+                      }
+                    />
+
+                    <Route
+                      path="/settingslist"
+                      element={
+                        <ProtectedRoutes props={{ Component: Settingslist }} />
+                      }
+                    />
+                     <Route
+                      path="/settingCreate"
+                      element={
+                        <ProtectedRoutes props={{ Component: SettingCreate  }} />
+                      }
+                    />
+                    <Route
+                      path="/settingUpdate/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: SettingUpdate }} />
+                      }
+                    /> 
 
                     <Route
                       path="/imageList"
