@@ -55,7 +55,7 @@ const ProductsList = () => {
                 draggable: true,
             });
             fetchProductsList(categoryid);
-            console.log(response.data);
+            // console.log(response.data);
             if (Array.isArray(response.data)) {
                 const sortedProducts = response.data.sort((a, b) => b.srno - a.srno);
                 setProducts(sortedProducts);
@@ -118,6 +118,7 @@ const ProductsList = () => {
     }, [categoryid]);
 
     useEffect(() => {
+       
         let admin_categoryid = localStorage.getItem('admin_categoryid');
         setCategoryid(admin_categoryid);
         if(admin_categoryid) {
@@ -125,8 +126,8 @@ const ProductsList = () => {
             fetchProductsList(admin_categoryid);
         }
         else{
-            console.log('calling else------------------')
-            //fetchProductsList(categories[0].category_id);
+            // console.log('calling else------------------')
+            // fetchProductsList(categories[0].category_id);
         }
     }, []);
 
@@ -142,23 +143,24 @@ const ProductsList = () => {
                     <button
                         key={category.categoryname}
                         onClick={() => handleCategoryClick(category.category_id)}
-                        className='btn btn-primary m-1'
+                        className={`btn m-1 ${categoryid === category.category_id ? 'btn-info' : 'btn-primary'}`}
+                        
                     >
                         {category.categoryname}
                     </button>
                 ))}
             </div>
-            <table className='table table-responsive'>
-                <thead>
+            <table className='table table-responsive table-striped table-bordered'>
+                <thead className=''>
                     <tr>
                         <th>Sr No</th>
                         <th>Product ID</th>
                         <th>Product Name</th>
                         <th>Category</th>
                         <th>SubCategory</th>
+                        <th>Brand</th>
                         <th>Price</th>
                         <th>Stock Quantity</th>
-                        <th>Brand</th>
                         <th>Discount</th>
                         <th>Actions</th>
                     </tr>
@@ -171,94 +173,87 @@ const ProductsList = () => {
                             <td>{temp.prod_name}</td>
                             <td>{temp.categoryname}</td>
                             <td>{temp.subcategory}</td>
-                            <td>{temp.price}</td>
-                            <td>{temp.stock_quantity}</td>
                             <td>{temp.brand}</td>
-                            <td>{temp.discount}</td>
-                            <td>{temp.subcategoryname}</td>
-                            <td>
+                            <td >
                                 {editingProductId === temp.productid ? (
                                     <input
-                                        type="text"
+                                        type="number"
                                         value={editedValues.price || temp.price}
                                         onChange={(e) => handleValueChange('price', e.target.value)}
-                                        style={{ width: '60px' }} />
+                                        style={{ width: '60px' }} 
+                                        />
                                 ) : (
                                     temp.price
                                 )}
                                 <button
                                     onClick={() => handleEditClick(temp.productid, 'price', temp.price)}
-                                    className='btn btn-warning'
-                                    style={{ marginLeft: '10px' }}
+                                    className="btn btn-warning btn-sm ml-2"
                                 >
                                     Edit
                                 </button>
                             </td>
-                            <td>
+                            <td >
                                 {editingProductId === temp.productid ? (
                                     <input
-                                        type="text"
+                                        type="number"
                                         value={editedValues.stock_quantity || temp.stock_quantity}
                                         onChange={(e) => handleValueChange('stock_quantity', e.target.value)}
-                                        style={{ width: '60px' }} />
+                                        style={{ width: '60px' }}  />
                                 ) : (
                                     temp.stock_quantity
                                 )}
                                 <button
                                     onClick={() => handleEditClick(temp.productid, 'stock_quantity', temp.stock_quantity)}
-                                    className='btn btn-warning'
-                                    style={{ marginLeft: '10px' }}
+                                    className="btn btn-warning btn-sm ml-2"
                                 >
                                     Edit
                                 </button>
                             </td>
-                            <td>{temp.brand_name}</td>
-                            <td>
+                            <td >
                                 {editingProductId === temp.productid ? (
                                     <input
-                                        type="text"
+                                        type="number"
                                         value={editedValues.discount || temp.discount}
                                         onChange={(e) => handleValueChange('discount', e.target.value)}
-                                        style={{ width: '60px' }} />
+                                        style={{ width: '60px' }}  />
                                 ) : (
                                     temp.discount
                                 )}
                                 <button
                                     onClick={() => handleEditClick(temp.productid, 'discount', temp.discount)}
-                                    className='btn btn-warning'
-                                    style={{ marginLeft: '10px' }}
+                                    className="btn btn-warning btn-sm ml-2"
                                 >
                                     Edit
                                 </button>
                             </td>
-                            <td>
+                            <td className=''>
                                 {editingProductId === temp.productid && (
                                     <button
                                         onClick={() => handleSaveClick(temp.productid)}
-                                        className='btn btn-success'
+                                        className='btn btn-success m-1 '
                                         style={{ marginRight: '10px' }}
                                     >
                                         Save
                                     </button>
                                 )}
-                                {/* <td>
-    <img src={temp.image_url} alt={temp.prod_name} style={{ width: '50px', height: '50px' }} />
-</td> */}
-                                {/* <td>{temp.description}</td>  */}
-                                <Link to={`/productview/${temp.productid}`} className='btn btn-success'>
+                                <span className='d-inline-block w-60'> <Link to={`/productview/${temp.productid}`} className='btn btn-primary m-1'>
                                     View
+                                </Link></span>
+                                <span className='d-inline-block w-60'>
+                                <Link to={`/productedit/${temp.productid}`} className='btn btn-warning m-1'>
+                                     Edit
                                 </Link>
-                                <Link to={`/productedit/${temp.productid}`} className='btn btn-warning'>
-                                    Edit
-                                </Link>
-                                <button className='btn-dark'><Link to={`/productcopy/${temp.productid}`}>Copy</Link></button>
+                                </span>
+                                <span className='d-inline-block w-60 '>
+                                <Link to={`/productcopy/${temp.productid}`} className='btn btn-info m-1 w-100'>Copy</Link>
+                                </span>
 
                                 <button
                                     onClick={() => {
                                         setIsDeleteModalOpen(true);
                                         setProductToDelete(temp.productid);
                                     }}
-                                    className='btn btn-danger'
+                                    className='btn btn-danger m-1'
                                 >
                                     Delete
                                 </button>
