@@ -26,7 +26,7 @@ const BulkProductAdd: FC = () => {
   const [excelFilterData, setExcelFilterData] = useState([] as any);
 
   const callApiQsAdd = async (values: any) => {
-    const url = process.env.REACT_APP_API_URL + 'products/addProuduct';
+    const url = process.env.REACT_APP_API_URL + 'products/addProduct';
     const response = await axios.post(url, values);
     setLoader(false);
     let temp = [...uploadedproducts, values.products];
