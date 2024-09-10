@@ -52,6 +52,7 @@ const Subcategorylist = () => {
             <table className='table table-responsive'>
                 <thead>
                     <tr>
+                        <th>Sq</th>
                         <th>Subcategory ID</th>
                         <th>Subcategory Name</th>
                         <th>Category_id</th>
@@ -66,9 +67,11 @@ const Subcategorylist = () => {
                     ) : (
                         subcategory && subcategory.map((temp) => (
                             <tr key={temp.subcategory_id}>
+                                <td>{temp.sequence}</td>
                                 <td>{temp.subcategory_id}</td>
                                 <td>{temp.subcategoryname}</td>
                                 <td>{temp.category_id}</td>
+                                
                                 <td>
                                     <Link to={`/subcategoryview/${temp.subcategory_id}`} className='btn btn-success'>View</Link>
                                     &nbsp;
