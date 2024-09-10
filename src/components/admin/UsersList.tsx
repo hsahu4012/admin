@@ -61,6 +61,8 @@ const UsersList = () => {
         <thead>
           <tr>
             <th>Sr No</th>
+            <th>User Id</th>
+
             <th>UserName</th>
             <th>Name</th>
             <th>Email</th>
@@ -75,6 +77,7 @@ const UsersList = () => {
 
               <tr key={index + item.exam_id}>
                 <td>{index + 1}</td>
+                <td>{item.userId}</td>   
                 <td>{item.username}</td>
                 <td>{item.name}</td>
                 <td>{item.email}</td>
