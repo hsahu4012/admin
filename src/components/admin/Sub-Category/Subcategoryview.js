@@ -1,48 +1,56 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import axios from "axios";
 
 const Subcategoryview = () => {
-    const temp = useParams();
-    console.log(temp.subcategory_id);
-    const [subcategory, setSubcategory] = useState();
-    let { subcategoryid} = useParams();
-    console.log(subcategoryid);
-    const fetchSubcategoryById = async(subcategoryid) => {
-        try {
-            
-            const url = process.env.REACT_APP_API_URL + 'subCategory/subCategoryById/' + subcategoryid;
-            
-            const response = await axios.get(url);
-            
-            setSubcategory(response.data[0].subcategoryname);
-        }
-        catch (error) {
-            console.log(error);
-        }
+  const { subcategoryid } = useParams();
+  const [subcategory, setSubcategory] = useState(null);
+
+  const fetchSubcategoryById = async (subcategoryid) => {
+    try {
+      const url =
+        process.env.REACT_APP_API_URL +
+        "subCategory/subCategoryById/" +
+        subcategoryid;
+      const response = await axios.get(url);
+
+      if (response.data.length > 0) {
+        setSubcategory(response.data[0]);
+      } else {
+        console.log("Subcategory not found");
+      }
+    } catch (error) {
+      console.log(error);
     }
-    useEffect(() => {
-        fetchSubcategoryById(subcategoryid);
-    }, [])
-    return (
+  };
+
+  useEffect(() => {
+    fetchSubcategoryById(subcategoryid);
+  }, [subcategoryid]);
+
+  return (
+    <div>
+      <h2>Subcategory View</h2>
+      <br />
+      <br />
+      {subcategory ? (
         <div>
-            <h2>Subcategory View</h2>
-  <br />
-  <br />
-            <div>Subcategory Name - {subcategory}</div>
-       
-
-
-            <div className='row'>
-                            <div className='text-center my-4'>
-                                <Link to="/subcategorylist" className='btn btn-primary'>Back to Subcategory List</Link>
-                            </div>
-                        </div>
-
+          <div>Subcategory Name: {subcategory.subcategoryname}</div>
+          <div>Sequence: {subcategory.sequence}</div>
         </div>
-    )
-}
+      ) : (
+        <div>Loading...</div>
+      )}
 
-export default Subcategoryview
+      <div className="row">
+        <div className="text-center my-4">
+          <Link to="/subcategorylist" className="btn btn-primary">
+            Back to Subcategory List
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Subcategoryview;

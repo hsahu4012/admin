@@ -22,6 +22,7 @@ const Subcategoryedit = () => {
             let obj = {
                 subcategoryname: subcategoryData.subcategoryname,
                 subcategoryimage: subcategoryData.subcategoryimage || '',
+                sequence: subcategoryData.sequence || '',
             };
             setSubcategory(obj);
             setImageName(subcategoryData.subcategoryimage || '');
@@ -36,6 +37,7 @@ const Subcategoryedit = () => {
             const url = process.env.REACT_APP_API_URL + 'subcategory/updateSubCategory/' + subcategoryid;
             const formData = new FormData();
             formData.append('subcategoryname', values.subcategoryname);
+            formData.append('sequence', values.sequence);
             if (imageFile) {
                 formData.append('image', imageFile);
             }
@@ -86,6 +88,11 @@ const Subcategoryedit = () => {
                             <div className='row'>
                                 <label htmlFor="subcategoryname" className='col-4 my-2'>Subcategory Name:</label>
                                 <Field name="subcategoryname" type="text" className='col-8' required />
+                            </div>
+
+                            <div className='row'>
+                                <label htmlFor="sequence" className='col-4 my-2'>Sequence:</label>
+                                <Field name="sequence" type="number" className='col-8' required /> {/* Added sequence field */}
                             </div>
 
                             <div className='row'>
