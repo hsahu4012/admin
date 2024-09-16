@@ -1,7 +1,4 @@
-
 const DashboardAdmin = () => {
-
-
   // const [examList, setExamList] = useState<any[]>([]);
 
   // const callApiQsList = async () => {
@@ -27,10 +24,7 @@ const DashboardAdmin = () => {
 
   return (
     <>
-    
-        
-            
-        {/* <table className='table table-striped'>
+      {/* <table className='table table-striped'>
             <thead>
             <tr>
               <th>Sr No</th>
@@ -62,9 +56,8 @@ const DashboardAdmin = () => {
             }
             </tbody>
           </table> */}
-
     </>
-  )
-}
+  );
+};
 
-export default DashboardAdmin
+export default DashboardAdmin;

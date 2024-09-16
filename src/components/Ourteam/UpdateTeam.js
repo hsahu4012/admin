@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { Formik, Field, Form } from "formik";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { Formik, Field, Form } from 'formik';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const UpdateTeam = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
-    name: "",
-    designation: "",
-    department: "",
-    image: "",
-    description: "",
+    name: '',
+    designation: '',
+    department: '',
+    image: '',
+    description: '',
   });
 
-  const [image, setImage] = useState(null); 
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}ourteam/ourteambyid/${id}`)
-      .then((res) => {
+      .then(res => {
         let obj = {
           name: res.data[0].name,
           designation: res.data[0].designation,
@@ -29,35 +29,35 @@ const UpdateTeam = () => {
         };
         setFormValues(obj);
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }, [id]);
 
-  const handleFileChange = (event) => {
+  const handleFileChange = event => {
     setImage(event.target.files[0]);
   };
 
-  const UpdateTeam = async (values) => {
+  const UpdateTeam = async values => {
     try {
       const isUnchanged = Object.keys(formValues).every(
-        (key) => formValues[key] === values[key]
+        key => formValues[key] === values[key]
       );
 
       if (isUnchanged && !image) {
-        alert("No changes were made. Nothing to update.");
+        alert('No changes were made. Nothing to update.');
         return;
       }
 
       const confirmed = window.confirm(
-        "Are you sure you want to update this member?"
+        'Are you sure you want to update this member?'
       );
       if (confirmed) {
         const formData = new FormData();
-        Object.keys(values).forEach((key) => {
+        Object.keys(values).forEach(key => {
           formData.append(key, values[key]);
         });
 
         if (image) {
-          formData.append("image", image);
+          formData.append('image', image);
         }
 
         await axios.put(
@@ -65,12 +65,12 @@ const UpdateTeam = () => {
           formData,
           {
             headers: {
-              "Content-Type": "multipart/form-data",
+              'Content-Type': 'multipart/form-data',
             },
           }
         );
 
-        navigate("/teamlist");
+        navigate('/teamlist');
       }
     } catch (err) {
       console.log(err);
@@ -79,53 +79,54 @@ const UpdateTeam = () => {
 
   return (
     <>
-      <h3 className="text-center mb-5"> Update Team</h3>
+      <h3 className='text-center mb-5'> Update Team</h3>
       <Formik
         enableReinitialize={true}
         initialValues={formValues}
-        onSubmit={(values) => UpdateTeam(values)}
+        onSubmit={values => UpdateTeam(values)}
       >
         <Form>
-          <div className="row mb-2">
-            <label className="col-4 my-2 text-center"> Name:-</label>
-            <Field name="name" type="text" className="col-6" />
+          <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'> Name:-</label>
+            <Field name='name' type='text' className='col-6' />
           </div>
-          <div className="row mb-2">
-            <label className="col-4 my-2 text-center">Designation:-</label>
-            <Field name="designation" type="text" className="col-6" />
+          <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'>Designation:-</label>
+            <Field name='designation' type='text' className='col-6' />
           </div>
-          <div className="row mb-2">
-            <label className="col-4 my-2 text-center">Department:-</label>
-            <Field name="department" type="text" className="col-6" />
+          <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'>Department:-</label>
+            <Field name='department' type='text' className='col-6' />
           </div>
 
-          <div className="row mb-2">
-            <label className="col-4 my-2 text-center">current image:-</label>
+          <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'>current image:-</label>
             <img
-                        src={`${process.env.REACT_APP_API_URL}${formValues.image}`}
-                        alt={formValues.name}
-                        className="img-fluid " style={{ height: "200px", width: "200px" }}
-                        />
+              src={`${process.env.REACT_APP_API_URL}${formValues.image}`}
+              alt={formValues.name}
+              className='img-fluid '
+              style={{ height: '200px', width: '200px' }}
+            />
           </div>
-         
-          <div className="row mb-2">
-            <label className="col-4 my-2 text-center"> New Image:-</label>
+
+          <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'> New Image:-</label>
             <input
-              name="image"
-              type="file"
-              className="col-6"
+              name='image'
+              type='file'
+              className='col-6'
               onChange={handleFileChange}
             />
           </div>
 
-          <div className="row mb-2">
-            <label className="col-4 my-2 text-center">Description:-</label>
-            <Field name="description" type="text" className="col-6" />
+          <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'>Description:-</label>
+            <Field name='description' type='text' className='col-6' />
           </div>
 
-          <div className="hey">
-            <button type="submit">Submit</button>
-            <Link to="/teamlist" className="btn btn-danger back">
+          <div className='hey'>
+            <button type='submit'>Submit</button>
+            <Link to='/teamlist' className='btn btn-danger back'>
               Back
             </Link>
           </div>
