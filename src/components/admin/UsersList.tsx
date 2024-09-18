@@ -65,6 +65,7 @@ const UsersList = () => {
             <th>Name</th>
             <th>Email</th>
             <th>Mobile</th>
+            <th>Password</th>
             <th>Status</th>
             <th colSpan={3}>Actions</th>
           </tr>
@@ -79,6 +80,7 @@ const UsersList = () => {
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td>{item.mobile}</td>
+                <td>{item.password}</td>
                 <td>{item.status}</td>
                 <td>
                   <Link to={`/useredit/${item.userid}`} className='btn btn-warning'>Edit</Link>
