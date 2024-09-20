@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Settingslist = () => {
   const [setting, setSetting] = useState([]);
@@ -15,11 +15,11 @@ const Settingslist = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async (id) => {
-    console.log(id, "hii");
+  const handleDelete = async id => {
+    console.log(id, 'hii');
     try {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this setting?"
+        'Are you sure you want to delete this setting?'
       );
       if (confirmed) {
         await axios.put(
@@ -34,16 +34,19 @@ const Settingslist = () => {
   };
 
   return (
-    <div className="container">
-      <h2 className="w-100 d-flex justify-content-center p-3"> Settings List</h2>
-      <div className="row">
-        <div className="col-md-12">
+    <div className='container'>
+      <h2 className='w-100 d-flex justify-content-center p-3'>
+        {' '}
+        Settings List
+      </h2>
+      <div className='row'>
+        <div className='col-md-12'>
           <p>
-            <Link to="/settingCreate" className="btn btn-warning">
+            <Link to='/settingCreate' className='btn btn-warning'>
               Add Setting
             </Link>
           </p>
-          <table className="table table-striped table-white">
+          <table className='table table-striped table-white'>
             <thead>
               <tr>
                 <th>SrNo</th>
@@ -52,30 +55,29 @@ const Settingslist = () => {
                 <th>Setting Value</th>
                 {/* <th>IsActive</th> */}
                 <th>Action</th>
-                
               </tr>
             </thead>
             <tbody>
               {setting.map((item, i) => {
                 return (
                   <tr key={i}>
-                    <td>{i+1}</td>
+                    <td>{i + 1}</td>
                     <td>{item.setting_id}</td>
                     <td>{item.setting_name}</td>
                     <td>{item.setting_value}</td>
 
                     {/* <td>{item.isactive}</td> */}
-                    
-                    <td className="now">
+
+                    <td className='now'>
                       <Link
                         to={`/settingUpdate/${item.setting_id}`}
-                        className="btn btn-primary "
+                        className='btn btn-primary '
                       >
                         Edit
                       </Link>
                       <button
                         onClick={() => handleDelete(item.setting_id)}
-                        className="btn btn-danger"
+                        className='btn btn-danger'
                       >
                         Delete
                       </button>
@@ -92,5 +94,3 @@ const Settingslist = () => {
 };
 
 export default Settingslist;
-
-

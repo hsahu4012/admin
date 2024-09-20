@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import { DataAppContext } from "../../DataContext";
-import { Link, useNavigate } from "react-router-dom";
-import logo from "../../images/nss.png";
-import { FaBars, FaMobileAlt } from "react-icons/fa";
+import React, { useContext, useEffect, useState } from 'react';
+import { DataAppContext } from '../../DataContext';
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../images/nss.png';
+import { FaBars, FaMobileAlt } from 'react-icons/fa';
 
 const Header = () => {
   const localContext = useContext(DataAppContext);
@@ -47,19 +47,19 @@ const Header = () => {
   // }, [navigate]);
   return (
     <>
-      <header id="header" className="header">
-        <div className="top-left">
-          <div className="navbar-header">
-            <a className="navbar-brand" href="./">
+      <header id='header' className='header'>
+        <div className='top-left'>
+          <div className='navbar-header'>
+            <a className='navbar-brand' href='./'>
               <h2>Grocji Admin</h2>
             </a>
-            <a id="menuToggle" className="menutoggle" onClick={showhidemenu}>
+            <a id='menuToggle' className='menutoggle' onClick={showhidemenu}>
               <FaBars />
             </a>
           </div>
         </div>
-        <div className="top-right">
-          <div className="header-menu">
+        <div className='top-right'>
+          <div className='header-menu'>
             {/* <div className="header-left">
                             <button className="search-trigger"><i className="fa fa-search"></i></button>
                             <div className="form-inline">
@@ -134,7 +134,7 @@ const Header = () => {
                             </div>
                         </div> */}
 
-            <div className="user-area dropdown">
+            <div className='user-area dropdown'>
               <div>
                 {/* <span className='btn btn-outline-warning mx-1' to="/useradd"><FaMobileAlt  />&nbsp;9135707273</span> */}
                 {/* {
