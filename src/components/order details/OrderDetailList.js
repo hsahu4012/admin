@@ -1,6 +1,6 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const OrderDetailsList = () => {
   const [data, setData] = useState([]);
@@ -19,10 +19,10 @@ const OrderDetailsList = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async id => {
     try {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this wishlist?"
+        'Are you sure you want to delete this wishlist?'
       );
       if (confirmed) {
         await axios.put(
@@ -36,18 +36,18 @@ const OrderDetailsList = () => {
     }
   };
   return (
-    <div className="container">
-      <h2 className="w-100 d-flex justify-content-center p-3">
+    <div className='container'>
+      <h2 className='w-100 d-flex justify-content-center p-3'>
         Orders Detail List
       </h2>
-      <div className="row">
-        <div className="col-md-12">
+      <div className='row'>
+        <div className='col-md-12'>
           <p>
-            <Link to="/orderDetailsCreate" className="btn btn-warning">
+            <Link to='/orderDetailsCreate' className='btn btn-warning'>
               Add New OrderDetail
             </Link>
           </p>
-          <table className="table table-dark table-hover">
+          <table className='table table-dark table-hover'>
             <thead>
               <tr>
                 <th>No</th>
@@ -65,16 +65,16 @@ const OrderDetailsList = () => {
                     <td>{item.order_id}</td>
                     <td>{item.productid}</td>
                     <td>{item.quantity}</td>
-                    <td className="now">
+                    <td className='now'>
                       <Link
                         to={`/orderDetailsUpdate/${item.order_id}`}
-                        className="btn btn-warning mx-2"
+                        className='btn btn-warning mx-2'
                       >
                         Edit
                       </Link>
                       <button
                         onClick={() => handleDelete(item.order_id)}
-                        className="btn btn-danger"
+                        className='btn btn-danger'
                       >
                         Delete
                       </button>

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Orderslist = () => {
   const [orders, setOrders] = useState([]);
@@ -15,11 +15,11 @@ const Orderslist = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async (id) => {
-    console.log(id, "hii");
+  const handleDelete = async id => {
+    console.log(id, 'hii');
     try {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this order?"
+        'Are you sure you want to delete this order?'
       );
       if (confirmed) {
         await axios.put(
@@ -34,16 +34,16 @@ const Orderslist = () => {
   };
 
   return (
-    <div className="container">
-      <h2 className="w-100 d-flex justify-content-center p-3">Orders List</h2>
-      <div className="row">
-        <div className="col-md-12">
+    <div className='container'>
+      <h2 className='w-100 d-flex justify-content-center p-3'>Orders List</h2>
+      <div className='row'>
+        <div className='col-md-12'>
           <p>
-            <Link to="/orderCreate" className="btn btn-warning">
+            <Link to='/orderCreate' className='btn btn-warning'>
               Add New Order
             </Link>
           </p>
-          <table className="table table-striped table-dark">
+          <table className='table table-striped table-dark'>
             <thead>
               <tr>
                 <th>SrNo</th>
@@ -79,16 +79,16 @@ const Orderslist = () => {
                     <td>{item.delivery_status}</td>
                     <td>{item.tracking_id}</td>
                     <td>{item.delivery_partner}</td>
-                    <td className="now">
+                    <td className='now'>
                       <Link
                         to={`/orderUpdate/${item.order_id}`}
-                        className="btn btn-primary mx-2"
+                        className='btn btn-primary mx-2'
                       >
                         Edit
                       </Link>
                       <button
                         onClick={() => handleDelete(item.order_id)}
-                        className="btn btn-danger"
+                        className='btn btn-danger'
                       >
                         Delete
                       </button>
