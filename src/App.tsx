@@ -86,11 +86,12 @@ import UpdateContact from './components/contact/UpdateContact';
 import VendorList from './components/admin/VendorList';
 import VendorAdd from './components/admin/VendorAdd';
 import VendorUpdate from './components/admin/VendorUpdate';
-
+import DiscountList from "./components/discount/DiscountList";
+import AddDiscount from "./components/discount/AddDiscount";
+import UpdateDiscount from "./components/discount/UpdateDiscount";       
 import TeamList from './components/Ourteam/TeamList';
 import AddTeam from './components/Ourteam/AddTeam';
 import UpdateTeam from './components/Ourteam/UpdateTeam';
-
 import Settingslist from './components/settings/Settingslist';
 import SettingCreate from './components/settings/SettingCreate';
 import SettingUpdate from './components/settings/SettingUpdate';
@@ -509,6 +510,25 @@ function App() {
                     />
 
                     <Route
+                      path="/discountlist"
+                      element={
+                        <ProtectedRoutes props={{ Component: DiscountList }} />
+                      }
+                    />
+                     <Route
+                      path="/adddiscount"
+                      element={
+                        <ProtectedRoutes props={{ Component: AddDiscount  }} />
+                      }
+                    />
+                    <Route
+                      path="/updatediscount/:id"
+                      element={
+                        <ProtectedRoutes props={{ Component: UpdateDiscount }} />
+                        }
+                    />
+                    
+                   <Route
                       path='/teamlist'
                       element={
                         <ProtectedRoutes props={{ Component: TeamList }} />
@@ -524,6 +544,7 @@ function App() {
                       path='/updateteam/:id'
                       element={
                         <ProtectedRoutes props={{ Component: UpdateTeam }} />
+
                       }
                     />
 
