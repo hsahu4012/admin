@@ -1,8 +1,8 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const CustomerDetails = () => {
   const [data, setData] = useState([]);
@@ -27,11 +27,11 @@ const CustomerDetails = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async (userid) => {
+  const handleDelete = async userid => {
     try {
-      console.log(userid, "ayan");
+      console.log(userid, 'ayan');
       const confirmed = window.confirm(
-        "Are you sure you want to delete this customer?"
+        'Are you sure you want to delete this customer?'
       );
       if (confirmed) {
         await axios.put(
@@ -46,18 +46,18 @@ const CustomerDetails = () => {
   };
 
   return (
-    <div className="container">
-      <h2 className="w-100 d-flex justify-content-center p-3">
+    <div className='container'>
+      <h2 className='w-100 d-flex justify-content-center p-3'>
         Customer Details
       </h2>
-      <div className="row">
-        <div className="col-md-12">
+      <div className='row'>
+        <div className='col-md-12'>
           <p>
-            <Link to="/CustomerCreate" className="btn btn-success">
+            <Link to='/CustomerCreate' className='btn btn-success'>
               Add New Customer
             </Link>
           </p>
-          <table className="table table-striped table-hover">
+          <table className='table table-striped table-hover'>
             <thead>
               <tr>
                 <th>No</th>
@@ -91,16 +91,16 @@ const CustomerDetails = () => {
                     <td>{user.alternatecontact} </td>
                     <td>{user.pincode} </td>
                     <td>{user.profile_photo} </td>
-                    <td className="now">
+                    <td className='now'>
                       <Link
                         to={`/customerUpdate/${user.userid}`}
-                        className="btn btn-warning mx-2"
+                        className='btn btn-warning mx-2'
                       >
                         Edit
                       </Link>
                       <button
                         onClick={() => handleDelete(user.userid)}
-                        className="btn btn-danger"
+                        className='btn btn-danger'
                       >
                         Delete Now
                       </button>

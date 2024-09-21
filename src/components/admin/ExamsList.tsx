@@ -12,35 +12,35 @@ const ExamsList: FC = () => {
       const response = await axios.get(url);
       console.log(response);
       setExamList(response.data);
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     callApiExamsList();
-  }, [])
-
+  }, []);
 
   const deleteExam = async (id: any) => {
     // eslint-disable-next-line no-restricted-globals
-    var val = confirm("Sure you want to delete exam?");
+    var val = confirm('Sure you want to delete exam?');
     if (val === true) {
       const url = process.env.REACT_APP_API_URL + 'exams/removeexam/' + id;
       const response = await axios.delete(url);
       console.log(response);
-      alert("Exam deleted");
+      alert('Exam deleted');
     } else {
-      alert("Exam not Deleted");
+      alert('Exam not Deleted');
     }
     callApiExamsList();
-  }
+  };
 
   return (
     <>
       <br></br>
-      <Link to="/examsadd" className='btn btn-primary'>Create New Exam</Link>
+      <Link to='/examsadd' className='btn btn-primary'>
+        Create New Exam
+      </Link>
       <br></br>
       <div className='table-responsive'>
         <table className='table table-striped'>
@@ -59,9 +59,8 @@ const ExamsList: FC = () => {
             </tr>
           </thead>
           <tbody>
-            {
-              examList && examList.map((item, index) => (
-
+            {examList &&
+              examList.map((item, index) => (
                 <tr key={index + item.exam_id}>
                   <td>{index + 1}</td>
                   <td>{item.exam_id}</td>
@@ -73,21 +72,29 @@ const ExamsList: FC = () => {
                   <td>{item?.startdate?.split('T')[0]}</td>
                   <td>{item?.enddate?.split('T')[0]}</td>
                   <td>
-                    <Link to={`/examsupdate/${item.exam_id}`} className='btn btn-warning'>Edit</Link>
+                    <Link
+                      to={`/examsupdate/${item.exam_id}`}
+                      className='btn btn-warning'
+                    >
+                      Edit
+                    </Link>
                   </td>
                   <td>
-                    <button onClick={() => deleteExam(item.exam_id)} className='btn btn-primary'>Delete Exam</button>
+                    <button
+                      onClick={() => deleteExam(item.exam_id)}
+                      className='btn btn-primary'
+                    >
+                      Delete Exam
+                    </button>
                   </td>
                 </tr>
-              ))
-            }
+              ))}
           </tbody>
         </table>
       </div>
       <br></br>
-
     </>
-  )
-}
+  );
+};
 
-export default ExamsList
+export default ExamsList;
