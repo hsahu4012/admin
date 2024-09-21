@@ -12,6 +12,8 @@ const ProductsList = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
+  const [btnAll, setBtnAll] = useState(false);
+
   const fetchCategories = async () => {
     try {
       const url = process.env.REACT_APP_API_URL + 'category/allCategory';
@@ -42,7 +44,21 @@ const ProductsList = () => {
     setCategoryid(categoryid);
     window.localStorage.setItem('admin_categoryid', categoryid);
     fetchProductsList(categoryid);
+    setBtnAll(false);
   };
+
+  const handleAllCategoriesClick = async() => {
+    setBtnAll(!btnAll);
+    try {
+
+            const url = process.env.REACT_APP_API_URL + `products/allProducts`;
+            const response = await axios.get(url);
+            setProducts(response.data);
+
+    } catch (error) {
+        console.log(error);
+    }   
+};
 
   const deleteProduct = async productid => {
     try {
@@ -150,12 +166,15 @@ const ProductsList = () => {
           <button
             key={category.categoryname}
             onClick={() => handleCategoryClick(category.category_id)}
-            className={`btn m-1 ${categoryid === category.category_id ? 'btn-info' : 'btn-primary'}`}
+            className={`btn m-1 ${categoryid === category.category_id && btnAll === false ? 'btn-info' : 'btn-primary'}`}
           >
             {category.categoryname}
           </button>
         ))}
+        <button onClick={() => handleAllCategoriesClick()} className={`btn m-1 ${ btnAll ? 'btn-info' : 'btn-primary'}`}> All</button>
       </div>
+
+      <div>Total No of Products - {products && products.length}</div>
       <table className='table table-responsive table-striped table-bordered'>
         <thead className=''>
           <tr>
