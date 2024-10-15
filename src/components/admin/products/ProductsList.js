@@ -43,7 +43,11 @@ const ProductsList = () => {
   const handleCategoryClick = categoryid => {
     setCategoryid(categoryid);
     window.localStorage.setItem('admin_categoryid', categoryid);
-    fetchProductsList(categoryid);
+    if(categoryid==="all"){
+      handleAllCategoriesClick()
+    }else{
+      fetchProductsList(categoryid);
+    }
     setBtnAll(false);
   };
 
@@ -103,49 +107,25 @@ const ProductsList = () => {
       await axios.put(url, editedValues);
       toast.success('Product updated successfully!');
       setEditingProductId(null);
-      fetchProductsList(categoryid);
-      //fetchProductsList();
+      if (categoryid==="all") {
+        handleAllCategoriesClick()
+      } else {
+        fetchProductsList(categoryid);
+      }
     } catch (error) {
       console.error('Error updating product:', error);
       toast.error('Failed to update the product.');
     }
   };
 
-  // const deleteProduct = async (productid) => {
-  //     try {
-  //         const url = `${process.env.REACT_APP_API_URL}products/removeProduct/${productid}`;
-  //         const response = await axios.put(url);
-  //         if (response.status === 200) {
-  //             toast.success('Product deleted successfully!', {
-  //                 position: 'top-right',
-  //                 autoClose: 3000,
-  //                 hideProgressBar: false,
-  //                 closeOnClick: true,
-  //                 pauseOnHover: true,
-  //                 draggable: true,
-  //             });
-  //             fetchProductsList();
-  //         }
-  //     } catch (error) {
-  //         console.error("Error deleting product:", error);
-  //         toast.error('Failed to delete the product. Please try again later.');
-  //     }
-  // };
-
   useEffect(() => {
     fetchCategories();
-    fetchProductsList(categoryid);
-  }, [categoryid]);
-
-  useEffect(() => {
     let admin_categoryid = localStorage.getItem('admin_categoryid');
     setCategoryid(admin_categoryid);
-    if (admin_categoryid) {
-      console.log('calling if------------------');
-      fetchProductsList(admin_categoryid);
+    if (admin_categoryid==="all") {
+      handleAllCategoriesClick()
     } else {
-      // console.log('calling else------------------')
-      // fetchProductsList(categories[0].category_id);
+      fetchProductsList(admin_categoryid);
     }
   }, []);
 
@@ -171,7 +151,10 @@ const ProductsList = () => {
             {category.categoryname}
           </button>
         ))}
-        <button onClick={() => handleAllCategoriesClick()} className={`btn m-1 ${ btnAll ? 'btn-info' : 'btn-primary'}`}> All</button>
+        <button onClick={() => handleCategoryClick("all")} 
+        // className={`btn m-1 ${ btnAll ? 'btn-info' : 'btn-primary'}`}
+        className={`btn m-1 ${categoryid === "all" ? 'btn-info' : 'btn-primary'}`}
+        > All</button>
       </div>
 
       <div>Total No of Products - {products && products.length}</div>
