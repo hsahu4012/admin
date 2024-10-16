@@ -514,7 +514,6 @@ function App() {
                     />
 
                     <Route
-
                       path="/discountlist"
                       element={
                         <ProtectedRoutes props={{ Component: DiscountList }} />
