@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { DataAppContext } from "../../DataContext";
-import { toBeVisible } from "@testing-library/jest-dom/matchers";
+import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { DataAppContext } from '../../DataContext';
+import { toBeVisible } from '@testing-library/jest-dom/matchers';
 
 const LeftPanel = () => {
   const localContext = useContext(DataAppContext);
-  const usertype = localStorage.getItem("usertype");
+  const usertype = localStorage.getItem('usertype');
   const { appstate } = localContext;
   const { showmenu } = appstate;
   //console.log('usertype', usertype)
@@ -21,57 +21,58 @@ const LeftPanel = () => {
     <>
       {test && (
         <aside
-          id="left-panel"
-          className={!test ? "left-panel display_block" : "left-panel"}
+          id='left-panel'
+          className={!test ? 'left-panel display_block' : 'left-panel'}
         >
-          <nav className="navbar navbar-expand-sm navbar-default">
-            <div id="main-menu" className="main-menu collapse navbar-collapse">
-              <ul className="nav navbar-nav">
+          <nav className='navbar navbar-expand-sm navbar-default'>
+            <div id='main-menu' className='main-menu collapse navbar-collapse'>
+              <ul className='nav navbar-nav'>
                 {/* <li className="menu-title">&nbsp;</li> */}
 
                 {true && (
                   <>
                     {/* <li className="menu-item-has-children dropdown"></li>
                                         <li className="menu-item-has-children dropdown"></li> */}
-                    <li className="menu-title">Admin Options</li>
+                    <li className='menu-title'>Admin Options</li>
 
-                    <li className="menu-item-has-children dropdown bg-success bg-opacity-25">
-                      <Link to="/brandlist">Brands</Link>
+                    <li className='menu-item-has-children dropdown bg-success bg-opacity-25'>
+                      <Link to='/brandlist'>Brands</Link>
                     </li>
-                    <li className="menu-item-has-children dropdown bg-success bg-opacity-25">
-                      <Link to="/categoryDetails">Category</Link>
+                    <li className='menu-item-has-children dropdown bg-success bg-opacity-25'>
+                      <Link to='/categoryDetails'>Category</Link>
                     </li>
-                    <li className="menu-item-has-children dropdown bg-success bg-opacity-25">
-                      <Link to="/subcategorylist">Sub-Category</Link>
+                    <li className='menu-item-has-children dropdown bg-success bg-opacity-25'>
+                      <Link to='/subcategorylist'>Sub-Category</Link>
                     </li>
-                    <li className="menu-item-has-children dropdown bg-success bg-opacity-25">
-                      <Link to="/productslist">Products</Link>
-                    </li>
-
-                    <li className="menu-item-has-children dropdown bg-warning bg-opacity-25">
-                      <Link to="/userslist">Users</Link>
-                    </li>
-                    <li className="menu-item-has-children dropdown bg-warning bg-opacity-25">
-                      <Link to="/customerDetails">Customers</Link>
-                    </li>
-                    <li className="menu-item-has-children dropdown bg-warning bg-opacity-25">
-                      <Link to="/addressdetails">Address</Link>
+                    <li className='menu-item-has-children dropdown bg-success bg-opacity-25'>
+                      <Link to='/productslist'>Products</Link>
                     </li>
 
-                    <li className="menu-item-has-children dropdown bg-primary bg-opacity-25">
-                      <Link to="/orders">Orders</Link>
+                    <li className='menu-item-has-children dropdown bg-warning bg-opacity-25'>
+                      <Link to='/userslist'>Users</Link>
                     </li>
-                    <li className="menu-item-has-children dropdown">
-                      <Link to="/orderDetails">Orders Details</Link>
+                    <li className='menu-item-has-children dropdown bg-warning bg-opacity-25'>
+                      <Link to='/customerDetails'>Customers</Link>
+                    </li>
+                    <li className='menu-item-has-children dropdown bg-warning bg-opacity-25'>
+                      <Link to='/addressdetails'>Address</Link>
                     </li>
 
-                    <li className="menu-item-has-children dropdown">
-                      <Link to="/wishlist">WishList</Link>
+                    <li className='menu-item-has-children dropdown bg-primary bg-opacity-25'>
+                      <Link to='/orders'>Orders</Link>
+                    </li>
+                    <li className='menu-item-has-children dropdown'>
+                      <Link to='/orderDetails'>Orders Details</Link>
                     </li>
 
-                    <li className="menu-item-has-children dropdown">
-                      <Link to="/complainslist">Complains</Link>
+                    <li className='menu-item-has-children dropdown'>
+                      <Link to='/wishlist'>WishList</Link>
                     </li>
+
+                    <li className='menu-item-has-children dropdown'>
+                      <Link to='/complainslist'>Complains</Link>
+                    </li>
+
                     
                     <li className="menu-item-has-children dropdown">
                       <Link to="/discountlist">Discount</Link>
@@ -79,34 +80,41 @@ const LeftPanel = () => {
 
                     <li className="menu-item-has-children dropdown">
                       <Link to="/contactList">Contact</Link>
-                    </li>
 
                     <li className="menu-item-has-children dropdown">
-                      <Link to="/vendorDetails">Vendor</Link>
+                      <Link to="/discountlist">DiscountList</Link>
+                    </li>
+                    <li className='menu-item-has-children dropdown'>
+                      <Link to='/contactList'>Contact</Link>
+
                     </li>
 
-                    <li className="menu-item-has-children dropdown">
-                      <Link to="/TeamList">Our Team</Link>
+                    <li className='menu-item-has-children dropdown'>
+                      <Link to='/vendorDetails'>Vendor</Link>
                     </li>
 
-                    <li className="menu-item-has-children dropdown">
-                      <Link to="/settingslist">Settings</Link>
+                    <li className='menu-item-has-children dropdown'>
+                      <Link to='/TeamList'>Our Team</Link>
                     </li>
 
-                    <li className="menu-item-has-children dropdown">
-                      <Link to="/imageList">Image Upload</Link>
+                    <li className='menu-item-has-children dropdown'>
+                      <Link to='/settingslist'>Settings</Link>
+                    </li>
+
+                    <li className='menu-item-has-children dropdown'>
+                      <Link to='/imageList'>Image Upload</Link>
                     </li>
 
                     {!test && (
-                      <li className="menu-item-has-children dropdown">
-                        <Link to="/login">Login</Link>
+                      <li className='menu-item-has-children dropdown'>
+                        <Link to='/login'>Login</Link>
                       </li>
                     )}
 
                     {test && (
-                      <li className="menu-item-has-children dropdown">
+                      <li className='menu-item-has-children dropdown'>
                         <Link
-                          to="/login"
+                          to='/login'
                           onClick={() => {
                             localContext.logout_user();
                           }}

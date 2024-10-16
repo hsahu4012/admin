@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 const Footer = () => {
-    return (
-        <>
-            {/* <div className="clearfix"></div>
+  return (
+    <>
+      {/* <div className="clearfix"></div>
 
             <footer className="site-footer">
                 <div className="footer-inner bg-white">
@@ -17,8 +17,8 @@ const Footer = () => {
                     </div>
                 </div>
             </footer> */}
-        </>
-    )
-}
+    </>
+  );
+};
 
-export default Footer
+export default Footer;

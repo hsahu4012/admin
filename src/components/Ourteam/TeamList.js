@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const TeamList = () => {
   const [team, setTeam] = useState([]);
@@ -13,42 +13,41 @@ const TeamList = () => {
         );
         setTeam(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
     fetchData();
   }, []);
 
-  const handleDelete = async (id) => {
-    console.log(id, "hii");
+  const handleDelete = async id => {
+    console.log(id, 'hii');
     try {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this team member?"
+        'Are you sure you want to delete this team member?'
       );
       if (confirmed) {
         await axios.put(
           `${process.env.REACT_APP_API_URL}ourTeam/removeourTeam/${id}`
         );
 
-        
-        setTeam(team.filter((item) => item.id !== id));
+        setTeam(team.filter(item => item.id !== id));
       }
     } catch (err) {
-      console.log("Error deleting team member:", err);
+      console.log('Error deleting team member:', err);
     }
   };
 
   return (
-    <div className="container">
-      <h2 className="w-100 d-flex justify-content-center p-3">Team List</h2>
-      <div className="row">
-        <div className="col-md-12">
+    <div className='container'>
+      <h2 className='w-100 d-flex justify-content-center p-3'>Team List</h2>
+      <div className='row'>
+        <div className='col-md-12'>
           <p>
-            <Link to="/addTeam" className="btn btn-warning">
+            <Link to='/addTeam' className='btn btn-warning'>
               Add New Team Member
             </Link>
           </p>
-          <table className="table table-striped ">
+          <table className='table table-striped '>
             <thead>
               <tr>
                 <th>SrNo</th>
@@ -70,24 +69,24 @@ const TeamList = () => {
                     <td>{item.name}</td>
                     <td>{item.designation}</td>
                     <td>{item.department}</td>
-                   <td>
-                        <img
+                    <td>
+                      <img
                         src={`${process.env.REACT_APP_API_URL}${item.image}`}
                         alt={item.name}
-                        width="50"
-                        />
-                        </td>
-                     <td>{item.description}</td>
-                     <td>
-                       <Link
+                        width='50'
+                      />
+                    </td>
+                    <td>{item.description}</td>
+                    <td>
+                      <Link
                         to={`/updateTeam/${item.id}`}
-                        className="btn btn-primary mx-2"
+                        className='btn btn-primary mx-2'
                       >
                         Edit
                       </Link>
                       <button
                         onClick={() => handleDelete(item.id)}
-                        className="btn btn-danger"
+                        className='btn btn-danger'
                       >
                         Delete
                       </button>
@@ -96,7 +95,7 @@ const TeamList = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="8" className="text-center">
+                  <td colSpan='8' className='text-center'>
                     No team members found.
                   </td>
                 </tr>

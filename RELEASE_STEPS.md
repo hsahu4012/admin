@@ -1,4 +1,4 @@
-1) Go to master branch | take latest pull of master and dp health check
+1) Go to master branch | take latest pull of master and do health check
 2) update env to prod | comment continuous api call in app.js
 3) npm run build
 4) zip contents of build folder

@@ -5,17 +5,18 @@
     float: left;
     margin-top: 25px;
 } */
-.examAddForm input, .examAddForm select{
-    border-radius: 3px;
-    border-width: 1px;
-    width:50%;
-    margin-bottom: 15px;
+.examAddForm input,
+.examAddForm select {
+  border-radius: 3px;
+  border-width: 1px;
+  width: 50%;
+  margin-bottom: 15px;
 }
-.examAddForm label{
-    width:50%;
+.examAddForm label {
+  width: 50%;
 }
-.my-subject{
-    /* border-radius: 3px;
+.my-subject {
+  /* border-radius: 3px;
     border-width: 1px;
     width: 50%;
     margin-bottom: px;

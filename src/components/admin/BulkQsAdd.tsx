@@ -1,23 +1,24 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Container } from "react-bootstrap";
+import { Container } from 'react-bootstrap';
 import axios from 'axios';
 import * as xlsx from 'xlsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const notifydata: any = {
-  position: "top-center",
+  position: 'top-center',
   autoClose: 5000,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
-  theme: "light",
+  theme: 'light',
 };
-const notify = () => toast.success("Product Added Successfully!", notifydata);
+const notify = () => toast.success('Product Added Successfully!', notifydata);
 
-const notifyremove = () => toast.success("Product Removed from Incoming list!", notifydata);
+const notifyremove = () =>
+  toast.success('Product Removed from Incoming list!', notifydata);
 
 const BulkProductAdd: FC = () => {
   const [loader, setLoader] = useState(false);
@@ -26,7 +27,7 @@ const BulkProductAdd: FC = () => {
   const [excelFilterData, setExcelFilterData] = useState([] as any);
 
   const callApiQsAdd = async (values: any) => {
-    const url = process.env.REACT_APP_API_URL + 'products/addProuduct';
+    const url = process.env.REACT_APP_API_URL + 'products/addProduct';
     const response = await axios.post(url, values);
     setLoader(false);
     let temp = [...uploadedproducts, values.products];
@@ -77,24 +78,28 @@ const BulkProductAdd: FC = () => {
         stock_quantity: product.stock_quantity,
         brand: product.brand,
         discount: product.discount,
-        prod_desc: product.prod_desc
+        prod_desc: product.prod_desc,
       });
     }
   };
 
   return (
     <React.Fragment>
-      <Container className="content">
-        <div className="row fthight">
-          <div className="col-md-4 ">
+      <Container className='content'>
+        <div className='row fthight'>
+          <div className='col-md-4 '>
             <h3 className='mt-3'>Import Products</h3>
-            <label className="form-label">File </label>
-            <input type="file" className="form-control" onChange={(e) => readExcel(e)} />
+            <label className='form-label'>File </label>
+            <input
+              type='file'
+              className='form-control'
+              onChange={e => readExcel(e)}
+            />
           </div>
 
-          <div className="col-md-12 mt-3">
+          <div className='col-md-12 mt-3'>
             {excelFilterData.length > 0 && (
-              <table className="table">
+              <table className='table'>
                 <thead>
                   <tr>
                     <th>Sr No</th>
@@ -122,23 +127,37 @@ const BulkProductAdd: FC = () => {
                       <td>{getdata.discount}</td>
                       <td>{getdata.prod_desc}</td>
                       <td>
-                        <button onClick={() => callApiQsAdd(
-                          {
-                            productid: generateproductid(),
-                            prod_name: getdata.prod_name,
-                            category: getdata.category,
-                            subcategory: getdata.subcategory,
-                            price: getdata.price,
-                            stock_quantity: getdata.stock_quantity,
-                            brand: getdata.brand,
-                            discount: getdata.discount,
-                            prod_desc: getdata.prod_desc
-                          })}
-                          type='button' className='btn btn-success'>Add</button>
-                        <button className='btn btn-danger' onClick={() => removeproducts(
-                          {
-                            productid: generateproductid(), prod_name: getdata.prod_name
-                          })} type='button'>Remove</button>
+                        <button
+                          onClick={() =>
+                            callApiQsAdd({
+                              productid: generateproductid(),
+                              prod_name: getdata.prod_name,
+                              category: getdata.category,
+                              subcategory: getdata.subcategory,
+                              price: getdata.price,
+                              stock_quantity: getdata.stock_quantity,
+                              brand: getdata.brand,
+                              discount: getdata.discount,
+                              prod_desc: getdata.prod_desc,
+                            })
+                          }
+                          type='button'
+                          className='btn btn-success'
+                        >
+                          Add
+                        </button>
+                        <button
+                          className='btn btn-danger'
+                          onClick={() =>
+                            removeproducts({
+                              productid: generateproductid(),
+                              prod_name: getdata.prod_name,
+                            })
+                          }
+                          type='button'
+                        >
+                          Remove
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -146,7 +165,12 @@ const BulkProductAdd: FC = () => {
               </table>
             )}
             {excelFilterData.length > 0 && (
-              <button onClick={uploadAllProducts} className='btn btn-primary mt-3'>Upload All Products</button>
+              <button
+                onClick={uploadAllProducts}
+                className='btn btn-primary mt-3'
+              >
+                Upload All Products
+              </button>
             )}
             <ToastContainer />
           </div>
@@ -154,6 +178,6 @@ const BulkProductAdd: FC = () => {
       </Container>
     </React.Fragment>
   );
-}
+};
 
 export default BulkProductAdd;
