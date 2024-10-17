@@ -74,7 +74,7 @@ const Orderslist = () => {
                     <td>{item.userid}</td>
                     <td>{item.paymentamount}</td>
                     <td>{item.paymentstatus}</td>
-                    <td>{item.payementmode}</td>
+                    <td>{item.paymentmode}</td>
                     <td>{item.addressid}</td>
                     <td>{item.delivery_status}</td>
                     <td>{item.tracking_id}</td>
