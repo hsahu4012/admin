@@ -11,7 +11,7 @@ import './template.css';
 import './cs-skin-elastic.css';
 import DataApp from './DataContext';
 import { DataAppContext } from './DataContext';
-
+import Loader from './components/loader/Loader';
 import SecureHeader from './components/shared/SecureHeader';
 import SecureFooter from './components/shared/SecureFooter';
 import SecureLeftPanel from './components/shared/SecureLeftPanel';
@@ -131,6 +131,7 @@ function App() {
               <div className='row maincontent content'>
                 <div className='col-12 scrollPage'>
                   <Routes>
+                  <Route path='/loader' element={<Loader />} />
                     <Route
                       path='/orderDetailsUpdate/:id'
                       element={

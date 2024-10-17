@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
-
+import Loader from '../../loader/Loader';
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -11,10 +11,11 @@ const ProductsList = () => {
   const [editedValues, setEditedValues] = useState({});
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   const [btnAll, setBtnAll] = useState(false);
 
   const fetchCategories = async () => {
+    setLoading(true);
     try {
       const url = process.env.REACT_APP_API_URL + 'category/allCategory';
       const response = await axios.get(url);
@@ -22,9 +23,12 @@ const ProductsList = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
+
   const fetchProductsList = async categoryname => {
+    setLoading(true);
     try {
       if (categoryname) {
         const url =
@@ -38,6 +42,7 @@ const ProductsList = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const handleCategoryClick = categoryid => {
@@ -65,6 +70,7 @@ const ProductsList = () => {
 };
 
   const deleteProduct = async productid => {
+    setLoading(true);
     try {
       const url =
         process.env.REACT_APP_API_URL + 'products/removeProduct/' + productid;
@@ -89,6 +95,7 @@ const ProductsList = () => {
       console.error('Error fetching products:', error);
       setProducts([]);
     }
+    setLoading(false);
   };
 
   const handleEditClick = (productid, field, value) => {
@@ -101,6 +108,7 @@ const ProductsList = () => {
   };
 
   const handleSaveClick = async productid => {
+    setLoading(true);
     try {
       const url =
         process.env.REACT_APP_API_URL + `products/updateProduct/${productid}`;
@@ -116,6 +124,7 @@ const ProductsList = () => {
       console.error('Error updating product:', error);
       toast.error('Failed to update the product.');
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -133,6 +142,7 @@ const ProductsList = () => {
     <div>
       <ToastContainer />
       <h2>Products List</h2>
+      {loading && <Loader />}
       <Link to='/productadd' className='btn btn-primary'>
         Create New Product
       </Link>
