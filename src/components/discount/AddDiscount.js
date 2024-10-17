@@ -11,9 +11,15 @@ import { useState } from "react";
   const formValues = {
     discountname: "",
     amount: "",
-    percentaget: "",
+    percentage: "",
+    maxdiscount: "",
+    mincartvalue: "",
+    maxcartvalue: "",
     image: "",
     count: "",
+    isoffer: "",
+    ishidden: "",
+    description: "",
     startdate: "",
     enddate: "",
 
@@ -30,8 +36,14 @@ import { useState } from "react";
         formData.append("discountname", values.discountname);
         formData.append("amount", values.amount);
         formData.append("percentage", values.percentage);
+        formData.append("maxdiscount", values.maxdiscount);
+        formData.append("mincartvalue", values.mincartvalue);
+        formData.append("maxcartvalue", values.maxcartvalue);
         formData.append("image", image);
         formData.append("count", values.count);
+        formData.append("isoffer", values.isoffer);
+        formData.append("ishidden", values.ishidden);
+        formData.append("description", values.description);
         formData.append("startdate", values.startdate);
         formData.append("enddate", values.enddate);
         console.log(values.startdate);
@@ -78,6 +90,18 @@ import { useState } from "react";
               <Field name="percentage" type="text" className="col-6" />
             </div>
             <div className="row mb-2">
+              <label className="col-4 my-2 text-center">maxdiscount:</label>
+              <Field name="maxdiscount" type="text" className="col-6" />
+            </div>
+            <div className="row mb-2">
+              <label className="col-4 my-2 text-center">mincartvalue:</label>
+              <Field name="mincartvalue" type="text" className="col-6" />
+            </div>
+            <div className="row mb-2">
+              <label className="col-4 my-2 text-center">maxcartvalue:</label>
+              <Field name="maxcartvalue" type="text" className="col-6" />
+            </div>
+            <div className="row mb-2">
               <label className="col-4 my-2 text-center">Image:</label>
               <input
                 name="image"
@@ -93,12 +117,24 @@ import { useState } from "react";
               <Field name="count" type="text" className="col-6" />
             </div>
             <div className="row mb-2">
+              <label className="col-4 my-2 text-center">isoffer:</label>
+              <Field name="isoffer" type="text" className="col-6" />
+            </div>
+            <div className="row mb-2">
+              <label className="col-4 my-2 text-center">ishidden:</label>
+              <Field name="ishidden" type="text" className="col-6" />
+            </div>
+            <div className="row mb-2">
+              <label className="col-4 my-2 text-center">description:</label>
+              <Field name="description" type="text" className="col-6" />
+            </div>
+            <div className="row mb-2">
               <label className="col-4 my-2 text-center">Start Date:</label>
-              <Field name="startdate" type="date" className="col-6" placeholder="dd-mm-yyyy" />
+              <Field name="startdate" type="date" className="col-6" placeholder="dd-mm-yyyy"  />
             </div>
             <div className="row mb-2">
               <label className="col-4 my-2 text-center">End Date:</label>
-              <Field name="enddate" type="date" className="col-6" placeholder="dd-mm-yyyy" />
+              <Field name="enddate" type="date" className="col-6" placeholder="dd-mm-yyyy"  />
             </div>
 
             <div className="text-center">

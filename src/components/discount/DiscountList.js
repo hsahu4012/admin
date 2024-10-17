@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -32,7 +31,6 @@ const DiscountList = () => {
 
 
   const handleDelete = async (id) => {
-    console.log(id, "hii");
     try {
       const confirmed = window.confirm(
         "Are you sure you want to delete this discount?"
@@ -41,7 +39,6 @@ const DiscountList = () => {
         await axios.put(
           `${process.env.REACT_APP_API_URL}discount/removediscount/${id}`
         );
-
         setDiscount(discount.filter((discounts) => discounts.id !== id));
       }
     } catch (err) {
@@ -67,8 +64,14 @@ const DiscountList = () => {
                 <th>Disc Name</th>
                 <th>Amount</th>
                 <th>Percentage</th>
+                <th>maxdiscount</th>
+                <th>mincartvalue</th>
+                <th>maxcartvalue</th>
                 <th>Image</th>
                 <th>Count</th>
+                <th>isoffer</th>
+                <th>ishidden</th>
+                <th>description</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Action</th>
@@ -83,6 +86,9 @@ const DiscountList = () => {
                     <td>{discounts.discountname}</td>
                     <td>{discounts.amount}</td>
                     <td>{discounts.percentage}</td>
+                    <td>{discounts.maxdiscount}</td>
+                    <td>{discounts.mincartvalue}</td>
+                    <td>{discounts.maxcartvalue}</td>
                     <td>
                       <img
                         src={`${process.env.REACT_APP_API_URL}${discounts.image}`}
@@ -91,6 +97,9 @@ const DiscountList = () => {
                       />
                     </td>
                     <td>{discounts.count}</td>
+                    <td>{discounts.isoffer}</td>
+                    <td>{discounts.ishidden}</td>
+                    <td>{discounts.description}</td>
                     <td>{formatDate(discounts.startdate)}</td>
                     <td>{formatDate(discounts.enddate)}</td>
                     <td>
@@ -111,7 +120,7 @@ const DiscountList = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="10" className="text-center">
+                  <td colSpan="17" className="text-center">
                     No discounts found.
                   </td>
                 </tr>
