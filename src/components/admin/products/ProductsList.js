@@ -57,11 +57,11 @@ const ProductsList = () => {
     setBtnAll(false);
   };
 
-  const toggleVisibility = async (productid, isVisible) => {
+  const switchVisibility = async (productid, isVisible) => {
     setLoading(true);
     try {
       const url = process.env.REACT_APP_API_URL + `products/updateProduct/${productid}`;
-      const updatedData = isVisible ? { stock_quantity: 100, isactive: 1 } : { isactive: -1, stock_quantity: 0 };
+      const updatedData = isVisible ? { stock_quantity: 100, isactive: 1 } : { isactive: -1 };
   
       await axios.put(url, updatedData);
   
@@ -316,7 +316,7 @@ const ProductsList = () => {
  
                   {/* Hide and Show Button */}
                   <button
-                     onClick={() => toggleVisibility(temp.productid, temp.isactive === -1)}
+                     onClick={() => switchVisibility(temp.productid, temp.isactive === -1)}
                      className='btn m-1'
                      style={{ backgroundColor: temp.isactive === -1 ? 'lightgreen' : 'lightcoral', color: 'black' }}
                   >
