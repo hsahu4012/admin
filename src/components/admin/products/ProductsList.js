@@ -13,6 +13,7 @@ const ProductsList = () => {
   const [productToDelete, setProductToDelete] = useState(null);
   const [loading, setLoading] = useState(false);
   const [btnAll, setBtnAll] = useState(false);
+  const [visibleProducts, setVisibleProducts] = useState({});
 
   const fetchCategories = async () => {
     setLoading(true);
@@ -56,6 +57,30 @@ const ProductsList = () => {
     setBtnAll(false);
   };
 
+  const toggleVisibility = async (productid, isVisible) => {
+    setLoading(true);
+    try {
+      const url = process.env.REACT_APP_API_URL + `products/updateProduct/${productid}`;
+      const updatedData = isVisible ? { stock_quantity: 100, isactive: 1 } : { isactive: -1, stock_quantity: 0 };
+  
+      await axios.put(url, updatedData);
+  
+      toast.success(isVisible ? 'Product is now visible!' : 'Product is now hidden!');  //Notification Message
+  
+      setProducts(prevProducts =>
+        prevProducts.map(product =>
+          product.productid === productid
+            ? { ...product, stock_quantity: updatedData.stock_quantity, isactive: updatedData.isactive }
+            : product
+        )
+      );
+    } catch (error) {
+      console.error('Error toggling product visibility:', error);
+      toast.error('Failed to update product visibility.');
+    }
+    setLoading(false);
+  };
+  
   const handleAllCategoriesClick = async() => {
     setBtnAll(!btnAll);
     try {
@@ -288,6 +313,16 @@ const ProductsList = () => {
                       Edit
                     </Link>
                   </span>
+ 
+                  {/* Hide and Show Button */}
+                  <button
+                     onClick={() => toggleVisibility(temp.productid, temp.isactive === -1)}
+                     className='btn m-1'
+                     style={{ backgroundColor: temp.isactive === -1 ? 'lightgreen' : 'lightcoral', color: 'black' }}
+                  >
+                     {temp.isactive === -1 ? 'Show' : 'Hide'}
+                  </button>
+
                   <span className='d-inline-block w-60 '>
                     <Link
                       to={`/productcopy/${temp.productid}`}
