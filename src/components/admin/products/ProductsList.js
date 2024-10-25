@@ -81,6 +81,7 @@ const ProductsList = () => {
     setLoading(false);
   };
   
+  
   const handleAllCategoriesClick = async() => {
     setBtnAll(!btnAll);
     try {
