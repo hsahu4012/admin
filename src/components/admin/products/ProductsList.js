@@ -49,9 +49,9 @@ const ProductsList = () => {
   const handleCategoryClick = categoryid => {
     setCategoryid(categoryid);
     window.localStorage.setItem('admin_categoryid', categoryid);
-    if(categoryid==="all"){
+    if (categoryid === "all") {
       handleAllCategoriesClick()
-    }else{
+    } else {
       fetchProductsList(categoryid);
     }
     setBtnAll(false);
@@ -81,19 +81,20 @@ const ProductsList = () => {
     setLoading(false);
   };
   
-  
-  const handleAllCategoriesClick = async() => {
+
+  const handleAllCategoriesClick = async () => {
+
     setBtnAll(!btnAll);
     try {
 
-            const url = process.env.REACT_APP_API_URL + `products/allProducts`;
-            const response = await axios.get(url);
-            setProducts(response.data);
+      const url = process.env.REACT_APP_API_URL + `products/allProducts`;
+      const response = await axios.get(url);
+      setProducts(response.data);
 
     } catch (error) {
-        console.log(error);
-    }   
-};
+      console.log(error);
+    }
+  };
 
   const deleteProduct = async productid => {
     setLoading(true);
@@ -129,6 +130,16 @@ const ProductsList = () => {
     setEditedValues({ ...editedValues, [field]: value });
   };
 
+  const handleStockClick = async (id, stock) => {
+    try {
+      (stock > 0 && stock < 100) ? await axios.put(process.env.REACT_APP_API_URL + `products/updateStockQuantity/${id}/0`)
+        : await axios.put(process.env.REACT_APP_API_URL + `products/updateStockQuantity/${id}/100`);
+      toast.success('Product Stock updated successfully!');
+    } catch (error) {
+      toast.error('Failed to update the Stock Quantity.');
+    }
+    window.location.reload();
+  };
   const handleValueChange = (field, value) => {
     setEditedValues({ ...editedValues, [field]: value });
   };
@@ -141,7 +152,7 @@ const ProductsList = () => {
       await axios.put(url, editedValues);
       toast.success('Product updated successfully!');
       setEditingProductId(null);
-      if (categoryid==="all") {
+      if (categoryid === "all") {
         handleAllCategoriesClick()
       } else {
         fetchProductsList(categoryid);
@@ -157,7 +168,7 @@ const ProductsList = () => {
     fetchCategories();
     let admin_categoryid = localStorage.getItem('admin_categoryid');
     setCategoryid(admin_categoryid);
-    if (admin_categoryid==="all") {
+    if (admin_categoryid === "all") {
       handleAllCategoriesClick()
     } else {
       fetchProductsList(admin_categoryid);
@@ -187,9 +198,9 @@ const ProductsList = () => {
             {category.categoryname}
           </button>
         ))}
-        <button onClick={() => handleCategoryClick("all")} 
-        // className={`btn m-1 ${ btnAll ? 'btn-info' : 'btn-primary'}`}
-        className={`btn m-1 ${categoryid === "all" ? 'btn-info' : 'btn-primary'}`}
+        <button onClick={() => handleCategoryClick("all")}
+          // className={`btn m-1 ${ btnAll ? 'btn-info' : 'btn-primary'}`}
+          className={`btn m-1 ${categoryid === "all" ? 'btn-info' : 'btn-primary'}`}
         > All</button>
       </div>
 
@@ -341,6 +352,12 @@ const ProductsList = () => {
                     className='btn btn-danger m-1'
                   >
                     Delete
+                  </button>
+                  <button onClick={() => {
+                    handleStockClick(temp.productid, temp.stock_quantity);
+                  }} className='btn btn-warning m-1'
+                  >
+                    {temp.stock_quantity === 0 ? "Stock" : "Out of Stock"}
                   </button>
                 </td>
 
