@@ -76,7 +76,7 @@ const UsersList = () => {
             userList.map((item, index) => (
               <tr key={index + item.exam_id}>
                 <td>{index + 1}</td>
-                <td>{item.userId}</td>   
+                <td>{item.userid}</td>   
                 <td>{item.username}</td>
                 <td>{item.name}</td>
                 <td>{item.email}</td>
