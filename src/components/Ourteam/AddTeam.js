@@ -13,6 +13,7 @@ const AddTeam = () => {
     department: '',
     image: '',
     description: '',
+    sequence: '',
   };
 
   const submitTeam = async values => {
@@ -25,9 +26,10 @@ const AddTeam = () => {
         formData.append('name', values.name);
         formData.append('designation', values.designation);
         formData.append('department', values.department);
-        formData.append('image', image);
+        formData.append('image', image);  
         formData.append('description', values.description);
-
+        formData.append('sequence', values.sequence);
+  
         await axios.post(
           `${process.env.REACT_APP_API_URL}ourTeam/addourTeam`,
           formData,
@@ -43,6 +45,7 @@ const AddTeam = () => {
       console.log(error);
     }
   };
+  
 
   return (
     <>
@@ -80,6 +83,10 @@ const AddTeam = () => {
             <div className='row mb-2'>
               <label className='col-4 my-2 text-center'>Description:</label>
               <Field name='description' type='text' className='col-6' />
+            </div>
+            <div className='row mb-2'>
+              <label className='col-4 my-2 text-center'>Sequence:</label>
+              <Field name='sequence' type='number' className='col-6' />
             </div>
 
             <div className='text-center'>

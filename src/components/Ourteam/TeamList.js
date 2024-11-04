@@ -57,6 +57,7 @@ const TeamList = () => {
                 <th>Department</th>
                 <th>Image</th>
                 <th>Description</th>
+                <th>Sequence</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -77,6 +78,7 @@ const TeamList = () => {
                       />
                     </td>
                     <td>{item.description}</td>
+                    <td>{item.sequence}</td>
                     <td>
                       <Link
                         to={`/updateTeam/${item.id}`}
