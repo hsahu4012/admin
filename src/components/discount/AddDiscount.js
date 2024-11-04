@@ -2,12 +2,12 @@ import { Formik, Field, Form } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import JoditEditor from 'jodit-react';
 
   const AddDiscount = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState('');
-
-
+  const [desc,setDesc]=useState('');
   const formValues = {
     discountname: "",
     amount: "",
@@ -43,7 +43,7 @@ import { useState } from "react";
         formData.append("count", values.count);
         formData.append("isoffer", values.isoffer);
         formData.append("ishidden", values.ishidden);
-        formData.append("description", values.description);
+        formData.append("description", desc);
         formData.append("startdate", values.startdate);
         formData.append("enddate", values.enddate);
         console.log(values.startdate);
@@ -125,10 +125,6 @@ import { useState } from "react";
               <Field name="ishidden" type="text" className="col-6" />
             </div>
             <div className="row mb-2">
-              <label className="col-4 my-2 text-center">description:</label>
-              <Field name="description" type="text" className="col-6" />
-            </div>
-            <div className="row mb-2">
               <label className="col-4 my-2 text-center">Start Date:</label>
               <Field name="startdate" type="date" className="col-6" placeholder="dd-mm-yyyy"  />
             </div>
@@ -137,6 +133,18 @@ import { useState } from "react";
               <Field name="enddate" type="date" className="col-6" placeholder="dd-mm-yyyy"  />
             </div>
 
+            {/* <div className="row mb-2">
+              <label className="col-4 my-2 text-center">description:</label>
+              <Field name="description" type="text" className="col-6" />
+            </div> */}
+
+            <div className="row mb-2">
+              <label className="col-4 my-2 text-center">description:</label>
+              <JoditEditor
+                value={desc}
+                onChange={(newContent) => setDesc(newContent)}
+              />
+            </div>
             <div className="text-center">
               <button type="submit" className="btn btn-primary mx-2">
                 Submit Now
