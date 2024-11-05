@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Formik, Field, Form } from "formik";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import JoditEditor from 'jodit-react';
 
 const UpdateDiscount = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [desc,setDesc]=useState('');
   const [formValues, setFormValues] = useState({
     discountname: "",
     amount: "",
@@ -57,6 +59,7 @@ const UpdateDiscount = () => {
         };
 
         setFormValues(obj);
+        setDesc(obj.description);
       })
       .catch((err) => console.log(err));
   }, [id]);
@@ -69,7 +72,7 @@ const UpdateDiscount = () => {
     try {
       const isUnchanged = Object.keys(formValues).every(
         (key) => formValues[key] === values[key]
-      );
+      ) && desc === formValues.description;
 
       if (isUnchanged && !image) {
         alert("No changes were made. Nothing to update.");
@@ -84,6 +87,8 @@ const UpdateDiscount = () => {
         Object.keys(values).forEach((key) => {
           formData.append(key, values[key]);
         });
+
+        formData.set("description", desc);
 
         if (image) {
           formData.append("image", image);
@@ -140,7 +145,7 @@ const UpdateDiscount = () => {
             <Field name="maxcartvalue" type="text" className="col-6" />
           </div>
           <div className="row mb-2">
-            <label className="col-4 my-2 text-center">current image:-</label>
+            <label className="col-4 my-2 text-center">Image:-</label>
             <img
               src={`${process.env.REACT_APP_API_URL}${formValues.image}`}
               alt={formValues.discountname}
@@ -150,7 +155,7 @@ const UpdateDiscount = () => {
           </div>
 
           <div className="row mb-2">
-            <label className="col-4 my-2 text-center"> New Image:-</label>
+            <label className="col-4 my-2 text-center"> {"            "}</label>
             <input
               name="image"
               type="file"
@@ -171,10 +176,7 @@ const UpdateDiscount = () => {
             <label className="col-4 my-2 text-center">ishidden:</label>
             <Field name="ishidden" type="text" className="col-6" />
           </div>
-          <div className="row mb-2">
-            <label className="col-4 my-2 text-center">description:</label>
-            <Field name="description" type="text" className="col-6" />
-          </div>
+
           <div className="row mb-2">
             <label className="col-4 my-2 text-center" required>Start Date:</label>
             <Field
@@ -193,6 +195,14 @@ const UpdateDiscount = () => {
               placeholder="dd-mm-yyyy"
             />
           </div>
+
+          <div className="row mb-2">
+              <label className="col-4 my-2 text-center">description:</label>
+              <JoditEditor
+              value={desc}
+              onChange={(newContent) => setDesc(newContent)}
+              />
+            </div>
 
           <div className="hey">
             <button type="submit">Submit</button>
