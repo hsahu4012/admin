@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const TeamList = () => {
   const [team, setTeam] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTeamId, setSelectedTeamId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,21 +21,26 @@ const TeamList = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async id => {
-    console.log(id, 'hii');
-    try {
-      const confirmed = window.confirm(
-        'Are you sure you want to delete this team member?'
-      );
-      if (confirmed) {
-        await axios.put(
-          `${process.env.REACT_APP_API_URL}ourTeam/removeourTeam/${id}`
-        );
+  const openModal = (id) => {
+    setSelectedTeamId(id);
+    setIsModalOpen(true);
+  };
 
-        setTeam(team.filter(item => item.id !== id));
-      }
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedTeamId(null);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.put(
+        `${process.env.REACT_APP_API_URL}ourTeam/removeourTeam/${selectedTeamId}`
+      );
+      setTeam(team.filter(item => item.id !== selectedTeamId));
+      closeModal();
     } catch (err) {
       console.log('Error deleting team member:', err);
+      closeModal();
     }
   };
 
@@ -87,7 +94,7 @@ const TeamList = () => {
                         Edit
                       </Link>
                       <button
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => openModal(item.id)}
                         className='btn btn-danger'
                       >
                         Delete
@@ -106,6 +113,33 @@ const TeamList = () => {
           </table>
         </div>
       </div>
+      {isModalOpen && (
+        <div className="modal fade show" tabIndex="-1" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-body">
+                <p className="text-dark">Are you sure you want to delete this team member?</p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={closeModal}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleDelete}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
