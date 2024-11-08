@@ -13,7 +13,6 @@ const UpdateContact = () => {
     address: '',
     subject: '',
     message: '',
-    userid: '',
     resolvestatus: '',
   });
 
@@ -30,7 +29,6 @@ const UpdateContact = () => {
           address: res.data[0].address,
           subject: res.data[0].subject,
           message: res.data[0].message,
-          userid: res.data[0].userid,
           resolvestatus: res.data[0].resolvestatus,
         };
         setFormValues(obj);
@@ -103,10 +101,7 @@ const UpdateContact = () => {
             <label className='col-4 my-2 text-center'>Message:-</label>
             <Field name='message' type='text' className='col-6' />
           </div>
-          <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'>User Id:-</label>
-            <Field name='userid' type='text' className='col-6' />
-          </div>
+          
           <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>Resolve Status:-</label>
             <Field name='resolvestatus' type='text' className='col-6' />

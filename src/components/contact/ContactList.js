@@ -25,6 +25,7 @@ const ContactList = () => {
         await axios.put(
           `${process.env.REACT_APP_API_URL}contact/removeContact/${id}`
         );
+        setContact(contact.filter(item => item.id !== id));
 
         window.location.reload();
       }
@@ -54,7 +55,7 @@ const ContactList = () => {
                 <th>Address</th>
                 <th>Subject</th>
                 <th>Message</th>
-                <th>User ID</th>
+                
                 <th>Resolve Status</th>
                 <th>Action</th>
               </tr>
@@ -71,7 +72,7 @@ const ContactList = () => {
                     <td>{item.address}</td>
                     <td>{item.subject}</td>
                     <td>{item.message}</td>
-                    <td>{item.userid}</td>
+                  
                     <td>{item.resolvestatus}</td>
 
                     {/* <td>{item.isactive}</td> */}

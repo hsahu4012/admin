@@ -9,7 +9,6 @@ const OrdersCreate = () => {
     order_date: '',
     order_time: '',
     order_status: '',
-    userid: '',
     paymentamount: '',
     paymentstatus: '',
     paymentmode: '',
@@ -61,10 +60,7 @@ const OrdersCreate = () => {
             <label className='col-4 my-2 text-center'>Order_Status:-</label>
             <Field name='order_status' type='text' className='col-6' />
           </div>
-          <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'>UserId:-</label>
-            <Field name='userid' type='text' className='col-6' />
-          </div>
+          
           <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>PaymentAmount:-</label>
             <Field name='paymentamount' type='text' className='col-6' />
