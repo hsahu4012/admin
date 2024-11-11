@@ -77,7 +77,9 @@ const ProductAdd = () => {
     // formData.append('subcategory', changedSubcategory);
     formData.append('price', values.price);
     formData.append('stock_quantity', values.stock_quantity);
-    formData.append('brand', values.brand);
+    if(values.brand){
+      formData.append('brand', values.brand); //only if brand is selected
+    }
     formData.append('discount', values.discount);
     formData.append('prod_desc', values.prod_desc);
     formData.append('image', imageFile);
@@ -280,7 +282,7 @@ const ProductAdd = () => {
                   Brand
                 </label>
                 <Field name='brand' as='select' className='col-8' required>
-                  <option value=''>Select a brand</option>
+                  <option value=''>Select a brand (optional)</option>
                   {brands.map(brand => (
                     <option key={brand.brand_id} value={brand.brand_id}>
                       {brand.brand_name}
