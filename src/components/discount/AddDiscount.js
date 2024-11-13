@@ -1,13 +1,17 @@
 import { Formik, Field, Form } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import JoditEditor from 'jodit-react';
 
   const AddDiscount = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState('');
   const [desc,setDesc]=useState('');
+  const [users, setUsers] = useState([]);
+  const [userid, setUserid] = useState('');
+  const [currentMonthSpendings, setCurrentMonthSpendings] = useState(0);
+  const [spendingFilter, setSpendingFilter] = useState(null);
   const formValues = {
     discountname: "",
     amount: "",
@@ -24,6 +28,45 @@ import JoditEditor from 'jodit-react';
     enddate: "",
 
   };
+
+  useEffect(() => {
+    const fetchFilteredUsers = async () => {
+      try {
+        if (spendingFilter === ">5000") {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}orders/highSpendingUsers`);
+          setUsers(response.data);
+        } else if (spendingFilter === "<5000") {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}orders/lessSpendingUsers`);
+          setUsers(response.data);
+        }
+        setCurrentMonthSpendings(''); 
+        setUserid(''); 
+      } catch (error) {
+        console.error("Error fetching filtered users:", error);
+      }
+    };
+
+    if (spendingFilter) {
+      fetchFilteredUsers();
+    }
+  }, [spendingFilter]);
+
+  
+  useEffect(() => {
+    const fetchCurrentMonthSpendings = async () => {
+      if (userid) {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}orders/getCurrentMonthExpenseByUserId/${userid}`);
+          setCurrentMonthSpendings(response.data.currentMonthSpendings);
+        } catch (error) {
+          console.error("Error fetching spendings:", error);
+        }
+      } else {
+        setCurrentMonthSpendings('');
+      }
+    };
+    fetchCurrentMonthSpendings();
+  }, [userid]);
 
 
   const submitDiscount = async (values) => {
@@ -77,6 +120,57 @@ import JoditEditor from 'jodit-react';
       >
         {({ setFieldValue }) => (
           <Form>
+            <div className="row mb-2">
+              <label className="col-4 my-2 text-center">Spending Filter:</label>
+              <div className="col-6">
+                <label className="mr-3">
+                  <input
+                    type="radio"
+                    name="spendingFilter"
+                    value=">5000"
+                    onChange={() => setSpendingFilter(">5000")}
+                    checked={spendingFilter === ">5000"}
+                  />{" "}
+                  &gt;5000  &nbsp; &nbsp; &nbsp; 
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="spendingFilter"
+                    value="<5000"
+                    onChange={() => setSpendingFilter("<5000")}
+                    checked={spendingFilter === "<5000"}
+                  />{" "}
+                  &lt;5000
+                </label>
+              </div>
+            </div>
+
+            <div className="row mb-2">
+              <label className="col-4 my-2 text-center">Select User:</label>
+              <Field
+                as="select"
+                name="userid"
+                className="col-6"
+                onChange={(e) => {
+                  const selectedUserId = e.target.value;
+                  setFieldValue("userid", selectedUserId);
+                  setUserid(selectedUserId);
+                }}
+              >
+                <option value="">Select a user</option>
+                {users.map((user) => (
+                  <option key={user.userid} value={user.userid}>{user.name}</option>
+                ))}
+              </Field>
+            </div>
+
+            {/* Current Month Spendings */}
+            <div className="row mb-2">
+              <label className="col-4 my-2 text-center">Current Month Spendings:</label>
+              <input type="text" className="col-6" value={currentMonthSpendings} readOnly />
+            </div>
+            
             <div className="row mb-2">
               <label className="col-4 my-2 text-center">Disc Name:</label>
               <Field name="discountname" type="text" className="col-6" />
