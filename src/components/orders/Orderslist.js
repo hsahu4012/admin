@@ -23,8 +23,9 @@ const Orderslist = () => {
       );
       if (confirmed) {
         await axios.put(
-          `${process.env.REACT_APP_API_URL}order/romoveOrder/${id}`
+          `${process.env.REACT_APP_API_URL}orders/romoveOrder/${id}`
         );
+        setOrders(orders.filter(item => item.order_id !== id));
 
         window.location.reload();
       }

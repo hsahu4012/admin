@@ -13,7 +13,7 @@ const AddContact = () => {
     subject: '',
     message: '',
     // resolvestatus: "",
-    userid: '',
+
   };
 
   const submitTeam = async values => {
@@ -65,10 +65,7 @@ const AddContact = () => {
             <label className='col-4 my-2 text-center'>Message:-</label>
             <Field name='message' type='text' className='col-6' />
           </div>
-          <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'>User Id:-</label>
-            <Field name='userid' type='text' className='col-6' />
-          </div>
+          
 
           <div className='hey'>
             <button type='submit'>Submit</button>

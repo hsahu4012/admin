@@ -11,7 +11,6 @@ const OrdersUpdate = () => {
     order_date: '',
     order_time: '',
     order_status: '',
-    userid: '',
     paymentamount: '',
     paymentstatus: '',
     paymentmode: '',
@@ -23,7 +22,7 @@ const OrdersUpdate = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}order/getById/${id}`)
+      .get(`${process.env.REACT_APP_API_URL}orders/getById/${id}`)
       .then(res => {
         console.log(res);
         let obj = {
@@ -31,7 +30,6 @@ const OrdersUpdate = () => {
           order_date: res.data[0].order_date,
           order_time: res.data[0].order_time,
           order_status: res.data[0].order_status,
-          userid: res.data[0].userid,
           paymentamount: res.data[0].paymentamount,
           paymentstatus: res.data[0].paymentstatus,
           paymentmode: res.data[0].paymentmode,
@@ -106,10 +104,7 @@ const OrdersUpdate = () => {
             <label className='col-4 my-2 text-center'>Order_Status:-</label>
             <Field name='order_status' type='text' className='col-6' />
           </div>
-          <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'>UserId:-</label>
-            <Field name='userid' type='text' className='col-6' />
-          </div>
+
           <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>PaymentAmount:-</label>
             <Field name='paymentamount' type='text' className='col-6' />
