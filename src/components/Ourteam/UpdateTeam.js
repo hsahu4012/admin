@@ -12,22 +12,26 @@ const UpdateTeam = () => {
     department: '',
     image: '',
     description: '',
+    sequence: '',
   });
 
   const [image, setImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState(null);
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}ourteam/ourteambyid/${id}`)
       .then(res => {
-        let obj = {
-          name: res.data[0].name,
-          designation: res.data[0].designation,
-          department: res.data[0].department,
-          image: res.data[0].image,
-          description: res.data[0].description,
-        };
-        setFormValues(obj);
+        const data = res.data[0];
+        setFormValues({
+          name: data.name,
+          designation: data.designation,
+          department: data.department,
+          image: data.image,
+          description: data.description,
+          sequence: data.sequence,
+        });
       })
       .catch(err => console.log(err));
   }, [id]);
@@ -36,44 +40,51 @@ const UpdateTeam = () => {
     setImage(event.target.files[0]);
   };
 
-  const UpdateTeam = async values => {
+  const openModal = (values) => {
+    setFormData(values);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const submitUpdate = async () => {
     try {
       const isUnchanged = Object.keys(formValues).every(
-        key => formValues[key] === values[key]
+        key => formValues[key] === formData[key]
       );
 
       if (isUnchanged && !image) {
         alert('No changes were made. Nothing to update.');
+        closeModal();
         return;
       }
 
-      const confirmed = window.confirm(
-        'Are you sure you want to update this member?'
-      );
-      if (confirmed) {
-        const formData = new FormData();
-        Object.keys(values).forEach(key => {
-          formData.append(key, values[key]);
-        });
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach(key => {
+        formDataToSend.append(key, formData[key]);
+      });
 
-        if (image) {
-          formData.append('image', image);
-        }
-
-        await axios.put(
-          `${process.env.REACT_APP_API_URL}ourteam/updateourteam/${id}`,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
-
-        navigate('/teamlist');
+      if (image) {
+        formDataToSend.append('image', image);
       }
+
+      await axios.put(
+        `${process.env.REACT_APP_API_URL}ourteam/updateourteam/${id}`,
+        formDataToSend,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      closeModal();
+      navigate('/teamlist');
     } catch (err) {
       console.log(err);
+      closeModal();
     }
   };
 
@@ -83,34 +94,32 @@ const UpdateTeam = () => {
       <Formik
         enableReinitialize={true}
         initialValues={formValues}
-        onSubmit={values => UpdateTeam(values)}
+        onSubmit={values => openModal(values)}
       >
         <Form>
           <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'> Name:-</label>
+            <label className='col-4 my-2 text-center'> Name:</label>
             <Field name='name' type='text' className='col-6' />
           </div>
           <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'>Designation:-</label>
+            <label className='col-4 my-2 text-center'>Designation:</label>
             <Field name='designation' type='text' className='col-6' />
           </div>
           <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'>Department:-</label>
+            <label className='col-4 my-2 text-center'>Department:</label>
             <Field name='department' type='text' className='col-6' />
           </div>
-
           <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'>current image:-</label>
+            <label className='col-4 my-2 text-center'>Current Image:</label>
             <img
               src={`${process.env.REACT_APP_API_URL}${formValues.image}`}
               alt={formValues.name}
-              className='img-fluid '
+              className='img-fluid'
               style={{ height: '200px', width: '200px' }}
             />
           </div>
-
           <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'> New Image:-</label>
+            <label className='col-4 my-2 text-center'> New Image:</label>
             <input
               name='image'
               type='file'
@@ -118,20 +127,37 @@ const UpdateTeam = () => {
               onChange={handleFileChange}
             />
           </div>
-
           <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'>Description:-</label>
+            <label className='col-4 my-2 text-center'>Description:</label>
             <Field name='description' type='text' className='col-6' />
           </div>
+          <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'>Sequence:</label>
+            <Field name='sequence' type='number' className='col-6' />
+          </div>
 
-          <div className='hey'>
-            <button type='submit'>Submit</button>
-            <Link to='/teamlist' className='btn btn-danger back'>
-              Back
-            </Link>
+          <div className='text-center'>
+            <button type='submit' className='btn btn-primary mx-2'>Submit</button>
+            <Link to='/teamlist' className='btn btn-danger'>Back</Link>
           </div>
         </Form>
       </Formik>
+
+      {isModalOpen && (
+        <div className="modal fade show" tabIndex="-1" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+          <div className="modal-dialog modal-dialog-centered"> 
+            <div className="modal-content">
+              <div className="modal-body">
+                <p className="text-dark">Are you sure you want to update this team member?</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-danger" onClick={closeModal}>Cancel</button>
+                <button type="button" className="btn btn-primary" onClick={submitUpdate}>Confirm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

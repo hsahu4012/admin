@@ -6,6 +6,8 @@ import { useState } from 'react';
 const AddTeam = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState(null);
 
   const formValues = {
     name: '',
@@ -13,34 +15,42 @@ const AddTeam = () => {
     department: '',
     image: '',
     description: '',
+    sequence: '',
   };
 
-  const submitTeam = async values => {
-    try {
-      const confirmed = window.confirm(
-        'Are you sure you want to add a new team member?'
-      );
-      if (confirmed) {
-        const formData = new FormData();
-        formData.append('name', values.name);
-        formData.append('designation', values.designation);
-        formData.append('department', values.department);
-        formData.append('image', image);
-        formData.append('description', values.description);
+  const openModal = (values) => {
+    setFormData(values);
+    setIsModalOpen(true);
+  };
 
-        await axios.post(
-          `${process.env.REACT_APP_API_URL}ourTeam/addourTeam`,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
-        navigate('/teamList');
-      }
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const submitTeam = async () => {
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('designation', formData.designation);
+      formDataToSend.append('department', formData.department);
+      formDataToSend.append('image', image);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('sequence', formData.sequence);
+
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}ourTeam/addourTeam`,
+        formDataToSend,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      closeModal();
+      navigate('/teamList');
     } catch (error) {
       console.log(error);
+      closeModal();
     }
   };
 
@@ -49,7 +59,7 @@ const AddTeam = () => {
       <h3 className='text-center mb-5'>Add Team Member</h3>
       <Formik
         initialValues={formValues}
-        onSubmit={values => submitTeam(values)}
+        onSubmit={values => openModal(values)}
       >
         {({ setFieldValue }) => (
           <Form>
@@ -76,10 +86,13 @@ const AddTeam = () => {
                 }}
               />
             </div>
-
             <div className='row mb-2'>
               <label className='col-4 my-2 text-center'>Description:</label>
               <Field name='description' type='text' className='col-6' />
+            </div>
+            <div className='row mb-2'>
+              <label className='col-4 my-2 text-center'>Sequence:</label>
+              <Field name='sequence' type='number' className='col-6' />
             </div>
 
             <div className='text-center'>
@@ -93,6 +106,35 @@ const AddTeam = () => {
           </Form>
         )}
       </Formik>
+
+      {isModalOpen && (
+        <div className="modal fade show" tabIndex="-1" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+          <div className="modal-dialog modal-dialog-centered"> 
+            <div className="modal-content">
+              <div className="modal-body">
+                <p className="text-dark">Are you sure you want to add a new team member?</p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={closeModal}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={submitTeam}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </>
   );
 };
