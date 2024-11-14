@@ -19,13 +19,13 @@ import SecureLeftPanel from './components/shared/SecureLeftPanel';
 import Home from './components/common/Home';
 import Login from './components/common/Login';
 
-import QsAdd from './components/admin/QsAdd';
+// import QsAdd from './components/admin/QsAdd';
 import BulkProductAdd from './components/admin/BulkQsAdd';
-import QsEdit from './components/admin/QsEdit';
-import QsList from './components/admin/QsList';
-import ExamsList from './components/admin/ExamsList';
-import ExamsAdd from './components/admin/ExamsAdd';
-import ExamsUpdate from './components/admin/ExamsUpdate';
+// import QsEdit from './components/admin/QsEdit';
+// import QsList from './components/admin/QsList';
+// import ExamsList from './components/admin/ExamsList';
+// import ExamsAdd from './components/admin/ExamsAdd';
+// import ExamsUpdate from './components/admin/ExamsUpdate';
 import DashboardAdmin from './components/admin/DashboardAdmin';
 import AdminNotice from './components/admin/Notice';
 
@@ -33,9 +33,9 @@ import UsersList from './components/admin/UsersList';
 import UserAdd from './components/admin/UserAdd';
 import UserUpdate from './components/admin/UserUpdate';
 import Profile from './components/common/Profile';
-import SubjectList from './components/admin/SubjectList';
-import SubjectAdd from './components/admin/SubjectAdd';
-import SubjectUpdate from './components/admin/SubjectUpdate';
+// import SubjectList from './components/admin/SubjectList';
+// import SubjectAdd from './components/admin/SubjectAdd';
+// import SubjectUpdate from './components/admin/SubjectUpdate';
 import CustomerDetails from './components/customer/CustomerDetails';
 import CustomerCreate from './components/customer/CustomerCreate';
 import CustomerUpdate from './components/customer/CustomerUpdate';
@@ -246,7 +246,7 @@ function App() {
                       path='/login'
                       element={<ProtectedRoutes props={{ Component: Login }} />}
                     />
-                    <Route
+                    {/* <Route
                       path='/qslist'
                       element={
                         <ProtectedRoutes props={{ Component: QsList }} />
@@ -255,7 +255,7 @@ function App() {
                     <Route
                       path='/qsadd'
                       element={<ProtectedRoutes props={{ Component: QsAdd }} />}
-                    />
+                    /> */}
                     <Route
                       path='/Bulkqsadd'
                       element={
@@ -264,7 +264,7 @@ function App() {
                         />
                       }
                     />
-                    <Route
+                    {/* <Route
                       path='/qsedit/:id'
                       element={
                         <ProtectedRoutes props={{ Component: QsEdit }} />
@@ -275,8 +275,8 @@ function App() {
                       element={
                         <ProtectedRoutes props={{ Component: ExamsList }} />
                       }
-                    />
-                    <Route
+                    /> */}
+                    {/* <Route
                       path='/examsadd'
                       element={
                         <ProtectedRoutes props={{ Component: ExamsAdd }} />
@@ -286,8 +286,8 @@ function App() {
                       path='/examsupdate/:examId'
                       element={
                         <ProtectedRoutes props={{ Component: ExamsUpdate }} />
-                      }
-                    />
+                      } */}
+                    {/* /> */}
                     <Route
                       path='/userslist'
                       element={
@@ -306,7 +306,7 @@ function App() {
                         <ProtectedRoutes props={{ Component: UserUpdate }} />
                       }
                     />
-                    <Route
+                    {/* <Route
                       path='/subjectslist'
                       element={
                         <ProtectedRoutes props={{ Component: SubjectList }} />
@@ -323,7 +323,7 @@ function App() {
                       element={
                         <ProtectedRoutes props={{ Component: SubjectUpdate }} />
                       }
-                    />
+                    /> */}
 
                     <Route
                       path='/categoryDetails'
