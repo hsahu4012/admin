@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ConfirmationModal } from '../../shared/ConfirmationModal';
 
 const Addressadd = () => {
   const navigate = useNavigate();
@@ -19,22 +20,24 @@ const Addressadd = () => {
     alternatecontact: '',
     landmark: '',
   };
+  const [modalShow,setModalShow] = useState(false)
+  const [formValue ,setFormValue] = useState([{}]);
 
-  const submitAddress = async values => {
-    try {
-      const confirmed = window.confirm(
-        'Are you sure you want to Add New Address???'
+const confirmSubmittedAddress = async()=>{
+  try {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}address/addAddress`,
+        formValue
       );
-      if (confirmed) {
-        await axios.post(
-          `${process.env.REACT_APP_API_URL}address/addAddress`,
-          values
-        );
-        navigate('/addressdetails');
-      }
-    } catch (error) {
-      console.log(error);
-    }
+      navigate('/addressdetails');
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+  const submitAddress =  (values) => {
+    setFormValue(values)
+  setModalShow(true)
   };
   return (
     <>
@@ -109,6 +112,14 @@ const Addressadd = () => {
           </div>
         </Form>
       </Formik>
+      <ConfirmationModal
+        show={modalShow}
+        modalMessage = "You Want to Add the New Address"
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmSubmittedAddress}
+        operationType="Add"
+        wantToAddData = {true}
+      />
     </>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Field, Form } from 'formik';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { ConfirmationModal } from '../../shared/ConfirmationModal';
 
 const AddressUpdate = () => {
   const { addressid } = useParams();
@@ -19,6 +20,10 @@ const AddressUpdate = () => {
     alternatecontact: '',
     landmark: '',
   });
+
+  const [modalShow,setModalShow] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [formValuesChanged ,setFormValuesChanged] = useState(false)
 
   useEffect(() => {
     axios
@@ -44,31 +49,36 @@ const AddressUpdate = () => {
       .catch(err => console.log(err));
   }, [addressid]);
 
-  const updateAddress = async values => {
+  const updateAddress =  values => {
     try {
       const isUnchanged = Object.keys(formValues).every(
         key => formValues[key] === values[key]
       );
-
       if (isUnchanged) {
-        alert('No changes were made. Nothing to update.');
-        return;
+        setModalMessage('No changes were made. Nothing to update.');
       }
-      //after form values update
-      const confirmed = window.confirm(
-        'Are you sure you want to Update this address?'
-      );
-      if (confirmed === true) {
-        await axios.put(
-          `${process.env.REACT_APP_API_URL}address/updateAddress/${addressid}`,
-          values
-        );
-        navigate('/addressdetails');
+      else{
+        setModalMessage('You really want to Update the Address.');
+        setFormValuesChanged(true)
+        setFormValues(values);
       }
+      setModalShow(true);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const confirmUpdateAddress = async()=>{
+    try {
+      await axios.put(
+        `${process.env.REACT_APP_API_URL}address/updateAddress/${addressid}`,
+        formValues
+      );
+      navigate('/addressdetails');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     console.log('formValues', formValues);
@@ -147,6 +157,14 @@ const AddressUpdate = () => {
           <br></br>
         </Form>
       </Formik>
+      <ConfirmationModal
+        show={modalShow}
+        modalMessage = {modalMessage}
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmUpdateAddress}
+        operationType = "Update"
+        wantToAddData = {formValuesChanged}
+      />
     </div>
   );
 };

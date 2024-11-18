@@ -3,9 +3,12 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { ConfirmationModal } from '../../shared/ConfirmationModal';
 
 const Addressdetails = () => {
   const [data, setData] = useState([]);
+  const [modalShow,setModalShow] = useState(false);
+  const [deletedId,setDeletedId] = useState(null);
 
   const fetchAddressDetails = async () => {
     try {
@@ -17,30 +20,31 @@ const Addressdetails = () => {
       console.log(error);
     }
   };
-  const handleDelete = async id => {
+  const handleDelete =  (id) => {
+    setDeletedId(id);
+    setModalShow(true);
     console.log('deleting ', id);
+  };
+
+  const confirmDeleteAddress = async()=>{
     try {
-      const confirmed = window.confirm(
-        'Are you sure you want to delete this address?'
-      );
-      if (!confirmed) {
-        return;
-      }
-      const url = process.env.REACT_APP_API_URL + 'address/deleteAddress/' + id;
-      console.log(id);
+      const url = process.env.REACT_APP_API_URL + 'address/deleteAddress/' + deletedId;
+      console.log(deletedId);
       const response = await axios.put(url);
       console.log(response);
+      setModalShow(false)
       fetchAddressDetails();
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   useEffect(() => {
     fetchAddressDetails();
   }, []);
 
   return (
+    <>
     <div className='container'>
       <h2 className='w-100 d-flex justify-content-center p-3'>
         Address Details
@@ -113,6 +117,15 @@ const Addressdetails = () => {
         </div>
       </div>
     </div>
+    <ConfirmationModal
+        show={modalShow}
+        modalMessage = "you really want to delete this Address"
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmDeleteAddress}
+        operationType = "Delete"
+        wantToAddData = {true}
+      />
+    </>
   );
 };
 
