@@ -14,6 +14,9 @@ const ProductsList = () => {
   const [loading, setLoading] = useState(false);
   const [btnAll, setBtnAll] = useState(false);
   const [visibleProducts, setVisibleProducts] = useState({});
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [showSelection, setShowSelection] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
 
   const fetchCategories = async () => {
     setLoading(true);
@@ -55,8 +58,73 @@ const ProductsList = () => {
       fetchProductsList(categoryid);
     }
     setBtnAll(false);
+    setSelectedProducts([]);
+    setSelectAll(false);
   };
 
+  const handleSelectProduct = (productid) => {
+    setSelectedProducts((prevSelected) => {
+      const updatedSelected = prevSelected.includes(productid)
+        ? prevSelected.filter((id) => id !== productid)
+        : [...prevSelected, productid];
+      return updatedSelected;
+    });
+  };
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedProducts([]);
+    } else {
+      const selectedProductIds = products.map((product) => product.productid);
+      setSelectedProducts(selectedProductIds);
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const handleShowSelection = () => {
+    setShowSelection(true);
+  };
+
+  const handleBulkOutOfStock = async () => {
+    if (selectedProducts.length > 0) {
+      try {
+        const url = 'http://localhost:4000/products/setstocktozero';
+        await axios.put(url, { productIds: selectedProducts });
+        toast.success('Selected products set to out of stock!');
+        setSelectedProducts([]); // Clear the selected products after the update
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } catch (error) {
+        toast.error('Failed to set selected products to out of stock.');
+        console.error(error);
+      }
+    } else {
+      toast.error('Please select products to set to out of stock.');
+    }
+  };
+  
+  const handleAllOutOfStock = async () => {
+    if (selectAll) {
+      try {
+        const url = 'http://localhost:4000/products/setstocktozero';
+        const allProductIds = products.map(product => product.productid); // Get all product IDs in the selected category
+        await axios.put(url, { productIds: allProductIds });
+        toast.success('All products in this category set to out of stock!');
+        setSelectedProducts([]); // Clear the selected products after the update
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } catch (error) {
+        toast.error('Failed to set all products to out of stock.');
+        console.error(error);
+      }
+    } else {
+      toast.error('Please select the "Select All" checkbox first.');
+    }
+  };
+  
+  
   const switchVisibility = async (productid, isVisible) => {
     setLoading(true);
     try {
@@ -138,7 +206,9 @@ const ProductsList = () => {
     } catch (error) {
       toast.error('Failed to update the Stock Quantity.');
     }
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
   const handleValueChange = (field, value) => {
     setEditedValues({ ...editedValues, [field]: value });
@@ -204,10 +274,37 @@ const ProductsList = () => {
         > All</button>
       </div>
 
-      <div>Total No of Products - {products && products.length}</div>
+      <div>
+        Total No of Products - {products && products.length} <br/>
+        Selected Products - {selectedProducts.length} <br/>
+        <button
+          className='btn btn-success m-1'
+          onClick={handleShowSelection}
+        >
+          Select Custom Products
+        </button> &nbsp;  &nbsp;
+        <label>
+          <input
+            type='checkbox'
+            checked={selectAll}
+            onChange={handleSelectAll}
+          />
+          Select All
+        </label>
+      </div>
+
+      <button onClick={handleBulkOutOfStock} disabled={!selectedProducts.length || selectAll} className="btn btn-danger m-1">
+        Bulk Out of Stock
+      </button>
+
+      <button onClick={handleAllOutOfStock} disabled={!selectAll} className="btn btn-warning m-1">
+        All Out of Stock
+      </button>
+      
       <table className='table table-responsive table-striped table-bordered'>
         <thead className=''>
           <tr>
+            {(selectAll || showSelection) && <th>Select</th>}
             <th>Sr No</th>
             <th>Product ID</th>
             <th>Product Name</th>
@@ -224,6 +321,15 @@ const ProductsList = () => {
           {products &&
             products.map((temp, index) => (
               <tr key={temp.productid}>
+                {(selectAll || showSelection) && (
+                  <td>
+                    <input
+                      type='checkbox'
+                      checked={selectedProducts.includes(temp.productid)}
+                      onChange={() => handleSelectProduct(temp.productid)}
+                    />
+                  </td>
+                )}
                 <td>{index + 1}</td>
                 <td>{temp.productid}</td>
                 <td>{temp.prod_name}</td>
