@@ -88,7 +88,7 @@ const ProductsList = () => {
   const handleBulkOutOfStock = async () => {
     if (selectedProducts.length > 0) {
       try {
-        const url = 'http://localhost:4000/products/setstocktozero';
+        const url = process.env.REACT_APP_API_URL + `products/setstocktozero`;
         await axios.put(url, { productIds: selectedProducts });
         toast.success('Selected products set to out of stock!');
         setSelectedProducts([]); // Clear the selected products after the update
@@ -107,7 +107,7 @@ const ProductsList = () => {
   const handleAllOutOfStock = async () => {
     if (selectAll) {
       try {
-        const url = 'http://localhost:4000/products/setstocktozero';
+        const url =  process.env.REACT_APP_API_URL + `products/setstocktozero`;
         const allProductIds = products.map(product => product.productid); // Get all product IDs in the selected category
         await axios.put(url, { productIds: allProductIds });
         toast.success('All products in this category set to out of stock!');
