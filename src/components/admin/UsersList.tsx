@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 const UsersList = () => {
   const [userList, setUserList] = useState<any[]>([]);
+  const [selectedUserId, setSelectedUserId] = useState<number| null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const callApiExamsList = async () => {
     try {
@@ -20,18 +23,44 @@ const UsersList = () => {
     callApiExamsList();
   }, []);
 
-  const deleteUser = async (id: any) => {
-    // eslint-disable-next-line no-restricted-globals
-    var val = confirm('Sure you want to delete user?');
-    if (val === true) {
-      const url = process.env.REACT_APP_API_URL + 'users/removeuser/' + id;
-      const response = await axios.delete(url);
-      console.log(response);
-      alert('User deleted');
-    } else {
-      alert('User not Deleted');
+  const openDeleteModal = (id: number) => {
+    setSelectedUserId(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedUserId(null);
+  };
+
+  // const deleteUser = async (id: any) => {
+  //   // eslint-disable-next-line no-restricted-globals
+  //   var val = confirm('Sure you want to delete user?');
+  //   if (val === true) {
+  //     const url = process.env.REACT_APP_API_URL + 'users/removeuser/' + id;
+  //     const response = await axios.delete(url);
+  //     console.log(response);
+  //     toast.success('User Deleted Successfully');
+  //   } else {
+  //     toast.error('User not Deleted');
+  //   }
+  //   callApiExamsList();
+  // };
+
+  const deleteUser = async () => {
+    if (selectedUserId !== null) {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}users/removeuser/${selectedUserId}`;
+        await axios.delete(url);
+        toast.success('User Deleted Successfully');
+        callApiExamsList();
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        toast.error('Failed to delete user');
+      }
     }
-    callApiExamsList();
+
+    closeDeleteModal();
   };
 
   const activateUser = async (id: any) => {
@@ -50,6 +79,7 @@ const UsersList = () => {
 
   return (
     <div>
+      <ToastContainer />
       <br></br>
       <Link to='/useradd' className='btn btn-primary'>
         Create New User
@@ -93,8 +123,8 @@ const UsersList = () => {
                 </td>
                 <td>
                   <button
-                    onClick={() => deleteUser(item.userid)}
-                    className='btn btn-primary'
+                    onClick={() => openDeleteModal(item.userid)}
+                    className='btn btn-danger'
                   >
                     Delete User
                   </button>
@@ -114,7 +144,36 @@ const UsersList = () => {
         </tbody>
       </table>
       <br></br>
+
+      {isDeleteModalOpen && (
+        <div className='modal fade show' style={{ display: 'block',backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+          <div className='modal-dialog modal-dialog-centered'>
+            <div className='modal-content'>
+              <div className='modal-body'>
+                <p>Are you sure you want to delete this user?</p>
+              </div>
+              <div className='modal-footer'>
+                <button
+                  type='button'
+                  className='btn btn-secondary'
+                  onClick={closeDeleteModal}
+                >
+                  Cancel
+                </button>
+                <button
+                  type='button'
+                  className='btn btn-danger'
+                  onClick={deleteUser}
+                >
+                  Delete User
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
+   
   );
 };
 
