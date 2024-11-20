@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Field, Form } from 'formik';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Subcategoryadd = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -39,6 +40,7 @@ const Subcategoryadd = () => {
       console.log(response.data);
 
       toast.success('Subcategory added successfully!');
+      navigate('/subcategorylist')
 
       setLoading(false);
       return { error: false };
