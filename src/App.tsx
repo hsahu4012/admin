@@ -39,6 +39,7 @@ import Profile from './components/common/Profile';
 import CustomerDetails from './components/customer/CustomerDetails';
 import CustomerCreate from './components/customer/CustomerCreate';
 import CustomerUpdate from './components/customer/CustomerUpdate';
+import UsersDetails from './components/user details/usersdetails';
 
 import CategoryDetails from './components/category/CategoryDetails';
 import CategoryCreate from './components/category/CategoryCreate';
@@ -194,6 +195,16 @@ function App() {
                         <ProtectedRoutes props={{ Component: OrdersUpdate }} />
                       }
                     />
+
+                    <Route
+                      path='/usersDetails'
+                      element={
+                        <ProtectedRoutes
+                          props={{ Component: UsersDetails}}
+                        />
+                      }
+                    />
+
                     <Route
                       path='/customerDetails'
                       element={

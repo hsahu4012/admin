@@ -51,9 +51,13 @@ const LeftPanel = () => {
                     <li className='menu-item-has-children dropdown bg-warning bg-opacity-25'>
                       <Link to='/userslist'>Users</Link>
                     </li>
+<li className='menu-item-has-children dropdown bg-warning bg-opacity-25'>
+                      <Link to='/usersDetails'>Users Details</Link>
+                    </li>
                     <li className='menu-item-has-children dropdown bg-warning bg-opacity-25'>
                       <Link to='/customerDetails'>Customers</Link>
                     </li>
+
                     <li className='menu-item-has-children dropdown bg-warning bg-opacity-25'>
                       <Link to='/addressdetails'>Address</Link>
                     </li>
