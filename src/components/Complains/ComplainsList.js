@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { ConfirmationModal } from '../shared/ConfirmationModal';
 
 export const ComplainsList = () => {
   const [complains, setComplains] = useState([]);
+  const [modalShow,setModalShow] = useState(false);
+  const [deleteId,setDeleteId] = useState(null);
 
   const fetchComplainsList = async () => {
     try {
@@ -16,13 +19,19 @@ export const ComplainsList = () => {
     }
   };
 
-  const deleteComplain = async complainid => {
+  const deleteComplain =  complainid => {
+    setDeleteId(complainid)
+    setModalShow(true)
+  };
+
+  const confirmDeleteComplain = async()=>{
     //api call for delete
+    setModalShow(false)
     try {
       const url =
         process.env.REACT_APP_API_URL +
         'complains/removecomplains/' +
-        complainid;
+        deleteId;
       const response = await axios.put(url);
       console.log(response);
       //setUserList(response.data);
@@ -30,12 +39,13 @@ export const ComplainsList = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   useEffect(() => {
     fetchComplainsList();
   }, []);
   return (
+    <>
     <div>
       <h2>Complain List</h2>
       <Link to='/complainsadd' className='btn btn-primary'>
@@ -88,6 +98,15 @@ export const ComplainsList = () => {
         </tbody>
       </table>
     </div>
+    <ConfirmationModal
+        show={modalShow}
+        modalMessage = "you really want to delete this Complain"
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmDeleteComplain}
+        operationType = "Delete"
+        wantToAddData = {true}
+      />
+    </>
   );
 };
 
