@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Field, Form } from 'formik';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { ConfirmationModal } from '../shared/ConfirmationModal';
 
 const UpdateTeam = () => {
   const { id } = useParams();
@@ -27,7 +28,7 @@ const UpdateTeam = () => {
         const data = res.data[0];
         setFormValues({
           name: data.name,
-          designation: data.designation,
+          designation: data.designation, 
           department: data.department,
           image: data.image,
           description: data.description,
@@ -152,64 +153,22 @@ const UpdateTeam = () => {
         </Form>
       </Formik>
 
-      {isModalOpen && (
-        <div
-          className='modal fade show'
-          tabIndex='-1'
-          style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-        >
-          <div className='modal-dialog modal-dialog-centered'>
-            <div className='modal-content'>
-              <div className='modal-body'>
-                <p className='text-dark'>
-                  Are you sure you want to update this team member?
-                </p>
-              </div>
-              <div className='modal-footer'>
-                <button
-                  type='button'
-                  className='btn btn-danger'
-                  onClick={closeModal}
-                >
-                  Cancel
-                </button>
-                <button
-                  type='button'
-                  className='btn btn-primary'
-                  onClick={submitUpdate}
-                >
-                  Confirm
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmationModal
+        show={isModalOpen}
+        onHide={closeModal}
+        modalMessage="Are you sure you want to update this team member?"
+        confirmation={submitUpdate}
+        wantToAddData={true}
+        operationType="Confirm"
+      />
 
-      {isNoChangesModalOpen && (
-        <div
-          className='modal fade show'
-          tabIndex='-1'
-          style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-        >
-          <div className='modal-dialog modal-dialog-centered'>
-            <div className='modal-content'>
-              <div className='modal-body'>
-                <p className='text-dark'>No changes were made. Nothing to update.</p>
-              </div>
-              <div className='modal-footer'>
-                <button
-                  type='button'
-                  className='btn btn-primary'
-                  onClick={closeNoChangesModal}
-                >
-                  OK
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* No Changes Modal */}
+      <ConfirmationModal
+        show={isNoChangesModalOpen}
+        onHide={closeNoChangesModal}
+        modalMessage="No changes were made. Nothing to update."
+        wantToAddData={false}
+      />
     </>
   );
 };
