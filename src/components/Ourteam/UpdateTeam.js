@@ -17,9 +17,10 @@ const UpdateTeam = () => {
   });
 
   const [image, setImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isNoChangesModalOpen, setIsNoChangesModalOpen] = useState(false);
-  const [formData, setFormData] = useState(null);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [formValuesChanged, setFormValuesChanged] = useState(false);
+  const [updatedFormData, setUpdatedFormData] = useState(null);
 
   useEffect(() => {
     axios
@@ -42,34 +43,27 @@ const UpdateTeam = () => {
     setImage(event.target.files[0]);
   };
 
-  const openModal = values => {
-    setFormData(values);
-    setIsModalOpen(true);
-  };
+  const openConfirmationModal = values => {
+    const isUnchanged = Object.keys(formValues).every(
+      (key) => formValues[key] === values[key]
+    ) && !image;
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const closeNoChangesModal = () => {
-    setIsNoChangesModalOpen(false);
+    if (isUnchanged) {
+      setModalMessage('No changes were made. Nothing to update.');
+      setFormValuesChanged(false);
+    } else {
+      setModalMessage('You really want to update this team member.');
+      setFormValuesChanged(true);
+      setUpdatedFormData(values);
+    }
+    setModalShow(true);
   };
 
   const submitUpdate = async () => {
     try {
-      const isUnchanged = Object.keys(formValues).every(
-        key => formValues[key] === formData[key]
-      );
-
-      if (isUnchanged && !image) {
-        setIsNoChangesModalOpen(true);
-        closeModal();
-        return;
-      }
-
       const formDataToSend = new FormData();
-      Object.keys(formData).forEach(key => {
-        formDataToSend.append(key, formData[key]);
+      Object.keys(updatedFormData).forEach(key => {
+        formDataToSend.append(key, updatedFormData[key]);
       });
 
       if (image) {
@@ -86,11 +80,11 @@ const UpdateTeam = () => {
         }
       );
 
-      closeModal();
+      setModalShow(false);
       navigate('/teamlist');
     } catch (err) {
       console.log(err);
-      closeModal();
+      setModalShow(false);
     }
   };
 
@@ -100,7 +94,7 @@ const UpdateTeam = () => {
       <Formik
         enableReinitialize={true}
         initialValues={formValues}
-        onSubmit={values => openModal(values)}
+        onSubmit={values => openConfirmationModal(values)}
       >
         <Form>
           <div className='row mb-2'>
@@ -154,20 +148,12 @@ const UpdateTeam = () => {
       </Formik>
 
       <ConfirmationModal
-        show={isModalOpen}
-        onHide={closeModal}
-        modalMessage="Are you sure you want to update this team member?"
+        show={modalShow}
+        onHide={()=> setModalShow(false)}
+        modalMessage={modalMessage}
         confirmation={submitUpdate}
-        wantToAddData={true}
+        wantToAddData={formValuesChanged}
         operationType="Confirm"
-      />
-
-      {/* No Changes Modal */}
-      <ConfirmationModal
-        show={isNoChangesModalOpen}
-        onHide={closeNoChangesModal}
-        modalMessage="No changes were made. Nothing to update."
-        wantToAddData={false}
       />
     </>
   );
