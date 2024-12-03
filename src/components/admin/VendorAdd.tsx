@@ -3,144 +3,86 @@ import axios from 'axios';
 import { Formik, Field, Form } from 'formik';
 import { useNavigate, Link } from 'react-router-dom';
 import nss_payment from '../../images/nss_payment.jpeg';
+import { ConfirmationModal } from '../shared/ConfirmationModal';
 
 const VendorAdd: FC = () => {
   const navigate = useNavigate();
+  const [modalShow, setModalShow] = useState(false);
+  const [formValue, setFormValue] = useState([{}]);
 
-  const [status, setStatus] = useState(false);
-  const [paymentModal, setPaymentModal] = useState(false);
+  const submitVendor = (values: any) => {
+    setFormValue(values);
+    setModalShow(true);
+  };
 
-  const callApiVendorAdd = async (values: any) => {
-    const url = process.env.REACT_APP_API_URL + 'vendor/addvendor';
-    const response = await axios.post(url, values);
-    console.log(values);
-    console.log(response);
-    if (response.status === 201) {
-      setStatus(true);
+  const confirmSubmittedVendor = async () => {
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}vendor/addVendor`,
+        formValue
+      );
+      navigate('/vendordetails');
+    } catch (error) {
+      console.log(error);
     }
-    alert('Vendor Added Successfully');
-
-    const token = localStorage.getItem('jwttoken');
-    if (token) {
-      navigate('/vendorDetails');
-    }
-    return {
-      error: false,
-    };
   };
 
   return (
-    <div>
-      <h4 className='bg-info bg-opacity-25 text-center py-2 mb-3'>
-        Sign Up Form
-      </h4>
+    <>
+      <h3 className="text-center mb-5">Vendor Create</h3>
       <Formik
-        initialValues={{ vendorname: '', vendordescription: '' }}
-        onSubmit={async (values, { resetForm }) => {
-          console.log(values);
-          const { error } = await callApiVendorAdd(values);
-          if (!error) {
-            resetForm();
-          }
-        }}
+        initialValues={{ vendor_name: '', vendor_description: '' }}
+        onSubmit={(values) => submitVendor(values)}
       >
-        <div className='row'>
-          <Form className='examAddForm'>
-            <div className='row'>
-              <label htmlFor='name' className='col-4 my-2'>
+          <Form>
+            <div className='row mb-2'>
+              <label className='col-4 my-2 text-center'>
                 Vendor Name:
               </label>
               <Field
                 name='vendor_name'
                 type='text'
-                className='col-8'
+                className='col-6'
                 required
               />
             </div>
 
-            <div className='row'>
-              <label htmlFor='vendordescription' className='col-4 my-2'>
+            <div className='row mb-2'>
+              <label className='col-4 my-2 text-center'>
                 Vendor Description{' '}
               </label>
               <Field
                 name='vendor_description'
-                className='col-8'
+                className='col-6'
                 type='text'
                 required
               />
             </div>
 
-            <div className='row'>
+            <br />
+
               <div className='text-center my-4'>
                 <button type='submit' className='btn btn-success'>
-                  Sign Up
+                  Submit
                 </button>
-              </div>
-            </div>
-
-            <div className='row'>
-              <div className='text-center my-4'>
-                <Link to='/vendorDetails' className='btn btn-primary'>
-                  back
+                &nbsp; &nbsp;
+                <Link to="/vendordetails" className="btn btn-danger back">
+                  Back
                 </Link>
               </div>
-            </div>
-
-            <br></br>
           </Form>
-        </div>
       </Formik>
 
-      {status && (
-        <div className='alert alert-success' role='alert'>
-          You are registered. Your account will be activated within 24 hours of
-          Payment.&nbsp;
-          <button
-            className='btn btn-success'
-            onClick={() => setPaymentModal(true)}
-          >
-            Click here for payment details.
-          </button>
-        </div>
-      )}
-
-      {paymentModal && (
-        <div
-          className='modal'
-          style={{ display: 'block', background: 'rgba(100,100,100,0.8)' }}
-        >
-          <div className='modal-dialog'>
-            <div className='modal-content'>
-              <div className='modal-header'>
-                <h5 className='modal-title text-center' id='exampleModalLabel'>
-                  Payment Details
-                </h5>
-                {/* <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> */}
-              </div>
-              <div className='modal-body'>
-                Fee - Rs 300<br></br>
-                <br></br>
-                Note - Please, make payment from registered mobile number and
-                send the screenshot on WhatsApp (9135707273).
-                <br></br>
-                <br></br>
-                <img src={nss_payment} height={400} alt='Payment QR' />
-              </div>
-              <div className='modal-footer text-center'>
-                <button
-                  type='button'
-                  className='btn btn-secondary'
-                  onClick={() => setPaymentModal(false)}
-                >
-                  Close
-                </button>
-                {/* <button type="button" className="btn btn-primary">Save changes</button> */}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+      <ConfirmationModal
+        show={modalShow}
+        modalMessage="You Want to Add the New Vendor"
+        onHide={() => setModalShow(false)}
+        confirmation={confirmSubmittedVendor}
+        operationType="Add"
+        wantToAddData={true}
+      />
+    </>
+      
   );
 };
 
