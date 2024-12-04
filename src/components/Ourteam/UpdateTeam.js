@@ -29,7 +29,7 @@ const UpdateTeam = () => {
         const data = res.data[0];
         setFormValues({
           name: data.name,
-          designation: data.designation, 
+          designation: data.designation,
           department: data.department,
           image: data.image,
           description: data.description,
@@ -39,52 +39,56 @@ const UpdateTeam = () => {
       .catch(err => console.log(err));
   }, [id]);
 
-  const handleFileChange = event => {
+  const handleFileChange = (event) => {
     setImage(event.target.files[0]);
   };
 
-  const openConfirmationModal = values => {
+  const openConfirmationModal = (values) => {
     const isUnchanged = Object.keys(formValues).every(
       (key) => formValues[key] === values[key]
     ) && !image;
 
     if (isUnchanged) {
-      setModalMessage('No changes were made. Nothing to update.');
-      setFormValuesChanged(false);
+      setModalMessage('No changes were made. Do you still want to proceed?');
     } else {
-      setModalMessage('You really want to update this team member.');
+      setModalMessage('You really want to update this team member?');
       setFormValuesChanged(true);
       setUpdatedFormData(values);
     }
     setModalShow(true);
   };
 
+  const closeModal = () => setModalShow(false);
+
   const submitUpdate = async () => {
-    try {
-      const formDataToSend = new FormData();
-      Object.keys(updatedFormData).forEach(key => {
-        formDataToSend.append(key, updatedFormData[key]);
-      });
+    if (!formValuesChanged) {
+      navigate('/teamlist'); // Redirect to TeamList if no changes were made
+    } else {
+      try {
+        const formDataToSend = new FormData();
+        Object.keys(updatedFormData).forEach((key) => {
+          formDataToSend.append(key, updatedFormData[key]);
+        });
 
-      if (image) {
-        formDataToSend.append('image', image);
-      }
-
-      await axios.put(
-        `${process.env.REACT_APP_API_URL}ourteam/updateourteam/${id}`,
-        formDataToSend,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+        if (image) {
+          formDataToSend.append('image', image);
         }
-      );
 
-      setModalShow(false);
-      navigate('/teamlist');
-    } catch (err) {
-      console.log(err);
-      setModalShow(false);
+        await axios.put(
+          `${process.env.REACT_APP_API_URL}ourteam/updateourteam/${id}`,
+          formDataToSend,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        navigate('/teamlist');
+      } catch (err) {
+        console.log(err);
+      } finally {
+        closeModal();
+      }
     }
   };
 
@@ -149,10 +153,10 @@ const UpdateTeam = () => {
 
       <ConfirmationModal
         show={modalShow}
-        onHide={()=> setModalShow(false)}
+        onHide={closeModal}
         modalMessage={modalMessage}
         confirmation={submitUpdate}
-        wantToAddData={formValuesChanged}
+        wantToAddData={true}  // Always show "Confirm" & "Cancel"
         operationType="Confirm"
       />
     </>
