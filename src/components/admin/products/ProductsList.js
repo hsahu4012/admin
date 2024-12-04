@@ -103,11 +103,11 @@ const ProductsList = () => {
       toast.error('Please select products to set to out of stock.');
     }
   };
-  
+
   const handleAllOutOfStock = async () => {
     if (selectAll) {
       try {
-        const url =  process.env.REACT_APP_API_URL + `products/setstocktozero`;
+        const url = process.env.REACT_APP_API_URL + `products/setstocktozero`;
         const allProductIds = products.map(product => product.productid); // Get all product IDs in the selected category
         await axios.put(url, { productIds: allProductIds });
         toast.success('All products in this category set to out of stock!');
@@ -123,18 +123,18 @@ const ProductsList = () => {
       toast.error('Please select the "Select All" checkbox first.');
     }
   };
-  
-  
+
+
   const switchVisibility = async (productid, isVisible) => {
     setLoading(true);
     try {
       const url = process.env.REACT_APP_API_URL + `products/updateProduct/${productid}`;
       const updatedData = isVisible ? { stock_quantity: 100, isactive: 1 } : { isactive: -1 };
-  
+
       await axios.put(url, updatedData);
-  
+
       toast.success(isVisible ? 'Product is now visible!' : 'Product is now hidden!');  //Notification Message
-  
+
       setProducts(prevProducts =>
         prevProducts.map(product =>
           product.productid === productid
@@ -148,7 +148,7 @@ const ProductsList = () => {
     }
     setLoading(false);
   };
-  
+
 
   const handleAllCategoriesClick = async () => {
 
@@ -200,15 +200,15 @@ const ProductsList = () => {
 
   const handleStockClick = async (id, stock) => {
     try {
-      (stock > 0 && stock < 100) ? await axios.put(process.env.REACT_APP_API_URL + `products/updateStockQuantity/${id}/0`)
-        : await axios.put(process.env.REACT_APP_API_URL + `products/updateStockQuantity/${id}/100`);
+      (stock < 1) ? await axios.put(process.env.REACT_APP_API_URL + `products/updateStockQuantity/${id}/100`)
+        : await axios.put(process.env.REACT_APP_API_URL + `products/updateStockQuantity/${id}/0`);
       toast.success('Product Stock updated successfully!');
     } catch (error) {
       toast.error('Failed to update the Stock Quantity.');
     }
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 1000);
   };
   const handleValueChange = (field, value) => {
     setEditedValues({ ...editedValues, [field]: value });
@@ -275,8 +275,8 @@ const ProductsList = () => {
       </div>
 
       <div>
-        Total No of Products - {products && products.length} <br/>
-        Selected Products - {selectedProducts.length} <br/>
+        Total No of Products - {products && products.length} <br />
+        Selected Products - {selectedProducts.length} <br />
         <button
           className='btn btn-success m-1'
           onClick={handleShowSelection}
@@ -300,7 +300,7 @@ const ProductsList = () => {
       <button onClick={handleAllOutOfStock} disabled={!selectAll} className="btn btn-warning m-1">
         All Out of Stock
       </button>
-      
+
       <table className='table table-responsive table-striped table-bordered'>
         <thead className=''>
           <tr>
@@ -431,14 +431,14 @@ const ProductsList = () => {
                       Edit
                     </Link>
                   </span>
- 
+
                   {/* Hide and Show Button */}
                   <button
-                     onClick={() => switchVisibility(temp.productid, temp.isactive === -1)}
-                     className='btn m-1'
-                     style={{ backgroundColor: temp.isactive === -1 ? 'lightgreen' : 'lightcoral', color: 'black' }}
+                    onClick={() => switchVisibility(temp.productid, temp.isactive === -1)}
+                    className='btn m-1'
+                    style={{ backgroundColor: temp.isactive === -1 ? 'lightgreen' : 'lightcoral', color: 'black' }}
                   >
-                     {temp.isactive === -1 ? 'Show' : 'Hide'}
+                    {temp.isactive === -1 ? 'Show' : 'Hide'}
                   </button>
 
                   <span className='d-inline-block w-60 '>
@@ -459,13 +459,13 @@ const ProductsList = () => {
                   >
                     Delete
                   </button>
-                  <button onClick={() => {
+                   {/* <button onClick={() => {
                     handleStockClick(temp.productid, temp.stock_quantity);
                   }} className='btn btn-warning m-1'
                   >
                     {temp.stock_quantity === 0 ? "Stock" : "Out of Stock"}
-                  </button>
-                </td>
+                  </button> */}
+                </td> 
 
                 {/* <td>
                                 <Link to={`/productview/${temp.productid}`} className='btn btn-success'>View</Link>
