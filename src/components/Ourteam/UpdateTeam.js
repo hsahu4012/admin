@@ -49,7 +49,7 @@ const UpdateTeam = () => {
     ) && !image;
 
     if (isUnchanged) {
-      setModalMessage('No changes were made. Do you still want to proceed?');
+      setModalMessage('No changes were made. Nothing to update.');
     } else {
       setModalMessage('You really want to update this team member?');
       setFormValuesChanged(true);
@@ -157,7 +157,7 @@ const UpdateTeam = () => {
         modalMessage={modalMessage}
         confirmation={submitUpdate}
         wantToAddData={true}  // Always show "Confirm" & "Cancel"
-        operationType="Confirm"
+        operationType="OK"
       />
     </>
   );
