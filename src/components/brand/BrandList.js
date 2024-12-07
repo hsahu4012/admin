@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { ConfirmationModal } from '../shared/ConfirmationModal';
+import { toast,ToastContainer } from 'react-toastify';
 
 const BrandList = () => {
   const [brands, setBrands] = useState([]);
+  const [modalShow,setModalShow] = useState(false);
+  const [deletedId,setDeletedId] = useState(null);
+
 
   useEffect(() => {
     axios
@@ -13,15 +18,24 @@ const BrandList = () => {
   }, []);
 
   const removeBrand = id => {
-    axios
-      .put(`${process.env.REACT_APP_API_URL}brand/removebrand/${id}`)
-      .then(response =>
-        setBrands(brands.filter(brand => brand.brand_id !== id))
-      )
-      .catch(error => console.error('Error removing brand:', error));
+    setDeletedId(id);
+    setModalShow(true);
   };
 
+  const confirmDeleteBrand = async()=>{
+    axios
+      .put(`${process.env.REACT_APP_API_URL}brand/removebrand/${deletedId}`)
+      .then(response =>
+        setBrands(brands.filter(brand => brand.brand_id !== deletedId))
+      )
+      .catch(error => console.error('Error removing brand:', error));
+      toast.success("Brand Deleted Successfully");
+      setModalShow(false);
+  }
+
   return (
+    <>
+    <ToastContainer/>
     <div>
       <h1>Brand List</h1>
       <Link to='/brandcreate' className='btn btn-primary'>
@@ -56,6 +70,16 @@ const BrandList = () => {
         </tbody>
       </table>
     </div>
+
+    <ConfirmationModal
+        show={modalShow}
+        modalMessage = "you really want to Remove this Brand"
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmDeleteBrand}
+        operationType = "Delete"
+        wantToAddData = {true}
+      />
+    </>
   );
 };
 
