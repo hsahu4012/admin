@@ -55,15 +55,16 @@ const BrandList = () => {
               <td>{brand.brand_id}</td>
               <td>{brand.brand_name}</td>
               <td>
-                <button onClick={() => removeBrand(brand.brand_id)}>
-                  Remove
-                </button>
-                <Link
+              <Link
                   to={`/brandupdate/${brand.brand_id}`}
                   className='btn btn-warning'
                 >
                   Edit
                 </Link>
+                <button onClick={() => removeBrand(brand.brand_id)}
+                className='btn btn-danger mx-2'>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

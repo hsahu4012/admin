@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ConfirmationModal } from '../shared/ConfirmationModal';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-bootstrap';
+import { Formik, Field, Form } from 'formik';
 
 const BrandCreate = () => {
-  const [brandName, setBrandName] = useState('');
-  const [brandImage, setBrandImage] = useState('');
-  const [vendorId, setVendorId] = useState('');
   const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate();
   const [modalShow,setModalShow] = useState(false)
   const [formValue ,setFormValue] = useState({});
+  const [vendorIds , setVendorIds] = useState([]);
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    setFormValue({
-      brand_name: brandName,
-      brand_image: brandImage,
-      vendor_id: vendorId,
-  })
+  const initialFormValues = {
+    brand_name: '',
+    brand_image: '',
+    vendor_id: '',
+  };
+
+  const handleSubmit =  values => {
+    setFormValue(values)
   setModalShow(true);
   };
 
@@ -38,40 +38,59 @@ const BrandCreate = () => {
     }
   }
 
+  useEffect(() => {
+    const fetchVendorIds = async()=>{
+      try{
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}vendor/allvendors`)
+        const allVendorIds = response.data.map(vendor => vendor.vendor_id);
+        setVendorIds(allVendorIds);
+     }catch(error){
+      console.log(error)
+     }
+    }
+
+    fetchVendorIds();
+    console.log(vendorIds);
+  }, [])
+  
   return (
     <>
     <div>
       <ToastContainer/>
       <h2 className='text-center mb-5'>Add New Brand</h2>
-      <form onSubmit={handleSubmit}>
+      <Formik
+       enableReinitialize={true}
+       initialValues={initialFormValues}
+      onSubmit={(values) => handleSubmit(values)}
+      >
+      <Form>
         <div className='row mb-2'>
           <label className='col-4 my-2 text-center'>Brand Name:</label>
-          <input
+          <Field
           className='col-6'
             type='text'
-            value={brandName}
-            onChange={e => setBrandName(e.target.value)}
+            name="brand_name"
             required
           />
         </div>
         <div className='row mb-2'>
           <label className='col-4 my-2 text-center'>Brand Image URL:</label>
-          <input
+          <Field
+          name="brand_image"
           className='col-6'
             type='file'
-            value={brandImage}
-            onChange={e => setBrandImage(e.target.files[0])} // Handle file input
           />
         </div>
         <div className='row mb-2'>
           <label className='col-4 my-2 text-center'>Vendor ID:</label>
-          <input
-          className='col-6'
-            type='text'
-            value={vendorId}
-            onChange={e => setVendorId(e.target.value)}
-            required
-          />
+          <Field as="select" name="vendor_id" className="col-6" required>
+              <option value="">Select an User ID</option>
+              {vendorIds.map((vendor) => (
+                <option key={vendor} value={vendor}>
+                  {vendor}
+                </option>
+              ))}
+            </Field>
         </div>
         <div className='text-center my-4'>
             <button 
@@ -86,7 +105,8 @@ const BrandCreate = () => {
               Back
             </Link>
           </div>
-      </form>
+      </Form>
+      </Formik>
     </div>
     
     <ConfirmationModal

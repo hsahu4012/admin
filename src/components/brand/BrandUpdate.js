@@ -9,6 +9,7 @@ const BrandUpdate = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
+    vendor_id:'',
     brand_name: '',
     brand_id:'',
   });
@@ -27,6 +28,7 @@ const BrandUpdate = () => {
           response.data && response.data.length > 0 ? response.data[0] : null;
         if (brand) {
           setFormValues({
+            vendor_id:brand.vendor_id,
             brand_name: brand.brand_name,
             brand_id: brand.brand_id,
           });
@@ -89,7 +91,11 @@ const BrandUpdate = () => {
       >
         <Form className='brandUpdateForm'>
         <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'>Brand Name:</label>
+            <label className='col-4 my-2 text-center'>Vendor Id:</label>
+            <Field name='vendor_id' type='text' className='col-6' readOnly />
+          </div>
+        <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'>Brand Id:</label>
             <Field name='brand_id' type='text' className='col-6' readOnly />
           </div>
           <div className='row mb-2'>
