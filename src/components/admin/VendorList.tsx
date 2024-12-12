@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { ConfirmationModal } from '../shared/ConfirmationModal';
 
 const VendorList = () => {
   const [vendorList, setVendorList] = useState<any[]>([]);
+  const [modalShow, setModalShow] = useState(false);
+  const [selectedVendorId, setSelectedVendorId] = useState(null);
 
   const callApiExamsList = async () => {
     try {
       const url = process.env.REACT_APP_API_URL + 'vendor/allvendors';
       const response = await axios.get(url);
-      console.log(response.data);
+      // console.log(response.data);
       setVendorList(response.data);
     } catch (error) {
       console.log(error);
@@ -21,17 +24,22 @@ const VendorList = () => {
   }, []);
 
   const deleteVendor = async (id: any) => {
-    // eslint-disable-next-line no-restricted-globals
-    var val = confirm('Sure you want to delete vendor?');
-    if (val === true) {
-      const url = process.env.REACT_APP_API_URL + 'vendor/removevendor/' + id;
-      const response = await axios.put(url);
-      console.log(response);
-      alert('Vendor deleted');
-    } else {
-      alert('Vendor not Deleted');
-    }
+    const url = process.env.REACT_APP_API_URL + 'vendor/removevendor/' + id;
+    const response = await axios.put(url);
+    // console.log(response);
     callApiExamsList();
+  };
+
+  const handleDeleteClick = (id: any) => {
+    setSelectedVendorId(id);
+    setModalShow(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedVendorId !== null) {
+      deleteVendor(selectedVendorId);
+      setModalShow(false);
+    }
   };
 
   function TableBody() {
@@ -52,8 +60,8 @@ const VendorList = () => {
         </td>
         <td>
           <button
-            onClick={() => deleteVendor(item.vendor_det_srno)}
-            className='btn btn-primary'
+            onClick={() => handleDeleteClick(item.vendor_det_srno)}
+            className='btn btn-danger'
           >
             Delete Vendor
           </button>
@@ -108,6 +116,15 @@ const VendorList = () => {
         <TableBody />
       </table>
       <br></br>
+
+      <ConfirmationModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        modalMessage="Are you sure you want to delete this vendor?"
+        confirmation={handleConfirmDelete}
+        operationType="Delete"
+        wantToAddData={true}
+      />
     </div>
   );
 };
