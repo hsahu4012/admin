@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import { toast, ToastContainer } from 'react-toastify';
 const Orderslist = () => {
   const [orders, setOrders] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,27 +17,53 @@ const Orderslist = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async id => {
-    console.log(id, 'hii');
-    try {
-      const confirmed = window.confirm(
-        'Are you sure you want to delete this order?'
-      );
-      if (confirmed) {
-        await axios.put(
-          `${process.env.REACT_APP_API_URL}orders/romoveOrder/${id}`
-        );
-        setOrders(orders.filter(item => item.order_id !== id));
+  // const handleDelete = async id => {
+  //   console.log(id, 'hii');
+  //   try {
+  //     const confirmed = window.confirm(
+  //       'Are you sure you want to delete this order?'
+  //     );
+  //     if (confirmed) {
+  //       await axios.put(
+  //         `${process.env.REACT_APP_API_URL}orders/romoveOrder/${id}`
+  //       );
+  //       setOrders(orders.filter(item => item.order_id !== id));
 
-        window.location.reload();
-      }
+  //       window.location.reload();
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const handleDelete = async()  => {
+    try {
+      await axios.put(
+        `${process.env.REACT_APP_API_URL}orders/romoveOrder/${deleteId}`
+      );
+
+      setOrders(orders.filter(item => item.order_id !== deleteId));
+        setShowModal(false);
+        toast.success('Order Deleted Successfully');
     } catch (err) {
       console.log(err);
+      toast.error('Failed to delete order');
     }
+  }
+   const openModal = (id) => {
+    setDeleteId(id);
+    setShowModal(true);
+  };
+
+  const closeModal = (id) => {
+    setShowModal(false);
+    setDeleteId(null);
+
   };
 
   return (
     <div className='container'>
+      <ToastContainer />
       <h2 className='w-100 d-flex justify-content-center p-3'>Orders List</h2>
       <div className='row'>
         <div className='col-md-12'>
@@ -80,6 +108,7 @@ const Orderslist = () => {
                     <td>{item.delivery_status}</td>
                     <td>{item.tracking_id}</td>
                     <td>{item.delivery_partner}</td>
+                    
                     <td className='now'>
                       <Link
                         to={`/orderUpdate/${item.order_id}`}
@@ -88,7 +117,7 @@ const Orderslist = () => {
                         Edit
                       </Link>
                       <button
-                        onClick={() => handleDelete(item.order_id)}
+                        onClick={() => openModal(item.order_id)}
                         className='btn btn-danger'
                       >
                         Delete
@@ -101,8 +130,38 @@ const Orderslist = () => {
           </table>
         </div>
       </div>
+      {showModal && (
+        <div className='modal fade show' style={{ display: 'block',backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+          <div className='modal-dialog modal-dialog-centered'>
+            <div className='modal-content'>
+              <div className='modal-body'>
+                <p>Are you sure you want to delete this order?</p>
+              </div>
+              <div className='modal-footer'>
+                <button
+                  type='button'
+                  className='btn btn-secondary'
+                  onClick={closeModal}
+                >
+                  Cancel
+                </button>
+                <button
+                  type='button'
+                  className='btn btn-danger'
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
+
+      
+  
 };
 
 export default Orderslist;
