@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Field, Form } from 'formik';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { ConfirmationModal } from '../shared/ConfirmationModal';
 
 const UpdateTeam = () => {
   const { id } = useParams();
@@ -16,8 +17,10 @@ const UpdateTeam = () => {
   });
 
   const [image, setImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState(null);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [formValuesChanged, setFormValuesChanged] = useState(false);
+  const [updatedFormData, setUpdatedFormData] = useState(null);
 
   useEffect(() => {
     axios
@@ -36,69 +39,70 @@ const UpdateTeam = () => {
       .catch(err => console.log(err));
   }, [id]);
 
-  const handleFileChange = event => {
+  const handleFileChange = (event) => {
     setImage(event.target.files[0]);
   };
 
-  const openModal = (values) => {
-    setFormData(values);
-    setIsModalOpen(true);
+  const openConfirmationModal = (values) => {
+    const isUnchanged = Object.keys(formValues).every(
+      (key) => formValues[key] === values[key]
+    ) && !image;
+
+    if (isUnchanged) {
+      setModalMessage('No changes were made. Nothing to update.');
+    } else {
+      setModalMessage('You really want to update this team member?');
+      setFormValuesChanged(true);
+      setUpdatedFormData(values);
+    }
+    setModalShow(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const closeModal = () => setModalShow(false);
 
   const submitUpdate = async () => {
-    try {
-      const isUnchanged = Object.keys(formValues).every(
-        key => formValues[key] === formData[key]
-      );
+    if (!formValuesChanged) {
+      navigate('/teamlist'); // Redirect to TeamList if no changes were made
+    } else {
+      try {
+        const formDataToSend = new FormData();
+        Object.keys(updatedFormData).forEach((key) => {
+          formDataToSend.append(key, updatedFormData[key]);
+        });
 
-      if (isUnchanged && !image) {
-        alert('No changes were made. Nothing to update.');
-        closeModal();
-        return;
-      }
-
-      const formDataToSend = new FormData();
-      Object.keys(formData).forEach(key => {
-        formDataToSend.append(key, formData[key]);
-      });
-
-      if (image) {
-        formDataToSend.append('image', image);
-      }
-
-      await axios.put(
-        `${process.env.REACT_APP_API_URL}ourteam/updateourteam/${id}`,
-        formDataToSend,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+        if (image) {
+          formDataToSend.append('image', image);
         }
-      );
 
-      closeModal();
-      navigate('/teamlist');
-    } catch (err) {
-      console.log(err);
-      closeModal();
+        await axios.put(
+          `${process.env.REACT_APP_API_URL}ourteam/updateourteam/${id}`,
+          formDataToSend,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        navigate('/teamlist');
+      } catch (err) {
+        console.log(err);
+      } finally {
+        closeModal();
+      }
     }
   };
 
   return (
     <>
-      <h3 className='text-center mb-5'> Update Team</h3>
+      <h3 className='text-center mb-5'>Update Team</h3>
       <Formik
         enableReinitialize={true}
         initialValues={formValues}
-        onSubmit={values => openModal(values)}
+        onSubmit={values => openConfirmationModal(values)}
       >
         <Form>
           <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'> Name:</label>
+            <label className='col-4 my-2 text-center'>Name:</label>
             <Field name='name' type='text' className='col-6' />
           </div>
           <div className='row mb-2'>
@@ -119,7 +123,7 @@ const UpdateTeam = () => {
             />
           </div>
           <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'> New Image:</label>
+            <label className='col-4 my-2 text-center'>New Image:</label>
             <input
               name='image'
               type='file'
@@ -137,27 +141,24 @@ const UpdateTeam = () => {
           </div>
 
           <div className='text-center'>
-            <button type='submit' className='btn btn-primary mx-2'>Submit</button>
-            <Link to='/teamlist' className='btn btn-danger'>Back</Link>
+            <button type='submit' className='btn btn-primary mx-2'>
+              Submit
+            </button>
+            <Link to='/teamlist' className='btn btn-danger'>
+              Back
+            </Link>
           </div>
         </Form>
       </Formik>
 
-      {isModalOpen && (
-        <div className="modal fade show" tabIndex="-1" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-          <div className="modal-dialog modal-dialog-centered"> 
-            <div className="modal-content">
-              <div className="modal-body">
-                <p className="text-dark">Are you sure you want to update this team member?</p>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-danger" onClick={closeModal}>Cancel</button>
-                <button type="button" className="btn btn-primary" onClick={submitUpdate}>Confirm</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmationModal
+        show={modalShow}
+        onHide={closeModal}
+        modalMessage={modalMessage}
+        confirmation={submitUpdate}
+        wantToAddData={true}  // Always show "Confirm" & "Cancel"
+        operationType="OK"
+      />
     </>
   );
 };

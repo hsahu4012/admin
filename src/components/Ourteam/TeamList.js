@@ -54,7 +54,7 @@ const TeamList = () => {
               Add New Team Member
             </Link>
           </p>
-          <table className='table table-striped '>
+          <table className='table table-striped'>
             <thead>
               <tr>
                 <th>SrNo</th>
@@ -86,7 +86,7 @@ const TeamList = () => {
                     </td>
                     <td>{item.description}</td>
                     <td>{item.sequence}</td>
-                    <td>
+                    <td className='now'>
                       <Link
                         to={`/updateTeam/${item.id}`}
                         className='btn btn-primary mx-2'
