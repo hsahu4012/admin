@@ -16,12 +16,14 @@ const UpdateContact = () => {
     resolvestatus: '',
   });
 
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isNoChangeModalOpen, setIsNoChangeModalOpen] = useState(false);
+  const [formSubmittedValues, setFormSubmittedValues] = useState(null);
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}contact/getById/${id}`)
       .then(res => {
-        console.log(res);
-
         let obj = {
           name: res.data[0].name,
           email: res.data[0].email,
@@ -32,41 +34,47 @@ const UpdateContact = () => {
           resolvestatus: res.data[0].resolvestatus,
         };
         setFormValues(obj);
-        console.log(res.data[0]);
       })
       .catch(err => console.log(err));
   }, [id]);
 
-  const contactUpdate = async values => {
+  const contactUpdate = async (values) => {
     try {
-      // Check if form values are unchanged
-      const isUnchanged = Object.keys(formValues).every(
-        key => formValues[key] === values[key]
+      // Call API to update the contact
+      await axios.put(
+        `${process.env.REACT_APP_API_URL}contact/updateContact/${id}`,
+        values
       );
-
-      if (isUnchanged) {
-        alert('No changes were made. Nothing to update.');
-        return;
-      }
-      //after form values update
-      const confirmed = window.confirm(
-        'Are you sure you want to Update this contact?'
-      );
-      if (confirmed === true) {
-        await axios.put(
-          `${process.env.REACT_APP_API_URL}contact/updateContact/${id}`,
-          values
-        );
-        navigate('/ContactList');
-      }
+      navigate('/ContactList');
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
-    console.log('formValues', formValues);
-  }, [formValues]);
+  const handleFormSubmit = (values) => {
+    const isUnchanged = Object.keys(formValues).every(
+      (key) => formValues[key] === values[key]
+    );
+
+    if (isUnchanged) {
+      setIsNoChangeModalOpen(true);
+      return;
+    }
+    setFormSubmittedValues(values);
+    setIsConfirmationModalOpen(true);
+  };
+
+  const confirmUpdate = async () => {
+    if (formSubmittedValues) {
+      await contactUpdate(formSubmittedValues);
+      setIsConfirmationModalOpen(false);
+    }
+  };
+
+  const closeModals = () => {
+    setIsConfirmationModalOpen(false);
+    setIsNoChangeModalOpen(false);
+  };
 
   return (
     <>
@@ -74,7 +82,7 @@ const UpdateContact = () => {
       <Formik
         enableReinitialize={true}
         initialValues={formValues}
-        onSubmit={values => contactUpdate(values)}
+        onSubmit={handleFormSubmit}
       >
         <Form>
           <div className='row mb-2'>
@@ -115,6 +123,69 @@ const UpdateContact = () => {
           </div>
         </Form>
       </Formik>
+
+      {/* No Changes Modal */}
+      {isNoChangeModalOpen && (
+        <div
+          className="modal fade show"
+          style={{
+            display: 'block',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-body">
+                <p>No changes were made. Nothing to update.</p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={closeModals} // Close the modal
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirmation Modal */}
+      {isConfirmationModalOpen && (
+        <div
+          className="modal fade show"
+          style={{
+            display: 'block',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-body">
+                <p>Are you sure you want to update this contact?</p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={closeModals} // Close modal on cancel
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={confirmUpdate} // Confirm and proceed with update
+                >
+                  Confirm Update
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

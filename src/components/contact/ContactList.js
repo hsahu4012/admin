@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const ContactList = () => {
   const [contact, setContact] = useState([]);
+  const [selectedContactId, setSelectedContactId] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,23 +17,32 @@ const ContactList = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async id => {
-    console.log(id, 'hii');
-    try {
-      const confirmed = window.confirm(
-        'Are you sure you want to delete this contact?'
-      );
-      if (confirmed) {
-        await axios.put(
-          `${process.env.REACT_APP_API_URL}contact/removeContact/${id}`
-        );
-        setContact(contact.filter(item => item.id !== id));
+  const openDeleteModal = (id) => {
+    setSelectedContactId(id);
+    setIsDeleteModalOpen(true);
+  };
 
-        window.location.reload();
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedContactId(null);
+  };
+
+  const handleDelete = async () => {
+    if (selectedContactId !== null) {
+      try {
+        await axios.put(
+          `${process.env.REACT_APP_API_URL}contact/removeContact/${selectedContactId}`
+        );
+        setContact((prevContacts) =>
+          prevContacts.filter((item) => item.contactid !== selectedContactId)
+        );
+
+        setSelectedContactId(null);
+      } catch (err) {
+        console.error('Error deleting contact:', err);
       }
-    } catch (err) {
-      console.log(err);
     }
+    closeDeleteModal();
   };
 
   return (
@@ -49,7 +60,7 @@ const ContactList = () => {
               <tr>
                 <th>SrNo</th>
                 <th>Contact Id</th>
-                <th> Name</th>
+                <th>Name</th>
                 <th>Email</th>
                 <th>Mobile No</th>
                 <th>Address</th>
@@ -85,7 +96,7 @@ const ContactList = () => {
                         Edit
                       </Link>
                       <button
-                        onClick={() => handleDelete(item.contactid)}
+                        onClick={() => openDeleteModal(item.contactid)}
                         className='btn btn-danger'
                       >
                         Delete
@@ -98,6 +109,38 @@ const ContactList = () => {
           </table>
         </div>
       </div>
+
+      {/* Modal for delete confirmation */}
+      {isDeleteModalOpen && (
+        <div
+          className='modal fade show'
+          style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+        >
+          <div className='modal-dialog modal-dialog-centered'>
+            <div className='modal-content'>
+              <div className='modal-body'>
+                <p>Are you sure you want to delete this contact?</p>
+              </div>
+              <div className='modal-footer'>
+                <button
+                  type='button'
+                  className='btn btn-secondary'
+                  onClick={closeDeleteModal} // Close modal on cancel
+                >
+                  Cancel
+                </button>
+                <button
+                  type='button'
+                  className='btn btn-danger'
+                  onClick={handleDelete} // Proceed with delete on confirmation
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
