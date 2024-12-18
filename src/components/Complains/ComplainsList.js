@@ -47,6 +47,7 @@ export const ComplainsList = () => {
             <th>Sr No</th>
             <th>Complain ID</th>
             <th>Order ID</th>
+            <th>User ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Mobile no.</th>
@@ -62,7 +63,8 @@ export const ComplainsList = () => {
               <tr>
                 <td>{index + 1}</td>
                 <td>{temp.complainid}</td>
-                <td>{temp.orderid || temp.userid}</td>
+                <td>{temp.orderid}</td>
+                <td>{temp.userid}</td>
                 <td>{temp.name}</td>
                 <td>{temp.email}</td>
                 <td>{temp.mobile}</td>
