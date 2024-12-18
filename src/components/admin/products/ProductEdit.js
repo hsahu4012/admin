@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Field, Form } from 'formik';
 import JoditEditor from 'jodit-react';
+import { ConfirmationModal } from '../../shared/ConfirmationModal';
+import { toast,ToastContainer } from 'react-toastify';
 const ProductEdit = () => {
   const { productid } = useParams();
   const navigate = useNavigate();
@@ -15,6 +17,9 @@ const ProductEdit = () => {
   const [brands, setBrands] = useState([]);
   const [discountAmount, setDiscountAmount] = useState('');
   const [discountPercentage, setDiscountPercentage] = useState('');
+  const [modalShow,setModalShow] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [formValuesChanged ,setFormValuesChanged] = useState(false)
 
   useEffect(() => {
     const fetchProductById = async id => {
@@ -69,34 +74,52 @@ const ProductEdit = () => {
     }
   };
 
-  const editProduct = async values => {
+  const editProduct =  values => {
+    try{
+      const isUnchanged = Object.keys(product).every(
+        key => product[key] === values[key]
+      );
+      if (isUnchanged) {
+        setModalMessage('No changes were made. Nothing to update.');
+      }else{
+        setModalMessage('You really want to Update the Address.');
+        setFormValuesChanged(true)
+        setProduct(values);
+      }
+      setModalShow(true)
+    }catch(error){
+      console.log(error)
+    }
+  };
+
+  const confirmUpdateProduct = async()=>{
     try {
       const formData = new FormData();
-      const { category, subcategory, ...otherValues } = values;
+      const { category, subcategory, ...otherValues } = product;
       const categoryObject = categories.find(
         cat => cat.category_id === category
       );
       // const subcategoryObject = subcategories.find(subcat => subcat.subcategory_id === subcategory);
       const changedSubcategory = selectedCategory.join('#');
-      formData.append('prod_name', values.prod_name);
+      formData.append('prod_name', product.prod_name);
       formData.append(
         'category',
         categoryObject ? categoryObject.category_id : ''
       );
       // formData.append('subcategory', subcategoryObject ? subcategoryObject.subcategory_id : '');
       formData.append('subcategory', changedSubcategory);
-      formData.append('price', values.price);
-      formData.append('stock_quantity', values.stock_quantity);
-      formData.append('brand', values.brand);
-      formData.append('discount', values.discount);
+      formData.append('price', product.price);
+      formData.append('stock_quantity', product.stock_quantity);
+      formData.append('brand', product.brand);
+      formData.append('discount', product.discount);
       formData.append('productid', productid);
       if (imageFile) {
         formData.append('image', imageFile);
       } else {
         formData.append('image', 'true');
       }
-      if (values.prod_desc) {
-        formData.append('prod_desc', values.prod_desc);
+      if (product.prod_desc) {
+        formData.append('prod_desc', product.prod_desc);
       }
       const url =
         process.env.REACT_APP_API_URL + 'products/updateProduct/' + productid;
@@ -111,13 +134,15 @@ const ProductEdit = () => {
           process.env.REACT_APP_API_URL + 'products/productById/' + productid;
         const updatedProductResponse = await axios.get(updatedProductUrl);
         setProduct(updatedProductResponse.data);
+        setModalShow(false)
+        toast.success("Product Updated Successfully")
         navigate('/productslist');
       }
       console.log(changedSubcategory);
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const handleDiscountPercentageChange = (
     percentage,
@@ -149,6 +174,8 @@ const ProductEdit = () => {
   };
 
   return (
+    <>
+    <ToastContainer/>
     <div>
       <h2>Products Edit</h2>
 
@@ -367,6 +394,16 @@ const ProductEdit = () => {
         )}
       </Formik>
     </div>
+
+    <ConfirmationModal
+        show={modalShow}
+        modalMessage = {modalMessage}
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmUpdateProduct}
+        operationType = "Update"
+        wantToAddData = {formValuesChanged}
+      />
+    </>
   );
 };
 

@@ -3,13 +3,14 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Loader from '../../loader/Loader';
+import { ConfirmationModal } from '../../shared/ConfirmationModal';
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [categoryid, setCategoryid] = useState(null);
   const [editingProductId, setEditingProductId] = useState(null);
   const [editedValues, setEditedValues] = useState({});
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
   const [loading, setLoading] = useState(false);
   const [btnAll, setBtnAll] = useState(false);
@@ -17,6 +18,7 @@ const ProductsList = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [showSelection, setShowSelection] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
+  const [modalShow,setModalShow] = useState(false);
 
   const fetchCategories = async () => {
     setLoading(true);
@@ -151,7 +153,7 @@ const ProductsList = () => {
 
 
   const handleAllCategoriesClick = async () => {
-
+    setLoading(true);
     setBtnAll(!btnAll);
     try {
 
@@ -162,6 +164,7 @@ const ProductsList = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const deleteProduct = async productid => {
@@ -452,7 +455,7 @@ const ProductsList = () => {
 
                   <button
                     onClick={() => {
-                      setIsDeleteModalOpen(true);
+                      setModalShow(true);
                       setProductToDelete(temp.productid);
                     }}
                     className='btn btn-danger m-1'
@@ -482,66 +485,23 @@ const ProductsList = () => {
             ))}
         </tbody>
       </table>
-      <DeleteModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        message='Do you want to delete the product?'
-        onConfirm={() => {
+      <ConfirmationModal
+        show={modalShow}
+        modalMessage = "you really want to delete this Product"
+        onHide={() => setModalShow(false)}
+        confirmation ={() => {
           if (productToDelete) {
             deleteProduct(productToDelete);
-            setIsDeleteModalOpen(false);
+            setModalShow(false);
           }
         }}
+        operationType = "Delete"
+        wantToAddData = {true}
       />
     </div>
   );
 };
 
-const DeleteModal = ({ isOpen, onClose, message, onConfirm }) => {
-  return (
-    <>
-      {isOpen && (
-        <div
-          className='modal'
-          tabIndex='-1'
-          role='dialog'
-          aria-labelledby='delete-modal-title'
-          aria-describedby='delete-modal-description'
-          style={{ display: 'block' }}
-        >
-          <div className='modal-dialog' role='document'>
-            <div className='modal-content'>
-              <div className='modal-header'>
-                <h5 className='modal-title' id='delete-modal-title'>
-                  <b>Confirmation</b>
-                </h5>
-              </div>
-              <div className='modal-body' id='delete-modal-description'>
-                <p>{message}</p>
-              </div>
-              <div className='modal-footer'>
-                <button
-                  type='button'
-                  className='btn btn-secondary'
-                  onClick={onClose}
-                >
-                  Cancel
-                </button>
-                <button
-                  type='button'
-                  className='btn btn-primary'
-                  onClick={onConfirm}
-                >
-                  Confirm
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {isOpen && <div className='modal-backdrop fade show'></div>}
-    </>
-  );
-};
+
 
 export default ProductsList;
