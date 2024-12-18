@@ -11,6 +11,7 @@ export const ComplainsEdit = () => {
     email: '',
     mobile: '',
     address: '',
+    subject: '',
     complain_desc: '',
     resolvestatus: '',
   });
@@ -105,6 +106,11 @@ export const ComplainsEdit = () => {
             <Field name='orderid' type='text' className='col-6' required />
           </div>
           <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'>Subject:-</label>
+            <Field name='subject' type='text' className='col-6' required />
+          </div>
+
+          <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>Description:-</label>
             <Field
               name='complain_desc'
@@ -124,9 +130,9 @@ export const ComplainsEdit = () => {
           </div>
 
           <div className='text-center my-4'>
-            <button type='submit' className='py-1 '>
+            <div type='submit' className='btn btn-success'>
               Submit
-            </button>
+            </div>
             <Link to='/complainslist' className='btn btn-danger back'>
               Back
             </Link>

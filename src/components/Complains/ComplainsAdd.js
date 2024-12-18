@@ -12,6 +12,7 @@ export const ComplainsAdd = () => {
     mobile: '',
     address: '',
     orderid: '',
+    subject:'',
     complain_desc: '',
     //resolvestatus: "",
   };
@@ -40,42 +41,47 @@ export const ComplainsAdd = () => {
         initialValues={initialFormValues}
         onSubmit={values => addNewComplain(values)}
       >
-        <div className='row'>
+        <div className='row mb-2'>
           <Form className='examAddForm'>
             {/* o */}
-            <div className='row'>
+            <div className='row mb-2'>
               <label htmlFor='name' className='col-4 my-2'>
                 Order id:
               </label>
               <Field name='orderid' type='text' className='col-8' required />
             </div>
-            <div className='row'>
+            <div className='row mb-2'>
               <label htmlFor='name' className='col-4 my-2'>
                 Name:
               </label>
               <Field name='name' type='text' className='col-8' required />
             </div>
 
-            <div className='row'>
+            <div className='row mb-2'>
               <label htmlFor='email' className='col-4 my-2'>
                 Email
               </label>
               <Field name='email' className='col-8' type='email' required />
             </div>
 
-            <div className='row'>
+            <div className='row mb-2'>
               <label htmlFor='mobile' className='col-4 my-2'>
                 Mobile
               </label>
               <Field name='mobile' type='text' className='col-8' required />
             </div>
 
-            <div className='row'>
+            <div className='row mb-2'>
               <label className='col-4 my-2'>Address:-</label>
-              <Field name='address' type='text' className='col-6' required />
+              <Field name='address' type='text' className='col-8' required />
             </div>
 
-            <div className='row'>
+            <div className='row mb-2'>
+              <label htmlFor='subject' className='col-4 my-2'>Subject</label>
+              <Field name='subjet' type='text' className='col-8' required/>
+            </div>
+
+            <div className='row mb-2'>
               <label htmlFor='password' className='col-4 my-2'>
                 Description
               </label>
@@ -87,26 +93,21 @@ export const ComplainsAdd = () => {
               />
             </div>
 
-            <div className='row'>
-              <div className='text-center my-4'>
-                <button type='submit' className='btn btn-success'>
-                  Add Complain
-                </button>
-              </div>
-            </div>
+           
 
-            <br></br>
+            <div className='text-center my-4'>
+                        <button type='submit' className='btn btn-success'>
+                          Add Complain
+                        </button>
+                        <Link to='/complainslist' className='btn btn-primary back'>
+                          Back to Complain List
+                        </Link>
+                      </div>
           </Form>
         </div>
       </Formik>
 
-      <div className='row'>
-        <div className='text-center my-4'>
-          <Link to='/complainslist' className='btn btn-primary'>
-            Back to Complain List
-          </Link>
-        </div>
-      </div>
+      
     </div>
   );
 };

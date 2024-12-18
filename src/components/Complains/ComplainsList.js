@@ -51,6 +51,7 @@ export const ComplainsList = () => {
             <th>Email</th>
             <th>Mobile no.</th>
             <th>Address</th>
+            <th>Subject</th>
             <th>Description</th>
             <th>Resolvestatus</th>
             <th>Actions</th>
@@ -67,6 +68,7 @@ export const ComplainsList = () => {
                 <td>{temp.email}</td>
                 <td>{temp.mobile}</td>
                 <td>{temp.address}</td>
+                <td>{temp.subject}</td>
                 <td>{temp.complain_desc}</td>
                 <td>{temp.resolvestatus}</td>
                 <td>
