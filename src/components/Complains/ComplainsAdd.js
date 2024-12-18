@@ -78,7 +78,7 @@ export const ComplainsAdd = () => {
 
             <div className='row mb-2'>
               <label htmlFor='subject' className='col-4 my-2'>Subject</label>
-              <Field name='subjet' type='text' className='col-8' required/>
+              <Field name='subject' type='text' className='col-8' required/>
             </div>
 
             <div className='row mb-2'>

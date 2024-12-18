@@ -30,6 +30,7 @@ export const ComplainsEdit = () => {
           mobile: res.data[0].mobile,
           address: res.data[0].address,
           orderid: res.data[0].orderid,
+          subject: res.data[0].subject,
           complain_desc: res.data[0].complain_desc,
           resolvestatus: res.data[0].resolvestatus,
         };
