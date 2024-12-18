@@ -109,6 +109,10 @@ const LeftPanel = () => {
                       <Link to='/imageList'>Image Upload</Link>
                     </li>
 
+                    <li className='menu-item-has-children dropdown'>
+                      <Link to='/reportgeneration'>Report</Link>
+                    </li>
+
                     {!test && (
                       <li className='menu-item-has-children dropdown'>
                         <Link to='/login'>Login</Link>
