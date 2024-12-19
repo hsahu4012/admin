@@ -131,9 +131,9 @@ export const ComplainsEdit = () => {
           </div>
 
           <div className='text-center my-4'>
-            <div type='submit' className='btn btn-success'>
+            <button type='submit' className='py-1'>
               Submit
-            </div>
+            </button>
             <Link to='/complainslist' className='btn btn-danger back'>
               Back
             </Link>
