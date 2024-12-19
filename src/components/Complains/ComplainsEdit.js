@@ -22,7 +22,7 @@ export const ComplainsEdit = () => {
         `${process.env.REACT_APP_API_URL}complains/complainbyid/${complainid}`
       )
       .then(res => {
-        console.log(res);
+        // console.log(res);
         let obj = {
           complainid: res.data[0].complainid,
           name: res.data[0].name,
@@ -35,9 +35,9 @@ export const ComplainsEdit = () => {
           resolvestatus: res.data[0].resolvestatus,
         };
         setFormValues(obj);
-        console.log(res.data[0]);
+        // console.log(res.data[0]);
       })
-      .catch(err => console.log(err));
+      // .catch(err => console.log(err));
   }, [complainid]);
 
   const updateComplain = async values => {
@@ -62,12 +62,12 @@ export const ComplainsEdit = () => {
         navigate('/complainslist');
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
   useEffect(() => {
-    console.log('formValues', formValues);
+    // console.log('formValues', formValues);
   }, [formValues]);
 
   return (
