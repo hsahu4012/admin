@@ -22,41 +22,42 @@ const ProductView = () => {
     fetchProductById(temp.productid);
   }, []);
   return (
-    <div>
-      <h2>Products View</h2>
-
-      <div>
-        <b>Product Name -</b> {product.prod_name}
-      </div>
-      <div>
-        <b>Category -</b> {product.categoryname}
-      </div>
-      <div>
-        <b>Subcategory -</b> {product.subcategoryname}
-      </div>
-      <div>
-        <b>Price -</b> {product.price}
-      </div>
-      <div>
-        <b>Brand -</b> {product.brand_name}
-      </div>
-      <div>
-        <b>Stock Quantity -</b> {product.stock_quantity}
-      </div>
-      <div>
-        <b>Discount -</b> {product.discount}
-      </div>
-      <div>
-        <b>Description -</b>{' '}
-        <div dangerouslySetInnerHTML={{ __html: product.prod_desc }} />
-      </div>
-      <div>
-        <b>Image -</b>{' '}
-        <img
-          src={`${process.env.REACT_APP_API_URL}${product.image}`}
-          alt='Product'
-          className='product-view'
-        />
+    <div className='container responsive my-4'>
+      <h2 className='text-center'>Products View</h2>
+      <div className='card shadow-sm p-4 bg-light'>
+        <div className='mb-3'>
+          <b>Product Name -</b> {product.prod_name}
+        </div>
+        <div className='mb-3'>
+          <b>Category -</b> {product.categoryname}
+        </div>
+        <div className='mb-3'>
+          <b>Subcategory -</b> {product.subcategoryname}
+        </div>
+        <div className='mb-3'>
+          <b>Price -</b> {product.price}
+        </div>
+        <div className='mb-3'>
+          <b>Brand -</b> {product.brand_name}
+        </div>
+        <div className='mb-3'>
+          <b>Stock Quantity -</b> {product.stock_quantity}
+        </div>
+        <div className='mb-3'>
+          <b>Discount -</b> {product.discount}
+        </div>
+        <div className='mb-3'>
+          <b>Description -</b>{' '}
+          <div dangerouslySetInnerHTML={{ __html: product.prod_desc }} />
+        </div>
+        <div className='mb-3'>
+          <b>Image -</b>{' '}
+          <img
+            src={`${process.env.REACT_APP_API_URL}${product.image}`}
+            alt='Product'
+            className='product-view'
+          />
+        </div>
       </div>
 
       <div className='row'>
