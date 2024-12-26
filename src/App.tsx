@@ -15,7 +15,7 @@ import Loader from './components/loader/Loader';
 import SecureHeader from './components/shared/SecureHeader';
 import SecureFooter from './components/shared/SecureFooter';
 import SecureLeftPanel from './components/shared/SecureLeftPanel';
-
+import report_generation from './components/orders/ReportGeneration';
 import Home from './components/common/Home';
 import Login from './components/common/Login';
 
@@ -99,6 +99,7 @@ import SettingUpdate from './components/settings/SettingUpdate';
 
 import ImageList from './components/imageup/ImageList';
 import ProtectedRoutes from './ProtectedRoutes';
+import ReportGeneration from './components/orders/ReportGeneration';
 
 function App() {
   //temp code to keep server live
@@ -518,6 +519,13 @@ function App() {
                       path='/vendoredit/:vendorid'
                       element={
                         <ProtectedRoutes props={{ Component: VendorUpdate }} />
+                      }
+                    />
+
+                    <Route
+                      path="/reportgeneration"
+                      element={
+                        <ProtectedRoutes props={{ Component: ReportGeneration }} />
                       }
                     />
 

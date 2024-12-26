@@ -1,83 +1,123 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import {Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ConfirmationModal } from '../shared/ConfirmationModal';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-bootstrap';
+import { Formik, Field, Form } from 'formik';
 
 const BrandCreate = () => {
-  const [brandName, setBrandName] = useState('');
-  const [brandImage, setBrandImage] = useState('');
-  const [vendorId, setVendorId] = useState('');
   const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate();
+  const [modalShow,setModalShow] = useState(false)
+  const [formValue ,setFormValue] = useState({});
+  const [vendorIds , setVendorIds] = useState([]);
 
-  const handleSubmit = async e => {
-    e.preventDefault();
+  const initialFormValues = {
+    brand_name: '',
+    brand_image: '',
+    vendor_id: '',
+  };
+
+  const handleSubmit =  values => {
+    setFormValue(values)
+  setModalShow(true);
+  };
+
+  const confirmSubmittedBrand = async()=>{
     setLoading(true); // Show loader
-
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}brand/addbrand`, {
-        headers: {
-          brand_name: brandName,
-          brand_image: brandImage,
-          vendor_id: vendorId,
-        },
-      });
+      await axios.post(`${process.env.REACT_APP_API_URL}brand/addbrand`,formValue );
+      setModalShow(false)
       navigate('/brandlist'); // Navigate to BrandList page
+      toast.success("Brand Added Successfully")
     } catch (error) {
       console.error('Error adding brand:', error);
     } finally {
       setLoading(false); // Hide loader
     }
-  };
+  }
 
+  useEffect(() => {
+    const fetchVendorIds = async()=>{
+      try{
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}vendor/allvendors`)
+        const allVendorIds = response.data.map(vendor => vendor.vendor_id);
+        setVendorIds(allVendorIds);
+     }catch(error){
+      console.log(error)
+     }
+    }
+
+    fetchVendorIds();
+    console.log(vendorIds);
+  }, [])
+  
   return (
+    <>
     <div>
-      <h2>Add New Brand</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Brand Name:</label>
-          <input
+      <ToastContainer/>
+      <h2 className='text-center mb-5'>Add New Brand</h2>
+      <Formik
+       enableReinitialize={true}
+       initialValues={initialFormValues}
+      onSubmit={(values) => handleSubmit(values)}
+      >
+      <Form>
+        <div className='row mb-2'>
+          <label className='col-4 my-2 text-center'>Brand Name:</label>
+          <Field
+          className='col-6'
             type='text'
-            value={brandName}
-            onChange={e => setBrandName(e.target.value)}
+            name="brand_name"
             required
           />
         </div>
-        <div>
-          <label>Brand Image URL:</label>
-          <input
+        <div className='row mb-2'>
+          <label className='col-4 my-2 text-center'>Brand Image URL:</label>
+          <Field
+          name="brand_image"
+          className='col-6'
             type='file'
-            value={brandImage}
-            onChange={e => setBrandImage(e.target.files[0])} // Handle file input
           />
         </div>
-        <div>
-          <label>Vendor ID:</label>
-          <input
-            type='text'
-            value={vendorId}
-            onChange={e => setVendorId(e.target.value)}
-            required
-          />
+        <div className='row mb-2'>
+          <label className='col-4 my-2 text-center'>Vendor ID:</label>
+          <Field as="select" name="vendor_id" className="col-6" required>
+              <option value="">Select an User ID</option>
+              {vendorIds.map((vendor) => (
+                <option key={vendor} value={vendor}>
+                  {vendor}
+                </option>
+              ))}
+            </Field>
         </div>
-        <button
-          type='submit'
-          disabled={loading}
-          style={{
-            backgroundColor: loading ? 'grey' : '#0088aa', // Change to your preferred color
-            color: 'white',
-            border: 'none',
-            marginTop: 10,
-            marginLeft: 100,
-            paddingTop: 10,
-            padding: '10px 20px',
-            borderRadius: '5px',
-            fontSize: '16px',
-          }}
-        >
-          {loading ? 'Adding Brand...' : 'Add Brand'}
-        </button>
-      </form>
+        <div className='text-center my-4'>
+            <button 
+            type='submit'
+            disabled={loading}
+           className='py-1'
+            >
+            {loading ? 'Adding Brand...' : 'Add Brand'}
+            </button>
+            &nbsp; &nbsp;
+            <Link to='/brandlist' className='btn btn-danger back'>
+              Back
+            </Link>
+          </div>
+      </Form>
+      </Formik>
     </div>
+    
+    <ConfirmationModal
+        show={modalShow}
+        modalMessage = "You Want to Add the New Brand"
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmSubmittedBrand}
+        operationType="Add"
+        wantToAddData = {true}
+      />
+    </>
   );
 };
 

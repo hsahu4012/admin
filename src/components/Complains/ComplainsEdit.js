@@ -50,20 +50,53 @@ export const ComplainsEdit = () => {
         alert('No changes were made. Nothing to update.');
         return;
       }
-      //after form values update
-      const confirmed = window.confirm(
-        'Are you sure you want to Update this complain?'
-      );
-      if (confirmed === true) {
-        await axios.put(
-          `${process.env.REACT_APP_API_URL}complains/updatecomplains/${complainid}`,
-          values
-        );
-        navigate('/complainslist');
+      else{
+        setFormValues(values);
+        setModalMessage("You Really Want to Update this Complain");
+        setFormValuesChanged(true)
       }
+      setModalShow(true)
     } catch (err) {
       // console.log(err);
     }
+  };
+
+  const confirmUpdateComplain = async()=>{
+    try{
+        await axios.put(
+          `${process.env.REACT_APP_API_URL}complains/updatecomplains/${complainid}`,
+          formValues
+        );
+        setModalShow(false);
+        navigate('/complainslist');
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  const validate = (formValues) => {
+    const errors = {};
+
+    // Validate name
+    if (!formValues.name) {
+      errors.name = '*Name is required';
+    }
+
+    // Validate email
+    if (!formValues.email) {
+      errors.email = '*Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
+      errors.email = '*Email address is invalid';
+    }
+
+    // Validate mobile number
+    if (!formValues.mobile) {
+      errors.mobile = '*Mobile number is required';
+    } else if (!/^[0-9]{10}$/.test(formValues.mobile)) {
+      errors.mobile = '*Mobile number should be of 10 digits';
+    }
+
+    return errors;
   };
 
   useEffect(() => {
@@ -101,10 +134,6 @@ export const ComplainsEdit = () => {
           <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>Address:-</label>
             <Field name='address' type='text' className='col-6' required />
-          </div>
-          <div className='row mb-2'>
-            <label className='col-4 my-2 text-center'>OrderId:-</label>
-            <Field name='orderid' type='text' className='col-6' required />
           </div>
           <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>Subject:-</label>

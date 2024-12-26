@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { ConfirmationModal } from '../../shared/ConfirmationModal';
 import JoditEditor from 'jodit-react';
+import { toast, ToastContainer } from 'react-toastify';
+
 
 const ProductAdd = () => {
   const [categories, setCategories] = useState([]);
@@ -15,6 +18,8 @@ const ProductAdd = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [loadingCategories, setLoadingCategories] = useState(false);
+  const [modalShow,setModalShow] = useState(false)
+  const [formValue ,setFormValue] = useState([{}]);
 
   const navigate = useNavigate();
 
@@ -65,7 +70,7 @@ const ProductAdd = () => {
     }
   };
 
-  const addNewProduct = async values => {
+  const addNewProduct =  values => {
     const formData = new FormData();
     const productid = parseInt(Math.random() * 10000000000);
     const datestamp = Date.now();
@@ -85,15 +90,22 @@ const ProductAdd = () => {
     formData.append('image', imageFile);
     formData.append('productid', productid);
     formData.append('datestamp', datestamp);
+    setFormValue(formData);
+    setModalShow(true);
+    setLoading(false)
+  };
 
-    try {
+  const confirmSubmittedProduct = async()=>{
+      try {
       const url = process.env.REACT_APP_API_URL + 'products/addProduct';
-      const response = await axios.post(url, formData, {
+      const response = await axios.post(url, formValue, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       console.log(response.data);
+      setModalShow(false)
+      toast.success('Product Added Successfully');
       navigate('/productslist'); // Redirect on successful response
     } catch (error) {
       console.error(error);
@@ -101,7 +113,7 @@ const ProductAdd = () => {
     } finally {
       setLoading(false); // Stop the loader
     }
-  };
+  }
 
   const handleDiscountPercentageChange = (
     percentage,
@@ -133,6 +145,8 @@ const ProductAdd = () => {
   };
 
   return (
+    <>
+    <ToastContainer/>
     <div>
       <h2>Products Add</h2>
       <Formik
@@ -377,6 +391,16 @@ const ProductAdd = () => {
         </div>
       </div>
     </div>
+
+    <ConfirmationModal
+        show={modalShow}
+        modalMessage = "You Want to Add the New Product"
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmSubmittedProduct}
+        operationType="Add"
+        wantToAddData = {true}
+      />
+    </>
   );
 };
 

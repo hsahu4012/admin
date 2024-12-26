@@ -1,7 +1,9 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Formik, Field, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ConfirmationModal } from '../shared/ConfirmationModal';
+
 
 export const ComplainsAdd = () => {
   const navigate = useNavigate();
@@ -16,24 +18,30 @@ export const ComplainsAdd = () => {
     complain_desc: '',
     //resolvestatus: "",
   };
-  const addNewComplain = async values => {
-    try {
-      const confirmed = window.confirm(
-        'Are you sure you want to Add New complain???'
-      );
-      if (confirmed) {
-        await axios.post(
-          `${process.env.REACT_APP_API_URL}complains/addcomplain`,
-          values
-        );
-        navigate('/complainslist');
-      }
-    } catch (error) {
-      console.log(error);
-    }
+
+  const [modalShow,setModalShow] = useState(false);
+  const [formValue ,setFormValue] = useState([{}]);
+  
+  const addNewComplain =  values => {
+    setFormValue(values);
+    setModalShow(true);
   };
 
+const confirmAddComplain = async()=>{
+  setModalShow(false)
+  try {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}complains/addcomplain`,
+        formValue
+      );
+      navigate('/complainslist');
+  } catch (error) {
+    console.log(error);
+  }
+}
+
   return (
+    <>
     <div>
       <h2>Complain Add</h2>
 
@@ -109,6 +117,16 @@ export const ComplainsAdd = () => {
 
       
     </div>
+
+    <ConfirmationModal
+        show={modalShow}
+        modalMessage = "you really want to Add this Complain"
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmAddComplain}
+        operationType = "Add"
+        wantToAddData = {true}
+      />
+    </>
   );
 };
 

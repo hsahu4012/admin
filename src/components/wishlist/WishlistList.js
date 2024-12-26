@@ -1,9 +1,31 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ConfirmationModal } from '../shared/ConfirmationModal';
 
 const WishlistList = () => {
   const [data, setData] = useState([]);
+  const [modalShow,setModalShow] = useState(false);
+  const [deletedId,setDeletedId] = useState(null);
+
+
+  const handleDelete =  userid => {
+    setDeletedId(userid);
+    setModalShow(true)
+  };
+
+  const confirmDeleteWishlist = async()=>{
+      try {
+        await axios.put(
+          `${process.env.REACT_APP_API_URL}wishlist/emptyWishList/${deletedId}`
+        );
+        // window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }finally{
+    setModalShow(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,25 +39,10 @@ const WishlistList = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [data]);
 
-  const handleDelete = async userid => {
-    try {
-      const confirmed = window.confirm(
-        'Are you sure you want to delete this wishlist?'
-      );
-      if (confirmed) {
-        await axios.put(
-          `${process.env.REACT_APP_API_URL}wishlist/emptyWishList/${userid}`
-        );
-
-        window.location.reload();
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
+    <>
     <div className='container'>
       <h2 className='w-100 d-flex justify-content-center p-3'>
         WishList Details
@@ -87,6 +94,16 @@ const WishlistList = () => {
         </div>
       </div>
     </div>
+
+    <ConfirmationModal
+        show={modalShow}
+        modalMessage = "you really want to delete this Wishlist"
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmDeleteWishlist}
+        operationType = "Delete"
+        wantToAddData = {true}
+      />
+    </>
   );
 };
 
