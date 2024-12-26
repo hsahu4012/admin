@@ -47,6 +47,9 @@ const LeftPanel = () => {
                     <li className='menu-item-has-children dropdown bg-success bg-opacity-25'>
                       <Link to='/productslist'>Products</Link>
                     </li>
+                    <li className='menu-item-has-children dropdown bg-success bg-opacity-25'>
+                      <Link to='/customproduct'>Custom Product</Link>
+                    </li>
 
                     <li className='menu-item-has-children dropdown bg-warning bg-opacity-25'>
                       <Link to='/userslist'>Users</Link>
