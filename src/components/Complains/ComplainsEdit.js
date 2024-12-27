@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Field, Form } from 'formik';
+import { ConfirmationModal } from '../shared/ConfirmationModal';
 
 export const ComplainsEdit = () => {
   const { complainid } = useParams();
@@ -15,6 +16,9 @@ export const ComplainsEdit = () => {
     complain_desc: '',
     resolvestatus: '',
   });
+  const [modalShow,setModalShow] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [formValuesChanged ,setFormValuesChanged] = useState(false)
 
   useEffect(() => {
     axios
@@ -45,10 +49,11 @@ export const ComplainsEdit = () => {
       const isUnchanged = Object.keys(formValues).every(
         key => formValues[key] === values[key]
       );
+      setFormValuesChanged(false)
 
       if (isUnchanged) {
-        alert('No changes were made. Nothing to update.');
-        return;
+        setModalMessage("Nothing to update")
+        setFormValuesChanged(false)
       }
       else{
         setFormValues(values);
@@ -104,6 +109,7 @@ export const ComplainsEdit = () => {
   }, [formValues]);
 
   return (
+    <>
     <div className='text-center mb-5'>
       <h2>Complain Edit</h2>
       <br />
@@ -111,25 +117,37 @@ export const ComplainsEdit = () => {
       <Formik
         enableReinitialize={true}
         initialValues={formValues}
+        validate={validate}
         onSubmit={values => updateComplain(values)}
       >
+        {({errors})=>(
         <Form className='examAddForm'>
           {/* <div className="row mb-2">
                         <label className="col-4 my-2 text-center">ComplainId:-</label>
                         <Field name="complainid" type="text" className="col-6" required />
                     </div> */}
-
+          <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'>Order ID:-</label>
+            <Field name='orderid' type='text' className='col-6' readOnly="true" />
+          </div>
+          <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'>Complain ID:-</label>
+            <Field name='complainid' type='text' className='col-6' readOnly="true" />
+          </div>
           <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>Name:-</label>
             <Field name='name' type='text' className='col-6' required />
+            {errors.name && <div className="col-6 offset-4 text-danger small">{errors.name}</div>}
           </div>
           <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>Email:-</label>
             <Field name='email' type='text' className='col-6' required />
+            {errors.email && <div className="col-6 offset-4 text-danger small">{errors.email}</div>}
           </div>
           <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>Mobile no.:-</label>
             <Field name='mobile' type='text' className='col-6' required />
+            {errors.mobile && <div className="col-6 offset-4 text-danger small">{errors.mobile}</div>}
           </div>
           <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>Address:-</label>
@@ -168,8 +186,18 @@ export const ComplainsEdit = () => {
             </Link>
           </div>
         </Form>
+        )}
       </Formik>
     </div>
+    <ConfirmationModal
+        show={modalShow}
+        modalMessage = {modalMessage}
+        onHide={() => setModalShow(false)}
+        confirmation ={confirmUpdateComplain}
+        operationType = "Update"
+        wantToAddData = {formValuesChanged}
+      />
+    </>
   );
 };
 

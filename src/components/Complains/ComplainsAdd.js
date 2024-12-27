@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Formik, Field, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -8,12 +8,12 @@ import { ConfirmationModal } from '../shared/ConfirmationModal';
 export const ComplainsAdd = () => {
   const navigate = useNavigate();
   const initialFormValues = {
-    orderid: '',
+    order_id: '',
     name: '',
     email: '',
     mobile: '',
     address: '',
-    orderid: '',
+    // orderid: '',
     subject:'',
     complain_desc: '',
     //resolvestatus: "",
@@ -21,6 +21,7 @@ export const ComplainsAdd = () => {
 
   const [modalShow,setModalShow] = useState(false);
   const [formValue ,setFormValue] = useState([{}]);
+  const[orderIds, setOrderIds] = useState([]);
   
   const addNewComplain =  values => {
     setFormValue(values);
@@ -39,6 +40,18 @@ const confirmAddComplain = async()=>{
     console.log(error);
   }
 }
+useEffect(() => {
+  const fetchOrderIds = async()=>{
+   try{
+     const response = await axios.get(`${process.env.REACT_APP_API_URL}orders/allorderIDs`)
+     const allOrderIds = response.data.map(order => order.order_id);
+     setOrderIds(allOrderIds);
+  }catch(error){
+   console.log(error)
+  }
+ }
+ fetchOrderIds();
+},[]);
 
   return (
     <>
@@ -56,7 +69,14 @@ const confirmAddComplain = async()=>{
               <label htmlFor='name' className='col-4 my-2'>
                 Order id:
               </label>
-              <Field name='orderid' type='text' className='col-8' required />
+              <Field as="select" name='orderid' className='col-8' required >
+              <option value="">Select an Order ID</option>
+              {orderIds.map((order) => (
+                <option key={order} value={order}>
+                  {order}
+                </option>
+              ))}
+              </Field>
             </div>
             <div className='row mb-2'>
               <label htmlFor='name' className='col-4 my-2'>
