@@ -197,8 +197,16 @@ const ProductsList = () => {
   };
 
   const handleEditClick = (productid, field, value) => {
+    const temp = {
+      price: editedValues.price || products.find(p => p.productid === productid).price,
+      stock_quantity: editedValues.stock_quantity || products.find(p => p.productid === productid).stock_quantity,
+      discount: editedValues.discount || products.find(p => p.productid === productid).discount,
+    };
     setEditingProductId(productid);
-    setEditedValues({ ...editedValues, [field]: value });
+    setEditedValues({
+      ...temp,
+      [field]: value,
+    });
   };
 
   const handleStockClick = async (id, stock) => {
@@ -213,8 +221,14 @@ const ProductsList = () => {
     //   window.location.reload();
     // }, 1000);
   };
-  const handleValueChange = (field, value) => {
-    setEditedValues({ ...editedValues, [field]: value });
+  const handleValueChange = (productid, field, value) => {
+    if (editingProductId === productid) {
+      if (value === '' && typeof editedValues[field] !== 'number') {
+        delete editedValues[field];
+      } else {
+        setEditedValues({ ...editedValues, [field]: value });
+      }
+    }
   };
 
   const handleSaveClick = async productid => {
@@ -343,9 +357,9 @@ const ProductsList = () => {
                   {editingProductId === temp.productid ? (
                     <input
                       type='number'
-                      value={editedValues.price || temp.price}
-                      onChange={e => handleValueChange('price', e.target.value)}
-                      style={{ width: '60px' }}
+                      value={editedValues.price}
+                      onChange={e => handleValueChange(temp.productid,'price', e.target.value)}
+                      className='w-100'
                     />
                   ) : (
                     temp.price
@@ -363,11 +377,11 @@ const ProductsList = () => {
                   {editingProductId === temp.productid ? (
                     <input
                       type='number'
-                      value={editedValues.stock_quantity || temp.stock_quantity}
+                      value={editedValues.stock_quantity}
                       onChange={e =>
-                        handleValueChange('stock_quantity', e.target.value)
+                        handleValueChange(temp.productid,'stock_quantity', e.target.value)
                       }
-                      style={{ width: '60px' }}
+                      className='w-75'
                     />
                   ) : (
                     temp.stock_quantity
@@ -389,11 +403,11 @@ const ProductsList = () => {
                   {editingProductId === temp.productid ? (
                     <input
                       type='number'
-                      value={editedValues.discount || temp.discount}
+                      value={editedValues.discount}
                       onChange={e =>
-                        handleValueChange('discount', e.target.value)
+                        handleValueChange(temp.productid,'discount', e.target.value)
                       }
-                      style={{ width: '60px' }}
+                      className='w-75'
                     />
                   ) : (
                     temp.discount
@@ -411,8 +425,8 @@ const ProductsList = () => {
                   {editingProductId === temp.productid && (
                     <button
                       onClick={() => handleSaveClick(temp.productid)}
-                      className='btn btn-success m-1 '
-                      style={{ marginRight: '10px' }}
+                      className='btn btn-success m-1 mr-2 '
+                      
                     >
                       Save
                     </button>
@@ -438,8 +452,8 @@ const ProductsList = () => {
                   {/* Hide and Show Button */}
                   <button
                     onClick={() => switchVisibility(temp.productid, temp.isactive === -1)}
-                    className='btn m-1'
-                    style={{ backgroundColor: temp.isactive === -1 ? 'lightgreen' : 'lightcoral', color: 'black' }}
+                    className={temp.isactive === -1 ? "bg-success text-dark btn m-1" : "bg-danger text-dark btn m-1"}
+                    
                   >
                     {temp.isactive === -1 ? 'Show' : 'Hide'}
                   </button>
