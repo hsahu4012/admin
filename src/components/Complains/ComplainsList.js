@@ -12,8 +12,13 @@ export const ComplainsList = () => {
     try {
       const url = process.env.REACT_APP_API_URL + 'complains/allcomplains';
       const response = await axios.get(url);
+      const sortedComplains = response.data.sort((a, b) => {
+        const dateA = new Date(a.date_raised); 
+        const dateB = new Date(b.date_raised);
+        return dateB - dateA;
+      });
       console.log(response.data);
-      setComplains(response.data);
+      setComplains(sortedComplains);
     } catch (error) {
       console.log(error);
     }
