@@ -12,10 +12,10 @@ export const ComplainsEdit = () => {
     email: '',
     mobile: '',
     address: '',
+    subject: '',
     complain_desc: '',
     resolvestatus: '',
   });
-
   const [modalShow,setModalShow] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [formValuesChanged ,setFormValuesChanged] = useState(false)
@@ -26,7 +26,7 @@ export const ComplainsEdit = () => {
         `${process.env.REACT_APP_API_URL}complains/complainbyid/${complainid}`
       )
       .then(res => {
-        console.log(res);
+        // console.log(res);
         let obj = {
           complainid: res.data[0].complainid,
           name: res.data[0].name,
@@ -34,21 +34,23 @@ export const ComplainsEdit = () => {
           mobile: res.data[0].mobile,
           address: res.data[0].address,
           orderid: res.data[0].orderid,
+          subject: res.data[0].subject,
           complain_desc: res.data[0].complain_desc,
           resolvestatus: res.data[0].resolvestatus,
         };
         setFormValues(obj);
-        console.log(res.data[0]);
+        // console.log(res.data[0]);
       })
-      .catch(err => console.log(err));
+      // .catch(err => console.log(err));
   }, [complainid]);
 
-  const updateComplain = values => {
+  const updateComplain = async values => {
     try {
       const isUnchanged = Object.keys(formValues).every(
         key => formValues[key] === values[key]
       );
       setFormValuesChanged(false)
+
       if (isUnchanged) {
         setModalMessage("Nothing to update")
         setFormValuesChanged(false)
@@ -60,7 +62,7 @@ export const ComplainsEdit = () => {
       }
       setModalShow(true)
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -103,7 +105,7 @@ export const ComplainsEdit = () => {
   };
 
   useEffect(() => {
-    console.log('formValues', formValues);
+    // console.log('formValues', formValues);
   }, [formValues]);
 
   return (
@@ -119,7 +121,7 @@ export const ComplainsEdit = () => {
         onSubmit={values => updateComplain(values)}
       >
         {({errors})=>(
-          <Form className='examAddForm'>
+        <Form className='examAddForm'>
           {/* <div className="row mb-2">
                         <label className="col-4 my-2 text-center">ComplainId:-</label>
                         <Field name="complainid" type="text" className="col-6" required />
@@ -152,6 +154,11 @@ export const ComplainsEdit = () => {
             <Field name='address' type='text' className='col-6' required />
           </div>
           <div className='row mb-2'>
+            <label className='col-4 my-2 text-center'>Subject:-</label>
+            <Field name='subject' type='text' className='col-6' required />
+          </div>
+
+          <div className='row mb-2'>
             <label className='col-4 my-2 text-center'>Description:-</label>
             <Field
               name='complain_desc'
@@ -171,7 +178,7 @@ export const ComplainsEdit = () => {
           </div>
 
           <div className='text-center my-4'>
-            <button type='submit' className='py-1 '>
+            <button type='submit' className='py-1' >
               Submit
             </button>
             <Link to='/complainslist' className='btn btn-danger back'>
@@ -182,7 +189,6 @@ export const ComplainsEdit = () => {
         )}
       </Formik>
     </div>
-
     <ConfirmationModal
         show={modalShow}
         modalMessage = {modalMessage}

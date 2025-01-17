@@ -12,8 +12,13 @@ export const ComplainsList = () => {
     try {
       const url = process.env.REACT_APP_API_URL + 'complains/allcomplains';
       const response = await axios.get(url);
+      const sortedComplains = response.data.sort((a, b) => {
+        const dateA = new Date(a.date_raised); 
+        const dateB = new Date(b.date_raised);
+        return dateB - dateA;
+      });
       console.log(response.data);
-      setComplains(response.data);
+      setComplains(sortedComplains);
     } catch (error) {
       console.log(error);
     }
@@ -62,6 +67,7 @@ export const ComplainsList = () => {
             <th>Email</th>
             <th>Mobile no.</th>
             <th>Address</th>
+            <th>Subject</th>
             <th>Description</th>
             <th>Resolvestatus</th>
             <th>Actions</th>
@@ -79,6 +85,7 @@ export const ComplainsList = () => {
                 <td>{temp.email}</td>
                 <td>{temp.mobile}</td>
                 <td>{temp.address}</td>
+                <td>{temp.subject}</td>
                 <td>{temp.complain_desc}</td>
                 <td>{temp.resolvestatus}</td>
                 <td>
