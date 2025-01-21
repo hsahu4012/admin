@@ -4,6 +4,10 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Loader from '../../loader/Loader';
 import { ConfirmationModal } from '../../shared/ConfirmationModal';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Dropdown } from 'react-bootstrap';
+
+
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -18,7 +22,15 @@ const ProductsList = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [showSelection, setShowSelection] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
-  const [modalShow,setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen((prevState) => !prevState);
+  };
+
+
 
   const fetchCategories = async () => {
     setLoading(true);
@@ -84,7 +96,8 @@ const ProductsList = () => {
   };
 
   const handleShowSelection = () => {
-    setShowSelection(true);
+    setShowSelection(prevShowSelection => !prevShowSelection);
+    //setShowSelection((true));
   };
 
   const handleBulkOutOfStock = async () => {
@@ -265,15 +278,34 @@ const ProductsList = () => {
   return (
     <div>
       <ToastContainer />
-      <h2>Products List</h2>
-      {loading && <Loader />}
-      <Link to='/productadd' className='btn btn-primary'>
-        Create New Product
-      </Link>
-      &nbsp;
-      <Link to='/bulkqsadd' className='btn btn-primary'>
-        Bulk Products Upload
-      </Link>
+      <div className='d-flex align-items-top'>
+        
+      </div>
+      <div className='d-flex pb-3 pl-5 flex-row justify-content-between align-items-center"'>
+        <div className='d-flex flex-row'>
+          <h2>Products List</h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <Dropdown>
+            <Dropdown.Toggle variant="primary" id="dropdown-basic">
+              Create / Upload Product
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item href="#">
+                <Link to='/productadd' className='btn btn-primary'>
+                  Create New Product
+                </Link>
+              </Dropdown.Item>
+              <Dropdown.Item href="#">
+                <Link to='/bulkqsadd' className='btn btn-primary'>
+                  Bulk Products Upload
+                </Link>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+        <div className='d-flex pb-3 ml-5 justify-content-end align-items-right'>
+          <h4>Total No of Products - {products && products.length}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+        </div>
+      </div>
       <div>
         <h3>Categories</h3>
         {categories.map(category => (
@@ -292,8 +324,6 @@ const ProductsList = () => {
       </div>
 
       <div>
-        Total No of Products - {products && products.length} <br />
-        Selected Products - {selectedProducts.length} <br />
         <button
           className='btn btn-success m-1'
           onClick={handleShowSelection}
@@ -310,15 +340,18 @@ const ProductsList = () => {
         </label>
       </div>
 
-      <button onClick={handleBulkOutOfStock} disabled={!selectedProducts.length || selectAll} className="btn btn-danger m-1">
-        Bulk Out of Stock
-      </button>
+      <div className='d-flex '>
+        <button onClick={handleBulkOutOfStock} disabled={!selectedProducts.length || selectAll} className="btn btn-danger m-1">
+          Bulk Out of Stock
+        </button>
 
-      <button onClick={handleAllOutOfStock} disabled={!selectAll} className="btn btn-warning m-1">
-        All Out of Stock
-      </button>
-
-      <table className='table table-responsive table-striped table-bordered'>
+        <button onClick={handleAllOutOfStock} disabled={!selectAll} className="btn btn-warning m-1">
+          All Out of Stock
+        </button>
+        <h5 className='p-3'><b> Selected Products - {selectedProducts.length}</b></h5> <br />
+      </div>
+      {loading ? (<Loader />) : (
+        <table className='table table-responsive table-striped table-bordered'>
         <thead className=''>
           <tr>
             {(selectAll || showSelection) && <th>Select</th>}
@@ -358,7 +391,7 @@ const ProductsList = () => {
                     <input
                       type='number'
                       value={editedValues.price}
-                      onChange={e => handleValueChange(temp.productid,'price', e.target.value)}
+                      onChange={e => handleValueChange(temp.productid, 'price', e.target.value)}
                       className='w-100'
                     />
                   ) : (
@@ -379,7 +412,7 @@ const ProductsList = () => {
                       type='number'
                       value={editedValues.stock_quantity}
                       onChange={e =>
-                        handleValueChange(temp.productid,'stock_quantity', e.target.value)
+                        handleValueChange(temp.productid, 'stock_quantity', e.target.value)
                       }
                       className='w-75'
                     />
@@ -405,7 +438,7 @@ const ProductsList = () => {
                       type='number'
                       value={editedValues.discount}
                       onChange={e =>
-                        handleValueChange(temp.productid,'discount', e.target.value)
+                        handleValueChange(temp.productid, 'discount', e.target.value)
                       }
                       className='w-75'
                     />
@@ -426,7 +459,7 @@ const ProductsList = () => {
                     <button
                       onClick={() => handleSaveClick(temp.productid)}
                       className='btn btn-success m-1 mr-2 '
-                      
+
                     >
                       Save
                     </button>
@@ -453,7 +486,7 @@ const ProductsList = () => {
                   <button
                     onClick={() => switchVisibility(temp.productid, temp.isactive === -1)}
                     className={temp.isactive === -1 ? "bg-success text-dark btn m-1" : "bg-danger text-dark btn m-1"}
-                    
+
                   >
                     {temp.isactive === -1 ? 'Show' : 'Hide'}
                   </button>
@@ -476,13 +509,13 @@ const ProductsList = () => {
                   >
                     Delete
                   </button>
-                   {/* <button onClick={() => {
+                  {/* <button onClick={() => {
                     handleStockClick(temp.productid, temp.stock_quantity);
                   }} className='btn btn-warning m-1'
                   >
                     {temp.stock_quantity === 0 ? "Stock" : "Out of Stock"}
                   </button> */}
-                </td> 
+                </td>
 
                 {/* <td>
                                 <Link to={`/productview/${temp.productid}`} className='btn btn-success'>View</Link>
@@ -499,18 +532,19 @@ const ProductsList = () => {
             ))}
         </tbody>
       </table>
+      ) }
       <ConfirmationModal
         show={modalShow}
-        modalMessage = "you really want to delete this Product"
+        modalMessage="you really want to delete this Product"
         onHide={() => setModalShow(false)}
-        confirmation ={() => {
+        confirmation={() => {
           if (productToDelete) {
             deleteProduct(productToDelete);
             setModalShow(false);
           }
         }}
-        operationType = "Delete"
-        wantToAddData = {true}
+        operationType="Delete"
+        wantToAddData={true}
       />
     </div>
   );
