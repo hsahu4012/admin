@@ -14,10 +14,33 @@ const CategoryDetails = () => {
   const [categoryToUpdate, setCategoryToUpdate] = useState(null);
   const [updateCategoryName, setUpdateCategoryName] = useState('');
 
+
+  const handleEnableDisable = async (id, isactive) => {
+    let stat;
+    if (isactive === 1) {
+        stat = 2;
+    } else {
+        stat = 1;
+    }
+    // function code
+    try {
+      const url= `${process.env.REACT_APP_API_URL}category/updatestatus/${id}`
+      await axios.put(url, {
+        stat: stat,
+      });
+      toast.success('Category Status Changed successfully!');
+      await fetchAllUsers();
+    } catch (err) {
+      console.error('Error updating category:', err);
+      toast.error('Error updating category!');
+    }
+  };
+  
+
   const fetchAllUsers = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}category/allCategory`
+        `${process.env.REACT_APP_API_URL}category/allCategoryadmin`
       );
       const categories = res.data;
       // const images = await Promise.all(categories.map(async category => {
@@ -131,6 +154,17 @@ const CategoryDetails = () => {
                       >
                         Delete
                       </button>
+                      <button className='btn btn-primary mx-2'
+                        onClick={() => { handleEnableDisable(user.category_id, user.isactive) }}
+                      >
+                        {user.isactive == 1 ? 'Disable' : user.isactive == 2 ? 'Enable' : null}
+                      </button>
+                      {/*<button className='btn btn-primary mx-2'
+                        onClick={()=>{handleEnableDisable(user.category_id)}
+                        }
+                      >
+                          {buttonStatus}
+                      </button>*/}
                     </td>
                   </tr>
                 ))}
