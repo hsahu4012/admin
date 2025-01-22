@@ -6,21 +6,22 @@ const Orderslist = () => {
   const [orders, setOrders] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-
+  const [editingOrderId, setEditingOrderId] = useState(null);
+  const [editedValues, setEditedValues] = useState({});
+  
+  const fetchData = async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}orders/allOrders`
+    );
+    setOrders(response.data);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}orders/allOrders`
-      );
-      setOrders(response.data);
-    };
     fetchData();
   }, []);
-
   // const handleDelete = async id => {
-  //   console.log(id, 'hii');
-  //   try {
-  //     const confirmed = window.confirm(
+    //   console.log(id, 'hii');
+    //   try {
+      //     const confirmed = window.confirm(
   //       'Are you sure you want to delete this order?'
   //     );
   //     if (confirmed) {
@@ -35,7 +36,48 @@ const Orderslist = () => {
   //     console.log(err);
   //   }
   // };
+  const handleEditClick = (order_id, field, value) => {
+      const date=orders.find(p => p.order_id === order_id).order_date;
+      const [day,month, year] = date.split("/");
+      const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      const temp={
+        order_date:formattedDate,
+      } 
+      setEditingOrderId(order_id);
+      setEditedValues({ ...temp });
+  }
+  const handleValueChange = (order_id, field, value) => {    
+      setEditedValues({ ...editedValues, [field]: value });
+      
+  }
 
+  const handleSaveClick = async orderid => {
+    // setOrders(prev => prev.map(item => (item.order_id === orderid ? { ...item, ...editedValues } : item)));
+    try {
+
+      let updatedValues = { ...editedValues }; // Clone the current edited values
+
+      if (editedValues.order_date) {
+          const date = editedValues.order_date;
+          const [year, month, day] = date.split("-");
+          const formattedDate = `${day}/${month}/${year}`;
+          updatedValues = { ...updatedValues, order_date: formattedDate };
+          console.log("Formatted date:", formattedDate); // Debug log
+      }
+
+
+      const url =
+        process.env.REACT_APP_API_URL + `orders/updateOrder/${orderid}`;
+      await axios.put(url, updatedValues);
+      toast.success('Order updated successfully!');
+      setEditingOrderId(null);
+      
+      fetchData();
+    } catch (error) {
+      console.error('Error updating Order:', error);
+      toast.error('Failed to update the Order.');
+    }
+  };
   const handleDelete = async()  => {
     try {
       await axios.put(
@@ -97,7 +139,25 @@ const Orderslist = () => {
                   <tr key={i}>
                     <td>{item.srno}</td>
                     <td>{item.order_id}</td>
-                    <td>{item.order_date}</td>
+                    <td>
+                    {editingOrderId === item.order_id ? (
+                      <input
+                        type='date'
+                        value={editedValues.order_date}
+                        onChange={e =>handleValueChange(item.order_id, 'order_date', e.target.value)}                      
+                      />
+                    ) : (
+                      item.order_date
+                    )}  
+                    <button
+                      onClick={() =>
+                        handleEditClick(item.order_id, 'order_date', item.order_date)
+                      }
+                      className='btn btn-warning btn-sm ml-2'
+                    >
+                      Edit
+                    </button>
+                    </td>
                     <td>{item.order_time}</td>
                     <td>{item.order_status}</td>
                     <td>{item.userid}</td>
@@ -122,6 +182,14 @@ const Orderslist = () => {
                       >
                         Delete
                       </button>
+                      {editingOrderId === item.order_id && (
+                        <button
+                          onClick={() => handleSaveClick(item.order_id)}
+                          className='btn btn-success'  
+                        >
+                          Save
+                        </button>
+                      )}
                     </td>
                   </tr>
                 );
