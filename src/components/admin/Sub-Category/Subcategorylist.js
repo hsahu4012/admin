@@ -12,9 +12,8 @@ const Subcategorylist = () => {
   const fetchSubcategorylist = async () => {
     setLoading(true);
     try {
-      const url = process.env.REACT_APP_API_URL + 'subCategory/allSubCategory';
+      const url = process.env.REACT_APP_API_URL + 'subCategory/allSubCategoryadmin';
       const response = await axios.get(url);
-      console.log(response.data);
       setSubcategory(response.data);
     } catch (error) {
       console.log(error);
@@ -22,6 +21,29 @@ const Subcategorylist = () => {
       setLoading(false);
     }
   };
+
+  const handleEnableDisable = async (id, isactive) => {
+    let stat;
+    if (isactive === 1) {
+        stat = 2;
+    } else {
+        stat = 1;
+    }
+    try {
+      const url =
+        process.env.REACT_APP_API_URL +'subCategory/updatestatus/' + id;
+      await axios.put(url,  {
+        stat: stat,
+      });
+      await new Promise(res => setTimeout(res, 1000));
+      toast.success('Subcategory status updated successfully!');
+      await fetchSubcategorylist();
+    } catch (error) {
+      console.log(error);
+      toast.error('Failed to update status of subcategory.');
+    }
+
+  }
 
   const deleteSubcategory = async subcategoryid => {
     try {
@@ -110,6 +132,11 @@ const Subcategorylist = () => {
                     ) : (
                       'Delete'
                     )}
+                  </button>
+                  <button className='btn btn-primary mx-2'
+                    onClick={() => { handleEnableDisable(temp.subcategory_id, temp.isactive) }}
+                  >
+                    {temp.isactive == 1 ? 'Disable' : temp.isactive == 2 ? 'Enable' : null}
                   </button>
                 </td>
               </tr>
